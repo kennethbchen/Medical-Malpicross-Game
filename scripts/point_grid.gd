@@ -3,9 +3,15 @@ extends Node2D
 var points: Array[PointMassSim.PointMass]
 var constraints: Array[PointMassSim.SpringConstraint]
 
-var gravity: Vector2 = Vector2(0,900)
+# (column, row) -> Point Mass
+var point_map: Dictionary[Vector2, PointMassSim.PointMass]
+
+var gravity: Vector2 = Vector2(0,0)
 
 func _ready() -> void:
+	
+	generate_point_grid(10, 10, 40)
+	"""
 	var point_count: int = 20
 	var length: float = 40
 
@@ -19,7 +25,32 @@ func _ready() -> void:
 	
 	for i in range(len(points) - 1):
 		constraints.append(PointMassSim.SpringConstraint.new(points[i], points[i + 1], length, 500))
+	"""
 
+func generate_point_grid(columns: int, rows: int, point_distance: float):
+	
+	# Create points
+	var pos = Vector2.ZERO
+	for row in range(rows):
+		for col in range(columns):
+			points.append(PointMassSim.PointMass.new(pos))
+			
+			pos.x += point_distance
+			print(pos)
+		
+		pos.y += point_distance
+		pos.x = 0
+	
+	# Create constraints
+	
+	
+func _get_neighbor_coords(column: int, row: int):
+	return [
+		Vector2(column + 1, row),
+		Vector2(column - 1, row),
+		Vector2(column, row + 1),
+		Vector2(column, row - 1),
+	]
 func _physics_process(delta: float) -> void:
 	
 	_simulate(delta)
