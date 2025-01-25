@@ -76,6 +76,8 @@ func _draw():
 # https://toqoz.fyi/game-rope.html
 # https://github.com/SebLague/Cloth-and-IK-Test/blob/main/Assets/Scripts/Simulation/Simulation.cs
 
+# https://lisyarus.github.io/blog/posts/soft-body-physics.html
+
 class VerletNode:
 	extends RefCounted
 	

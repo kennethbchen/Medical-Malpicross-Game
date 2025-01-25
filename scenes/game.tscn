@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://hwsx8i5h37ma"]
 
-[ext_resource type="Script" uid="uid://bljqde07cvm44" path="res://scripts/verlet.gd" id="1_uwrxv"]
+[ext_resource type="Script" uid="uid://bs6kbs3hpjhlo" path="res://scripts/point_mass_sim.gd" id="1_uwrxv"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_uwrxv")
