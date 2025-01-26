@@ -6,7 +6,7 @@ var constraints: Array[PointMassSim.SpringConstraint]
 # (column, row) -> Point Mass
 var point_map: Dictionary[Vector2, PointMassSim.PointMass]
 
-var gravity: Vector2 = Vector2(0,0)
+var gravity: Vector2 = Vector2(0, 0)
 
 func _ready() -> void:
 	
@@ -33,24 +33,36 @@ func generate_point_grid(columns: int, rows: int, point_distance: float):
 	var pos = Vector2.ZERO
 	for row in range(rows):
 		for col in range(columns):
-			points.append(PointMassSim.PointMass.new(pos))
+			var point = PointMassSim.PointMass.new(pos)
+			points.append(point)
 			
+			if row == 0:
+				point.fixed = true
+			
+			point_map[Vector2(col, row)] = point
+				
 			pos.x += point_distance
-			print(pos)
 		
 		pos.y += point_distance
 		pos.x = 0
 	
 	# Create constraints
-	
-	
-func _get_neighbor_coords(column: int, row: int):
-	return [
-		Vector2(column + 1, row),
-		Vector2(column - 1, row),
-		Vector2(column, row + 1),
-		Vector2(column, row - 1),
-	]
+	for row in range(rows):
+		for col in range(columns):
+			var point = point_map[Vector2(col, row)]
+			
+			if not point: continue
+			
+			for neighbor_coord in [Vector2(col + 1, row), Vector2(col, row + 1)]:
+				var point_b = point_map.get(neighbor_coord)
+				
+				if not point_b: continue
+				
+				var constraint = PointMassSim.SpringConstraint.new(point, point_b)
+				constraints.append(constraint)
+			
+			pass
+
 func _physics_process(delta: float) -> void:
 	
 	_simulate(delta)
