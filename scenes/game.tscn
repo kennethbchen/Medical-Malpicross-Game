@@ -6,11 +6,11 @@
 [node name="Game" type="Node2D"]
 
 [node name="Node2D" type="Node2D" parent="."]
-position = Vector2(429, 123)
+position = Vector2(320, 65)
 script = ExtResource("1_uwrxv")
+metadata/_edit_group_ = true
 
 [node name="DampedSpring2D" type="Node2D" parent="Node2D"]
 script = ExtResource("2_yqjtg")
-damping_ratio = 0.1
-angular_frequency = 10.0
+damping_ratio = 0.05
 draw_spring = true

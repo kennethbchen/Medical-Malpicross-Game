@@ -1,31 +1,22 @@
 extends Node2D
 
+@onready var damped_spring = $DampedSpring2D
+
 var points: Array[PointMassSim.PointMass]
 var constraints: Array[PointMassSim.SpringConstraint]
 
 # (column, row) -> Point Mass
 var point_map: Dictionary[Vector2, PointMassSim.PointMass]
 
-var gravity: Vector2 = Vector2(0, 0)
+# Fake inertia by simulating a damped spring?
+var intertia_velocity: Vector2 = Vector2(0, 0)
 
+var init_position: Vector2
 func _ready() -> void:
 	
-	generate_point_grid(10, 10, 40)
-	"""
-	var point_count: int = 20
-	var length: float = 40
-
-	var pos: = Vector2(30, 30)
-	for i in range(point_count):
-		points.append(PointMassSim.PointMass.new(pos))
-		pos.x += length
+	init_position = global_position
 	
-	points[0].fixed = true
-	points[-1].fixed = true
-	
-	for i in range(len(points) - 1):
-		constraints.append(PointMassSim.SpringConstraint.new(points[i], points[i + 1], length, 500))
-	"""
+	generate_point_grid(10, 10, 50)
 
 func generate_point_grid(columns: int, rows: int, point_distance: float):
 	
@@ -36,7 +27,7 @@ func generate_point_grid(columns: int, rows: int, point_distance: float):
 			var point = PointMassSim.PointMass.new(pos)
 			points.append(point)
 			
-			if row == 0:
+			if row == 0 or row == rows - 1:
 				point.fixed = true
 			
 			point_map[Vector2(col, row)] = point
@@ -58,13 +49,15 @@ func generate_point_grid(columns: int, rows: int, point_distance: float):
 				
 				if not point_b: continue
 				
-				var constraint = PointMassSim.SpringConstraint.new(point, point_b)
+				var constraint = PointMassSim.SpringConstraint.new(point, point_b, -1, 100)
 				constraints.append(constraint)
-			
-			pass
+
 
 func _physics_process(delta: float) -> void:
 	
+	position.x = init_position.x + cos((Time.get_ticks_msec() / 1000.0)) * 250.0
+	intertia_velocity = (damped_spring.spring_position - global_position)
+
 	_simulate(delta)
 	
 	for constraint in constraints:
@@ -73,9 +66,9 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 
 func _simulate(delta: float) -> void:
-	# Gravity
+	# intertia_velocity
 	for point in points:
-		point.velocity += gravity * delta
+		point.velocity += intertia_velocity
 	
 	# Symplectic Euler integration
 	for point in points:
