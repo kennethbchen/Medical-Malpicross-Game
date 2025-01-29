@@ -34,7 +34,7 @@ func generate_point_grid(columns: int, rows: int, point_distance: float):
 			points.append(point)
 			original_positions.append(pos)
 			
-			if row == 0 or row == rows - 1:
+			if row == 0 or row == rows - 1 or col == 0 or col == columns - 1:
 				point.fixed = true
 			
 			point_map[Vector2(col, row)] = point
@@ -56,13 +56,13 @@ func generate_point_grid(columns: int, rows: int, point_distance: float):
 				
 				if not point_b: continue
 				
-				var constraint = PointMassSim.SpringConstraint.new(point, point_b, -1, 100)
+				var constraint = PointMassSim.SpringConstraint.new(point, point_b)
 				constraints.append(constraint)
 
 
 func _physics_process(delta: float) -> void:
 
-	fixed_point_offset.x = cos((Time.get_ticks_msec() / 1000.0)) * 250.0
+	#fixed_point_offset.x = cos((Time.get_ticks_msec() / 1000.0)) * 250.0
 	
 	if drag:
 		fixed_point_offset = get_global_mouse_position() - global_position
@@ -91,9 +91,16 @@ func _simulate(delta: float) -> void:
 func _draw():
 
 	for i in range(len(constraints)):
+		
+		if constraints[i].point_a.fixed or constraints[i].point_b.fixed:
+			continue
+		
 		var color: Color = Color.WHITE
 		draw_line(constraints[i].point_a.position, constraints[i].point_b.position, color, 4)
 		
 	for i in range(len(points)):
-
+		
+		if points[i].fixed:
+			continue
+		
 		draw_circle(points[i].position, 4, Color.LIGHT_GREEN, 5)
