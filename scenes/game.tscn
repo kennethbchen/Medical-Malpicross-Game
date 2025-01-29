@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://hwsx8i5h37ma"]
+[gd_scene load_steps=2 format=3 uid="uid://hwsx8i5h37ma"]
 
 [ext_resource type="Script" uid="uid://cn331p8wooovl" path="res://scripts/point_grid.gd" id="1_uwrxv"]
-[ext_resource type="Script" uid="uid://6t2lpla7e4sg" path="res://scripts/damped_spring_2d.gd" id="2_yqjtg"]
 
 [node name="Game" type="Node2D"]
 
@@ -9,8 +8,3 @@
 position = Vector2(320, 65)
 script = ExtResource("1_uwrxv")
 metadata/_edit_group_ = true
-
-[node name="DampedSpring2D" type="Node2D" parent="Node2D"]
-script = ExtResource("2_yqjtg")
-damping_ratio = 0.05
-draw_spring = true
