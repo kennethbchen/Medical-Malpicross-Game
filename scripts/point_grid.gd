@@ -13,6 +13,8 @@ var fixed_point_offset: Vector2
 
 var drag: bool = false
 
+var gravity = Vector2(10, 0)
+
 func _ready() -> void:
 	
 	generate_point_grid(10, 10, 50)
@@ -56,7 +58,7 @@ func generate_point_grid(columns: int, rows: int, point_distance: float):
 				
 				if not point_b: continue
 				
-				var constraint = PointMassSim.SpringConstraint.new(point, point_b)
+				var constraint = PointMassSim.SpringConstraint.new(point, point_b, -1, 100, 5)
 				constraints.append(constraint)
 
 
@@ -79,6 +81,9 @@ func _simulate(delta: float) -> void:
 	
 	# Symplectic Euler integration
 	for i in range(len(points)):
+		
+		# Gravity
+		points[i].velocity += gravity * delta
 		
 		if points[i].fixed:
 			points[i].velocity = Vector2.ZERO
