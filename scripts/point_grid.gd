@@ -1,27 +1,19 @@
 extends Node2D
 
-@onready var damped_spring = $DampedSpring2D
-
 var points: Array[PointMassSim.PointMass]
 var constraints: Array[PointMassSim.SpringConstraint]
+
+# Original point positions
+var original_positions: Array[Vector2]
 
 # (column, row) -> Point Mass
 var point_map: Dictionary[Vector2, PointMassSim.PointMass]
 
-var original_fixed_point_offset: Dictionary[PointMassSim.PointMass, Vector2]
-
-# Fake inertia by simulating a damped spring?
-var intertia_velocity: Vector2 = Vector2(0, 0)
-
-var init_position: Vector2
+var fixed_point_offset: Vector2
 
 var drag: bool = false
 
-var fixed_point_offset: Vector2
-
 func _ready() -> void:
-	
-	init_position = global_position
 	
 	generate_point_grid(10, 10, 50)
 
@@ -38,11 +30,12 @@ func generate_point_grid(columns: int, rows: int, point_distance: float):
 	for row in range(rows):
 		for col in range(columns):
 			var point = PointMassSim.PointMass.new(pos)
+			
 			points.append(point)
+			original_positions.append(pos)
 			
 			if row == 0 or row == rows - 1:
 				point.fixed = true
-				original_fixed_point_offset[point] = pos
 			
 			point_map[Vector2(col, row)] = point
 				
@@ -85,15 +78,16 @@ func _simulate(delta: float) -> void:
 
 	
 	# Symplectic Euler integration
-	for point in points:
+	for i in range(len(points)):
 		
-		if point.fixed:
-			point.velocity = Vector2.ZERO
-			point.position = original_fixed_point_offset[point] + fixed_point_offset
+		if points[i].fixed:
+			points[i].velocity = Vector2.ZERO
+			points[i].position = original_positions[i] + fixed_point_offset
 			continue
 		
-		point.position += point.velocity * delta
-	
+		points[i].position += points[i].velocity * delta
+
+
 func _draw():
 
 	for i in range(len(constraints)):
