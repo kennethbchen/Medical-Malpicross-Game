@@ -1,10 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://hwsx8i5h37ma"]
+[gd_scene load_steps=4 format=3 uid="uid://hwsx8i5h37ma"]
 
 [ext_resource type="Script" uid="uid://cn331p8wooovl" path="res://scripts/point_grid.gd" id="1_uwrxv"]
+[ext_resource type="Script" uid="uid://clnv3gpmlj01o" path="res://scripts/puzzle_grid.gd" id="1_yqjtg"]
+[ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/debug_commands.gd" id="3_lnu2h"]
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_yqjtg")
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="PointMassSim" type="Node2D" parent="."]
 position = Vector2(320, 65)
 script = ExtResource("1_uwrxv")
 metadata/_edit_group_ = true
+
+[node name="DebugCommands" type="Node" parent="."]
+script = ExtResource("3_lnu2h")

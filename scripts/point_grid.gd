@@ -1,5 +1,7 @@
 extends Node2D
 
+@export var hide_fixed: bool = true
+
 var points: Array[PointMassSim.PointMass]
 var constraints: Array[PointMassSim.SpringConstraint]
 
@@ -15,9 +17,9 @@ var drag: bool = false
 
 var gravity = Vector2(10, 0)
 
+
 func _ready() -> void:
-	
-	generate_point_grid(10, 10, 50)
+	pass
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("debug_click"):
@@ -25,7 +27,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_released("debug_click"):
 		drag = false
 
-func generate_point_grid(columns: int, rows: int, point_distance: float):
+func generate_point_grid(point_columns: int, point_rows: int, point_distance: float):
+	
+	var columns = point_columns
+	var rows = point_rows
 	
 	# Create points
 	var pos = Vector2.ZERO
@@ -97,7 +102,7 @@ func _draw():
 
 	for i in range(len(constraints)):
 		
-		if constraints[i].point_a.fixed or constraints[i].point_b.fixed:
+		if (constraints[i].point_a.fixed or constraints[i].point_b.fixed) and hide_fixed:
 			continue
 		
 		var color: Color = Color.WHITE
@@ -105,7 +110,7 @@ func _draw():
 		
 	for i in range(len(points)):
 		
-		if points[i].fixed:
+		if points[i].fixed and hide_fixed:
 			continue
 		
 		draw_circle(points[i].position, 4, Color.LIGHT_GREEN, 5)
