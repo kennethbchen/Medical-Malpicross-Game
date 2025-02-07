@@ -14,9 +14,8 @@ var puzzle_string: String = \
 func _ready() -> void:
 	
 	var puzzle: Puzzle = Puzzle.new(puzzle_string)
-	print(puzzle._solution)
-	print(puzzle.get_hints())
-	generate_puzzle_board(8, 8)
+	var board_size = puzzle.board_size()
+	generate_puzzle_board(board_size.x, board_size.y)
 
 func generate_puzzle_board(grid_columns: int, grid_rows, grid_size: float = 50):
 	# n grid columns / rows means that 

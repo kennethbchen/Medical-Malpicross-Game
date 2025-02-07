@@ -2,10 +2,10 @@ extends Resource
 
 class_name Puzzle
 	
-# 2D array of bools
-# Outer array is row, inner is column
-# Assumes rectangular grid
-# true if cell should be colored, false if crossed
+## 2D array of bools
+## Outer array is row, inner is column
+## Assumes rectangular grid
+## true if cell should be colored, false if crossed
 @export var _solution: Array
 
 func _init(puzzle_string: String):
@@ -19,10 +19,31 @@ func _init(puzzle_string: String):
 	)
 
 ## (rows, columns)
-## dimensions of _solution
+## dimensions of _solution (input space)
 func input_size() -> Vector2i:
 	return Vector2i(_solution.size(), _solution[0].size())
 
+## (rows, columns)
+## simension of _solution + dimensions of the hints 
+## if each hint number was its own cell
+func board_size() -> Vector2i:
+	var max_hint_column_size: int = 0
+	var max_hint_row_size: int = 0
+	
+	var hint = get_hints()
+	
+	for column_hint in hint[0]:
+		if column_hint.size() > max_hint_column_size:
+			max_hint_column_size = column_hint.size()
+		
+	for row_hint in hint[1]:
+		if row_hint.size() > max_hint_row_size:
+			max_hint_row_size = row_hint.size()
+	return Vector2i(input_size().x + max_hint_row_size, input_size().y + max_hint_column_size)
+
+func get_cell(row, column) -> bool:
+	return _solution[row][column]
+	
 ## Given x = number of columns, y = number of rows in the puzzle
 ## Returns an array of size 2 where
 ## array[0] contains an array of size x is the hints of the columns (top of board)
@@ -102,6 +123,3 @@ func get_hints() -> Array:
 		output[1].append(row_hint)
 		
 	return output
-
-func get_cell(row, column) -> bool:
-	return _solution[row][column]
