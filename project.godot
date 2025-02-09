@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="WiggleGrid"
+config/name="MedicalMalpicross"
 run/main_scene="uid://hwsx8i5h37ma"
 config/features=PackedStringArray("4.4")
 config/icon="res://icon.svg"
