@@ -22,23 +22,10 @@ func construct_from_points(points: Array[Vector2], rows: int, columns: int) -> v
 	var vertices = PackedVector2Array()
 	
 	var uvs = PackedVector2Array()
-	
-	# Unless the mesh is a square, not all of the UV space will be used to avoid stretching
-	# Either the max x or y UV has to shrink in order to 
-	# fit the aspect ratio of the grid
-	var max_uv_values: Vector2 = Vector2(1, 1)
-	"""
-	if rows > columns:
-		max_uv_values.x = ((columns - 1) / float(rows - 1) )
-	elif columns > rows:
-		max_uv_values.y = ((rows - 1) / float(columns - 1) )
-	"""
-	
-	
-	max_uv_values = max_uv
+
 	# Each point that isn't on the rightmost / bottommost edge is the
 	# top left point of a quad
-	for row in range(rows - 1): # rows - 1
+	for row in range(rows - 1):
 		for col in range(columns - 1):
 
 			# (row, col) defines the top left position of the quad
@@ -52,28 +39,29 @@ func construct_from_points(points: Array[Vector2], rows: int, columns: int) -> v
 			
 			# Top Left
 			vertices.push_back(points[col + columns * row])
-			uvs.push_back(Vector2(float(col) / (columns - 2), float(row) / (rows - 2) ) * max_uv_values)
+			uvs.push_back(Vector2(float(col) / (columns - 1), float(row) / (rows - 1) ))
+			
 			# Top Right
 			vertices.push_back(points[(col + 1) + columns * row])
-			uvs.push_back(Vector2(float(col + 1) / (columns - 2), float(row) / (rows - 2) )  * max_uv_values)
+			uvs.push_back(Vector2(float(col + 1) / (columns - 1), float(row) / (rows - 1) ))
 
 			# Bottom Left
 			vertices.push_back(points[col + (columns * (row + 1))])
-			uvs.push_back(Vector2(float(col) / (columns - 2), float(row + 1) / (rows - 2) )  * max_uv_values)
+			uvs.push_back(Vector2(float(col) / (columns - 1), float(row + 1) / (rows - 1) ))
 
 			# Second Triangle
 			
 			# Top Right
 			vertices.push_back(points[(col + 1) + columns * row])
-			uvs.push_back(Vector2(float(col + 1) / (columns - 2), float(row) / (rows - 2) ) * max_uv_values)
+			uvs.push_back(Vector2(float(col + 1) / (columns - 1), float(row) / (rows - 1) ))
 
 			# Bottom Right
 			vertices.push_back(points[(col + 1) + columns * (row + 1)])
-			uvs.push_back(Vector2(float(col + 1) / (columns - 2), float(row + 1) / (rows - 2) ) * max_uv_values)
+			uvs.push_back(Vector2(float(col + 1) / (columns - 1), float(row + 1) / (rows - 1) ))
 
 			# Bottom Left
 			vertices.push_back(points[col + (columns * (row + 1))])
-			uvs.push_back(Vector2(float(col) / (columns - 2), float(row + 1) / (rows - 2) ) * max_uv_values)
+			uvs.push_back(Vector2(float(col) / (columns - 1), float(row + 1) / (rows - 1) ))
 
 
 	var arrays = []
