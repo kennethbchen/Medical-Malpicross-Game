@@ -2,6 +2,7 @@ extends MeshInstance2D
 
 class_name GridMesh2D
 
+@export var max_uv: Vector2 = Vector2(1, 1)
 func _ready() -> void:
 	pass # Replace with function body.
 
@@ -20,10 +21,25 @@ func construct_from_points(points: Array[Vector2], rows: int, columns: int) -> v
 	
 	var vertices = PackedVector2Array()
 	
+	var uvs = PackedVector2Array()
+	
+	# Unless the mesh is a square, not all of the UV space will be used to avoid stretching
+	# Either the max x or y UV has to shrink in order to 
+	# fit the aspect ratio of the grid
+	var max_uv_values: Vector2 = Vector2(1, 1)
+	"""
+	if rows > columns:
+		max_uv_values.x = ((columns - 1) / float(rows - 1) )
+	elif columns > rows:
+		max_uv_values.y = ((rows - 1) / float(columns - 1) )
+	"""
+	
+	
+	max_uv_values = max_uv
 	# Each point that isn't on the rightmost / bottommost edge is the
 	# top left point of a quad
-	for row in range(rows-1):
-		for col in range(columns-1):
+	for row in range(rows - 1): # rows - 1
+		for col in range(columns - 1):
 
 			# (row, col) defines the top left position of the quad
 			# we are currently looking at
@@ -36,27 +52,34 @@ func construct_from_points(points: Array[Vector2], rows: int, columns: int) -> v
 			
 			# Top Left
 			vertices.push_back(points[col + columns * row])
-			
+			uvs.push_back(Vector2(float(col) / (columns - 2), float(row) / (rows - 2) ) * max_uv_values)
 			# Top Right
 			vertices.push_back(points[(col + 1) + columns * row])
-			
+			uvs.push_back(Vector2(float(col + 1) / (columns - 2), float(row) / (rows - 2) )  * max_uv_values)
+
 			# Bottom Left
 			vertices.push_back(points[col + (columns * (row + 1))])
-			
+			uvs.push_back(Vector2(float(col) / (columns - 2), float(row + 1) / (rows - 2) )  * max_uv_values)
+
 			# Second Triangle
 			
 			# Top Right
 			vertices.push_back(points[(col + 1) + columns * row])
-			
+			uvs.push_back(Vector2(float(col + 1) / (columns - 2), float(row) / (rows - 2) ) * max_uv_values)
+
 			# Bottom Right
 			vertices.push_back(points[(col + 1) + columns * (row + 1)])
-			
+			uvs.push_back(Vector2(float(col + 1) / (columns - 2), float(row + 1) / (rows - 2) ) * max_uv_values)
+
 			# Bottom Left
 			vertices.push_back(points[col + (columns * (row + 1))])
+			uvs.push_back(Vector2(float(col) / (columns - 2), float(row + 1) / (rows - 2) ) * max_uv_values)
+
 
 	var arrays = []
 	arrays.resize(Mesh.ARRAY_MAX)
 	arrays[Mesh.ARRAY_VERTEX] = vertices
+	arrays[Mesh.ARRAY_TEX_UV] = uvs
 
 	am.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 	

@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://hwsx8i5h37ma"]
+[gd_scene load_steps=6 format=3 uid="uid://hwsx8i5h37ma"]
 
 [ext_resource type="Script" uid="uid://cn331p8wooovl" path="res://scripts/point_grid.gd" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://clnv3gpmlj01o" path="res://scripts/puzzle_grid.gd" id="1_yqjtg"]
+[ext_resource type="Texture2D" uid="uid://dbwc55h75l4r2" path="res://icon.svg" id="2_iywne"]
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/debug_commands.gd" id="3_lnu2h"]
 [ext_resource type="Script" uid="uid://s5lgnr5qn5q2" path="res://scripts/resources/grid_mesh.gd" id="4_lbhrr"]
 
@@ -17,5 +18,6 @@ metadata/_edit_group_ = true
 script = ExtResource("3_lnu2h")
 
 [node name="GridMesh2D" type="MeshInstance2D" parent="."]
+texture = ExtResource("2_iywne")
 script = ExtResource("4_lbhrr")
 metadata/_custom_type_script = ExtResource("4_lbhrr")
