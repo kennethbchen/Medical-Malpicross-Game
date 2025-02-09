@@ -2,10 +2,6 @@ extends MeshInstance2D
 
 class_name GridMesh2D
 
-@export var max_uv: Vector2 = Vector2(1, 1)
-func _ready() -> void:
-	pass # Replace with function body.
-
 ## Assumes rectangular array of points
 func construct_from_points(points: Array[Vector2], rows: int, columns: int) -> void:
 	
@@ -70,10 +66,3 @@ func construct_from_points(points: Array[Vector2], rows: int, columns: int) -> v
 	arrays[Mesh.ARRAY_TEX_UV] = uvs
 
 	am.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-	
-func push_quad(top_left_position: Vector2, quad_size: float) -> void:
-	pass
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
