@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var point_mass_sim: Node2D = $PointMassSim
+@onready var point_mass_sim: Node2D = $PointGridSim
 
 @onready var grid_mesh: GridMesh2D = $GridMesh2D
 

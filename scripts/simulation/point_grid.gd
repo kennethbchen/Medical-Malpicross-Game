@@ -18,7 +18,6 @@ var drag: bool = false
 
 var gravity = Vector2(10, 0)
 
-
 func _ready() -> void:
 	pass
 
