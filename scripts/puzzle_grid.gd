@@ -82,9 +82,3 @@ class PointMassQuad:
 	
 	func is_in_quad(test_position: Vector2):
 		pass
-	
-	"""
-	# TODO should this go here?
-	func draw() -> void:
-		pass
-	"""	

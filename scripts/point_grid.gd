@@ -71,11 +71,8 @@ func generate_point_grid(point_columns: int, point_rows: int, point_distance: fl
 				var constraint = PointMassSim.SpringConstraint.new(point, point_b, -1, 100, 50)
 				constraints.append(constraint)
 
-
 func _physics_process(delta: float) -> void:
 
-	#fixed_point_offset.x = cos((Time.get_ticks_msec() / 1000.0)) * 250.0
-	
 	if drag:
 		fixed_point_offset = get_global_mouse_position() - global_position
 
@@ -88,7 +85,6 @@ func _physics_process(delta: float) -> void:
 
 func _simulate(delta: float) -> void:
 
-	
 	# Symplectic Euler integration
 	for i in range(len(points)):
 		
@@ -101,7 +97,6 @@ func _simulate(delta: float) -> void:
 			continue
 		
 		points[i].position += points[i].velocity * delta
-
 
 func _draw():
 
