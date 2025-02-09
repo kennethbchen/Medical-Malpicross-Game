@@ -15,6 +15,15 @@ run/main_scene="uid://hwsx8i5h37ma"
 config/features=PackedStringArray("4.4")
 config/icon="res://icon.svg"
 
+[file_customization]
+
+folder_colors={
+"res://scenes/": "green",
+"res://scripts/": "blue",
+"res://scripts/resources/": "blue",
+"res://sprites/": "purple"
+}
+
 [input]
 
 debug_reload_scene={
