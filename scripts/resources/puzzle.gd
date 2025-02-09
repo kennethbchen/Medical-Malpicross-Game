@@ -39,7 +39,8 @@ func board_size() -> Vector2i:
 	for row_hint in hint[1]:
 		if row_hint.size() > max_hint_row_size:
 			max_hint_row_size = row_hint.size()
-	return Vector2i(input_size().x + max_hint_row_size, input_size().y + max_hint_column_size)
+			
+	return Vector2i(input_size().x + max_hint_column_size, input_size().y + max_hint_row_size)
 
 func get_cell(row, column) -> bool:
 	return _solution[row][column]

@@ -1,5 +1,6 @@
 extends Node2D
 
+@export var draw_sim: bool = false
 @export var hide_fixed: bool = true
 
 var points: Array[PointMassSim.PointMass]
@@ -27,6 +28,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_released("debug_click"):
 		drag = false
 
+func get_point(row, col) -> PointMassSim.PointMass:
+	return point_map[Vector2(col, row)]
+
+# TODO It is kinda weird that generate_point_grid is (col,row) instead of (row,col)
 func generate_point_grid(point_columns: int, point_rows: int, point_distance: float):
 	
 	var columns = point_columns
@@ -63,7 +68,7 @@ func generate_point_grid(point_columns: int, point_rows: int, point_distance: fl
 				
 				if not point_b: continue
 				
-				var constraint = PointMassSim.SpringConstraint.new(point, point_b, -1, 100, 5)
+				var constraint = PointMassSim.SpringConstraint.new(point, point_b, -1, 100, 50)
 				constraints.append(constraint)
 
 
@@ -100,6 +105,8 @@ func _simulate(delta: float) -> void:
 
 func _draw():
 
+	if not draw_sim: return
+	
 	for i in range(len(constraints)):
 		
 		if (constraints[i].point_a.fixed or constraints[i].point_b.fixed) and hide_fixed:
