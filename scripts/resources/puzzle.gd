@@ -23,12 +23,12 @@ class_name Puzzle
 ## array[1][n]'s array is ordered starting from the rightmost hint to the leftmost in appearance
 var hints: Array
 
-## (rows, columns)
-## dimensions of _solution (input space)
+## (rows, columns) [br]
+## dimensions of the input space of the puzzle
 var input_size: Vector2i
 
-## (rows, columns)
-## dimsimension of _solution + dimensions of the hints 
+## (rows, columns) [br]
+## dimension of [member input_size] + dimensions of the hints 
 ## if each hint number was its own cell
 var board_size: Vector2i
 
