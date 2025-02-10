@@ -4,6 +4,8 @@ extends Node2D
 
 @onready var grid_mesh: GridMesh2D = $GridMesh2D
 
+@onready var puzzle_viewport: SubViewport = $PuzzleViewport
+
 var puzzle_string: String = \
 """0 1 1 1 0
 0 0 0 0 0
@@ -20,7 +22,7 @@ var board_cell_columns: int
 func _ready() -> void:
 	
 	var puzzle: Puzzle = Puzzle.new(puzzle_string)
-	var board_size = puzzle.board_size()
+	var board_size = puzzle.board_size
 	
 	board_cell_rows = board_size.x
 	board_cell_columns = board_size.y
@@ -33,6 +35,8 @@ func _ready() -> void:
 	sim_point_columns = board_cell_columns + 3
 	
 	point_mass_sim.generate_point_grid(sim_point_columns, sim_point_rows, 50)
+	
+	puzzle_viewport.init(puzzle)
 
 func get_board_points() -> Array[Vector2]:
 	

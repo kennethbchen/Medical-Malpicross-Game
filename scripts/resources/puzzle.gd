@@ -8,43 +8,6 @@ class_name Puzzle
 ## true if cell should be colored, false if crossed
 @export var _solution: Array
 
-func _init(puzzle_string: String):
-	# Separate rows (\n delimited)
-	# Separate colums (space delimeted)
-	# Turn string values into bool values
-	_solution = Array(
-		puzzle_string.split("\n")) \
-		.map(func(row): return Array(row.split(" ")) \
-		.map(func(cell): return true if cell == "1" else false)
-	)
-
-## (rows, columns)
-## dimensions of _solution (input space)
-func input_size() -> Vector2i:
-	return Vector2i(_solution.size(), _solution[0].size())
-
-## (rows, columns)
-## simension of _solution + dimensions of the hints 
-## if each hint number was its own cell
-func board_size() -> Vector2i:
-	var max_hint_column_size: int = 0
-	var max_hint_row_size: int = 0
-	
-	var hint = get_hints()
-	
-	for column_hint in hint[0]:
-		if column_hint.size() > max_hint_column_size:
-			max_hint_column_size = column_hint.size()
-		
-	for row_hint in hint[1]:
-		if row_hint.size() > max_hint_row_size:
-			max_hint_row_size = row_hint.size()
-			
-	return Vector2i(input_size().x + max_hint_column_size, input_size().y + max_hint_row_size)
-
-func get_cell(row, column) -> bool:
-	return _solution[row][column]
-	
 ## Given x = number of columns, y = number of rows in the puzzle
 ## Returns an array of size 2 where
 ## array[0] contains an array of size x is the hints of the columns (top of board)
@@ -58,9 +21,50 @@ func get_cell(row, column) -> bool:
 ##
 ## array[1][n] contains an array of the hint numbers for the nth row
 ## array[1][n]'s array is ordered starting from the rightmost hint to the leftmost in appearance
-func get_hints() -> Array:
-	var rows: int = input_size().x
-	var columns: int = input_size().y
+var hints: Array
+
+## (rows, columns)
+## dimensions of _solution (input space)
+var input_size: Vector2i
+
+## (rows, columns)
+## dimsimension of _solution + dimensions of the hints 
+## if each hint number was its own cell
+var board_size: Vector2i
+
+
+func _init(puzzle_string: String):
+	# Separate rows (\n delimited)
+	# Separate colums (space delimeted)
+	# Turn string values into bool values
+	_solution = Array(
+		puzzle_string.split("\n")) \
+		.map(func(row): return Array(row.split(" ")) \
+		.map(func(cell): return true if cell == "1" else false)
+	)
+	
+	input_size = Vector2i(_solution.size(), _solution[0].size())
+	
+	hints = _calculate_hints()
+	var max_hint_column_size: int = 0
+	var max_hint_row_size: int = 0
+	
+	for column_hint in hints[0]:
+		if column_hint.size() > max_hint_column_size:
+			max_hint_column_size = column_hint.size()
+		
+	for row_hint in hints[1]:
+		if row_hint.size() > max_hint_row_size:
+			max_hint_row_size = row_hint.size()
+			
+	board_size = Vector2i(input_size.x + max_hint_column_size, input_size.y + max_hint_row_size)
+
+func get_cell(row, column) -> bool:
+	return _solution[row][column]
+	
+func _calculate_hints() -> Array:
+	var rows: int = input_size.x
+	var columns: int = input_size.y
 	
 	var output: Array = [[], []]
 	
