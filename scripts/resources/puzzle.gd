@@ -49,6 +49,8 @@ func _init(puzzle_string: String):
 	input_size = Vector2i(_solution.size(), _solution[0].size())
 	
 	hints = _calculate_hints()
+	
+	# Calculate board size
 	var max_hint_column_size: int = 0
 	var max_hint_row_size: int = 0
 	
@@ -62,7 +64,88 @@ func _init(puzzle_string: String):
 			
 	board_size = Vector2i(input_size.x + max_hint_column_size, input_size.y + max_hint_row_size)
 	
-	# Create cell data
+	_cells = _create_cell_data()
+
+
+## Gets cell at (row, col) in board space
+func get_board_cell(row: int, column: int) -> PuzzleCell:
+	return _cells[row][column]
+
+## Gets cell at (row, col) in input space
+func get_input_cell(row: int, column: int) -> InputCell:
+	return _cells[row + (board_size.x - input_size.x)][column + (board_size.y - input_size.y)]
+
+func _calculate_hints() -> Array:
+	var rows: int = input_size.x
+	var columns: int = input_size.y
+	
+	var output: Array = [[], []]
+	
+	# Calculate hints for columns
+	for col in range(columns):
+		
+		# The size of the current continuous line of colored squares
+		var line_count = 0
+		
+		var column_hint: Array[int] = []
+		
+		for row in range(rows):
+			
+			if _solution[row][col]:
+				# the line continues
+				line_count += 1
+			elif not _solution[row][col] and line_count != 0:
+				# Current line has ended, record that in column_hint
+				column_hint.append(line_count)
+				line_count = 0
+		
+		if line_count > 0:
+			# Record the last line
+			column_hint.append(line_count)
+		elif line_count == 0 and column_hint.size() <= 0:
+			# No lines are present at all in this column
+			column_hint.append(0)
+		
+		# Reverse so that hints appear bottom to top
+		column_hint.reverse()
+		
+		output[0].append(column_hint)
+	
+	
+	for row in range(rows):
+		
+		# The size of the current continuous line of colored squares
+		var line_count = 0
+		
+		var row_hint: Array[int] = []
+		
+		for col in range(columns):
+			
+			if _solution[row][col]:
+				# the line continues
+				line_count += 1
+			elif not _solution[row][col] and line_count != 0:
+				# Current line has ended, record that in column_hint
+				row_hint.append(line_count)
+				line_count = 0
+		
+		if line_count > 0:
+			# Record the last line
+			row_hint.append(line_count)
+		elif line_count == 0 and row_hint.size() <= 0:
+			# No lines are present at all in this row
+			row_hint.append(0)
+		
+		# Reverse so that hints appear right to left
+		row_hint.reverse()
+		output[1].append(row_hint)
+		
+	return output
+
+func _create_cell_data() -> Array:
+	
+	var output: Array = []
+	
 	for row in board_size.x:
 		
 		var row_data: Array[PuzzleCell] = []
@@ -115,78 +198,9 @@ func _init(puzzle_string: String):
 				
 				row_data.append(InputCell.new(_solution[solution_row_index][solution_col_index]))
 				
-		_cells.append(row_data)
-		
-func get_cell(row, column) -> bool:
-	return _solution[row][column]
-	
-func _calculate_hints() -> Array:
-	var rows: int = input_size.x
-	var columns: int = input_size.y
-	
-	var output: Array = [[], []]
-	
-	# Calculate hints for columns
-	for col in range(columns):
-		
-		# The size of the current continuous line of colored squares
-		var line_count = 0
-		
-		var column_hint: Array[int] = []
-		
-		for row in range(rows):
-			
-			if get_cell(row,col):
-				# the line continues
-				line_count += 1
-			elif not get_cell(row,col) and line_count != 0:
-				# Current line has ended, record that in column_hint
-				column_hint.append(line_count)
-				line_count = 0
-		
-		if line_count > 0:
-			# Record the last line
-			column_hint.append(line_count)
-		elif line_count == 0 and column_hint.size() <= 0:
-			# No lines are present at all in this column
-			column_hint.append(0)
-		
-		# Reverse so that hints appear bottom to top
-		column_hint.reverse()
-		
-		output[0].append(column_hint)
-	
-	
-	for row in range(rows):
-		
-		# The size of the current continuous line of colored squares
-		var line_count = 0
-		
-		var row_hint: Array[int] = []
-		
-		for col in range(columns):
-			
-			if get_cell(row,col):
-				# the line continues
-				line_count += 1
-			elif not get_cell(row,col) and line_count != 0:
-				# Current line has ended, record that in column_hint
-				row_hint.append(line_count)
-				line_count = 0
-		
-		if line_count > 0:
-			# Record the last line
-			row_hint.append(line_count)
-		elif line_count == 0 and row_hint.size() <= 0:
-			# No lines are present at all in this row
-			row_hint.append(0)
-		
-		# Reverse so that hints appear right to left
-		row_hint.reverse()
-		output[1].append(row_hint)
-		
+		output.append(row_data)
 	return output
-
+	
 class PuzzleCell:
 	extends RefCounted
 
