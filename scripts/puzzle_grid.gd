@@ -19,13 +19,14 @@ var sim_point_columns: int
 var board_cell_rows: int
 var board_cell_columns: int
 
+var puzzle: Puzzle
+
 func _ready() -> void:
 	
-	var puzzle: Puzzle = Puzzle.new(puzzle_string)
-	var board_size = puzzle.board_size
+	puzzle = Puzzle.new(puzzle_string)
 	
-	board_cell_rows = board_size.x
-	board_cell_columns = board_size.y
+	board_cell_rows = puzzle.board_size.x
+	board_cell_columns = puzzle.board_size.y
 	
 	# n board cell columns / rows means that 
 	# the point sim will have n + 3 columns / rows of points
