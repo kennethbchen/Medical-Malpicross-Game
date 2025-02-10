@@ -51,25 +51,7 @@ func get_board_points() -> Array[Vector2]:
 
 func _process(delta: float) -> void:
 	grid_mesh.construct_from_points(get_board_points(), sim_point_rows - 2, sim_point_columns - 2)
-	
-class PuzzleCell:
-	extends RefCounted
 
-class EmptyCell:
-	extends PuzzleCell
-
-class InputCell:
-	extends PuzzleCell
-	
-	enum INPUT_TYPE {EMPTY, CROSSED, COLORED}
-	
-	var player_input: INPUT_TYPE
-	var correct_input: INPUT_TYPE
-	
-class HintCell:
-	extends PuzzleCell
-	
-	var value: int
 	
 class PointMassQuad:
 	extends RefCounted

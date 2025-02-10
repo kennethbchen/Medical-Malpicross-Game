@@ -8,6 +8,10 @@ class_name Puzzle
 ## true if cell should be colored, false if crossed
 @export var _solution: Array
 
+## 2D array of [Puzzle.PuzzleCell]
+## which represents the data for each cell in the board
+var _cells: Array
+
 ## Given x = number of columns, y = number of rows in the puzzle
 ## Returns an array of size 2 where
 ## array[0] contains an array of size x is the hints of the columns (top of board)
@@ -31,7 +35,6 @@ var input_size: Vector2i
 ## dimension of [member input_size] + dimensions of the hints 
 ## if each hint number was its own cell
 var board_size: Vector2i
-
 
 func _init(puzzle_string: String):
 	# Separate rows (\n delimited)
@@ -58,7 +61,62 @@ func _init(puzzle_string: String):
 			max_hint_row_size = row_hint.size()
 			
 	board_size = Vector2i(input_size.x + max_hint_column_size, input_size.y + max_hint_row_size)
-
+	
+	# Create cell data
+	for row in board_size.x:
+		
+		var row_data: Array[PuzzleCell] = []
+		
+		for col in board_size.y:
+			
+			# Figure out quadrant that this cell is in
+			var in_top_half: bool = row < board_size.x - input_size.x
+			var in_left_half: bool = col < board_size.y - input_size.y
+			
+			# The top left quadrant is always empty (neither hint nor input)
+			if in_top_half and in_left_half:
+				row_data.append(EmptyCell.new())
+				
+			# The top right cells are either column hints or empty
+			if in_top_half and not in_left_half:
+				
+				# convert from board row/col to hint row/col
+				
+				# Access rows in reverse order
+				var hint_row_index: int = (board_size.y - input_size.y) - row
+				
+				var hint_column_index: int = col - (board_size.x - input_size.x) + 1
+				
+				if hint_row_index >= hints[0][hint_column_index].size():
+					row_data.append(EmptyCell.new())
+				else:
+					row_data.append(HintCell.new(hints[0][hint_column_index][hint_row_index]))
+			
+			# The bottom left cells are either row hints or empty
+			if not in_top_half and in_left_half:
+				
+				# convert from board row/col to hint row/col
+				var hint_row_index: int = row - (board_size.x - input_size.x)
+				
+				# Access columns in reverse order
+				var hint_column_index: int = (board_size.y - input_size.y) - col - 1
+				
+				if hint_column_index >= hints[1][hint_row_index].size():
+					row_data.append(EmptyCell.new())
+				else:
+					row_data.append(HintCell.new(hints[1][hint_row_index][hint_column_index]))
+			
+			# The bottom right cells are input cells
+			if not in_top_half and not in_left_half:
+				
+				# Convert from board row/col to solution row/col
+				var solution_row_index: int = row - (board_size.x - input_size.x)
+				var solution_col_index: int = col - (board_size.y - input_size.y)
+				
+				row_data.append(InputCell.new(_solution[solution_row_index][solution_col_index]))
+				
+		_cells.append(row_data)
+		
 func get_cell(row, column) -> bool:
 	return _solution[row][column]
 	
@@ -128,3 +186,47 @@ func _calculate_hints() -> Array:
 		output[1].append(row_hint)
 		
 	return output
+
+class PuzzleCell:
+	extends RefCounted
+
+class EmptyCell:
+	extends PuzzleCell
+	
+	func _to_string() -> String:
+		return "EmptyCell"
+
+class InputCell:
+	extends PuzzleCell
+	
+	enum INPUT_TYPE {EMPTY, CROSSED, COLORED}
+	
+	var true_value_is_colored: bool
+	var player_input: INPUT_TYPE
+	
+	func _init(correct_input_value: bool) -> void:
+		true_value_is_colored = correct_input_value
+		player_input = INPUT_TYPE.EMPTY
+	
+	func is_correct() -> bool:
+		match player_input:
+			INPUT_TYPE.EMPTY or INPUT_TYPE.CROSSED:
+				return not true_value_is_colored
+			INPUT_TYPE.COLORED:
+				return true_value_is_colored
+			_:
+				return false
+				
+	func _to_string() -> String:
+		return "InputCell(t={0})".format(["1" if true_value_is_colored else "0"])
+	
+class HintCell:
+	extends PuzzleCell
+	
+	var value: int
+	
+	func _init(hint_value) -> void:
+		value = hint_value
+		
+	func _to_string() -> String:
+		return "HintCell({0})".format([value])
