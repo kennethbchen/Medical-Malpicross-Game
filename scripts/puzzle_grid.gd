@@ -67,5 +67,17 @@ class PointMassQuad:
 		self.p3 = p3
 		self.p4 = p4
 	
-	func is_in_quad(test_position: Vector2):
-		pass
+	func contains_point(test_position: Vector2) -> bool:
+		# TODO
+		return _bounding_box_contains_point(test_position)
+	
+	func _bounding_box_contains_point(test_position: Vector2) -> bool:
+		
+		var min_x: float = p1.position.x
+		var min_y: float = p1.position.y
+		
+		var max_x: float = p4.position.x
+		var max_y: float = p4.position.y
+		
+		return test_position.x >= min_x and test_position.y >= min_y and \
+			test_position.x < max_x and test_position.y < max_y
