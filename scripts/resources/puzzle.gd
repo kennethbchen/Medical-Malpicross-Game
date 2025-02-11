@@ -75,6 +75,12 @@ func get_board_cell(row: int, column: int) -> PuzzleCell:
 func get_input_cell(row: int, column: int) -> InputCell:
 	return _cells[row + (board_size.x - input_size.x)][column + (board_size.y - input_size.y)]
 
+## Input: [param input_coord] (row, column) in input space  [br]
+## Output: [Vector2i] (row, column) of input coordinate in board space 
+func input_to_board_coordinate(input_coord: Vector2i) -> Vector2i:
+	
+	return Vector2i(input_coord.x + (board_size.x - input_size.x), input_coord.y + (board_size.y - input_size.y))
+
 func _calculate_hints() -> Array:
 	var rows: int = input_size.x
 	var columns: int = input_size.y

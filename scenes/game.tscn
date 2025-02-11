@@ -14,6 +14,7 @@ script = ExtResource("1_yqjtg")
 
 [node name="PointGridSim" type="Node2D" parent="."]
 script = ExtResource("1_uwrxv")
+draw_sim = true
 metadata/_edit_group_ = true
 
 [node name="DebugCommands" type="Node" parent="."]

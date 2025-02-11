@@ -10,7 +10,7 @@ var constraints: Array[PointMassSim.SpringConstraint]
 var original_positions: Array[Vector2]
 
 # (column, row) -> Point Mass
-var point_map: Dictionary[Vector2, PointMassSim.PointMass]
+var point_map: Dictionary[Vector2i, PointMassSim.PointMass]
 
 var fixed_point_offset: Vector2
 
@@ -28,7 +28,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		drag = false
 
 func get_point(row, col) -> PointMassSim.PointMass:
-	return point_map[Vector2(col, row)]
+	return point_map[Vector2i(col, row)]
 
 # TODO It is kinda weird that generate_point_grid is (col,row) instead of (row,col)
 func generate_point_grid(point_columns: int, point_rows: int, point_distance: float):
@@ -48,7 +48,7 @@ func generate_point_grid(point_columns: int, point_rows: int, point_distance: fl
 			if row == 0 or row == rows - 1 or col == 0 or col == columns - 1:
 				point.fixed = true
 			
-			point_map[Vector2(col, row)] = point
+			point_map[Vector2i(col, row)] = point
 				
 			pos.x += point_distance
 		
@@ -58,11 +58,11 @@ func generate_point_grid(point_columns: int, point_rows: int, point_distance: fl
 	# Create constraints
 	for row in range(rows):
 		for col in range(columns):
-			var point = point_map[Vector2(col, row)]
+			var point = point_map[Vector2i(col, row)]
 			
 			if not point: continue
 			
-			for neighbor_coord in [Vector2(col + 1, row), Vector2(col, row + 1)]:
+			for neighbor_coord in [Vector2i(col + 1, row), Vector2i(col, row + 1)]:
 				var point_b = point_map.get(neighbor_coord)
 				
 				if not point_b: continue

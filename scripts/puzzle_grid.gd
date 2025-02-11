@@ -21,6 +21,9 @@ var board_cell_columns: int
 
 var puzzle: Puzzle
 
+# 2D array (row, col) of quads in the input space
+var input_quads: Array
+
 func _ready() -> void:
 	
 	puzzle = Puzzle.new(puzzle_string)
@@ -38,6 +41,28 @@ func _ready() -> void:
 	point_mass_sim.generate_point_grid(sim_point_columns, sim_point_rows, 50)
 	
 	puzzle_viewport.init(puzzle)
+	
+	# Create input_quads so that we can interpret mouse input
+	for row in puzzle.input_size.x:
+		
+		var row_data: Array[PointMassQuad]
+		for col in puzzle.input_size.y:
+			
+			# Convert board-space (row, col) to the position of the 
+			# corresponding top left point in sim-space
+			# First, convert from input space to board space ( add (1,1) )
+			var sim_coord: Vector2i = puzzle.input_to_board_coordinate(Vector2i(row, col)) + Vector2i(1, 1)
+			
+			#print(sim_coord)
+			var new_quad: PointMassQuad = PointMassQuad.new(
+				point_mass_sim.get_point(sim_coord.x, sim_coord.y),
+				point_mass_sim.get_point(sim_coord.x + 1, sim_coord.y),
+				point_mass_sim.get_point(sim_coord.x + 1, sim_coord.y + 1),
+				point_mass_sim.get_point(sim_coord.x, sim_coord.y + 1)
+				)
+			row_data.append(new_quad)
+		
+		input_quads.append(row_data)
 
 func get_board_points() -> Array[Vector2]:
 	
@@ -51,7 +76,22 @@ func get_board_points() -> Array[Vector2]:
 
 func _process(delta: float) -> void:
 	grid_mesh.construct_from_points(get_board_points(), sim_point_rows - 2, sim_point_columns - 2)
-
+	
+	
+	# Check for input
+	var selected_cell = _get_selected_cell()
+	
+	if selected_cell != null:
+		print(selected_cell)
+	
+func _get_selected_cell():
+	
+	for row in input_quads.size():
+		for col in input_quads[row].size():
+			if input_quads[row][col].contains_point(get_global_mouse_position()):
+				return Vector2i(row, col)
+				
+	return null
 	
 class PointMassQuad:
 	extends RefCounted
@@ -61,7 +101,7 @@ class PointMassQuad:
 	var p3: PointMassSim.PointMass
 	var p4: PointMassSim.PointMass
 	
-	func init(p1: PointMassSim.PointMass, p2: PointMassSim.PointMass, p3: PointMassSim.PointMass, p4: PointMassSim.PointMass) -> void:
+	func _init(p1: PointMassSim.PointMass, p2: PointMassSim.PointMass, p3: PointMassSim.PointMass, p4: PointMassSim.PointMass) -> void:
 		self.p1 = p1
 		self.p2 = p2
 		self.p3 = p3
@@ -73,11 +113,11 @@ class PointMassQuad:
 	
 	func _bounding_box_contains_point(test_position: Vector2) -> bool:
 		
-		var min_x: float = p1.position.x
-		var min_y: float = p1.position.y
+		var x_vals: Array[float] = [p1.position.x, p2.position.x, p3.position.x, p4.position.x]
+		x_vals.sort()
 		
-		var max_x: float = p4.position.x
-		var max_y: float = p4.position.y
-		
-		return test_position.x >= min_x and test_position.y >= min_y and \
-			test_position.x < max_x and test_position.y < max_y
+		var y_vals: Array[float] = [p1.position.y, p2.position.y, p3.position.y, p4.position.y]
+		y_vals.sort()
+
+		return test_position.x >= x_vals[0] and test_position.y >= y_vals[0] and \
+			test_position.x < x_vals[-1] and test_position.y < y_vals[-1]
