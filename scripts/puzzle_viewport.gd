@@ -2,6 +2,10 @@ extends SubViewport
 
 @onready var ui_container: Control = $PuzzleUIContainer
 
+@onready var cursor: Control = $ColorRect
+
+var current_puzzle: Puzzle
+
 var cell_size_px: int = 32
 
 var rows: int
@@ -10,16 +14,16 @@ var columns: int
 # TODO
 var tile_map: Dictionary[Vector2i, Control]
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+var selected_cell: Vector2i = Vector2i(-1, -1)
 
 func init(puzzle: Puzzle) -> void:
+	current_puzzle = puzzle
+	
 	rows = puzzle.board_size.x
 	columns = puzzle.board_size.y
 	
 	size = Vector2(columns, rows) * cell_size_px
-	
+
 	var position_offset: = Vector2(cell_size_px / 2, cell_size_px / 2)
 	# Populate puzzle UI
 	for row in rows:
@@ -32,12 +36,7 @@ func init(puzzle: Puzzle) -> void:
 				continue
 				
 			if cell is Puzzle.InputCell:
-				var tile: = TextureRect.new()
-				ui_container.add_child(tile)
-				tile.position = pos
-				var img: = PlaceholderTexture2D.new()
-				img.size = Vector2(cell_size_px, cell_size_px)
-				tile.texture = img
+				continue
 				
 			if cell is Puzzle.HintCell:
 				var label: = Label.new()
@@ -50,9 +49,20 @@ func init(puzzle: Puzzle) -> void:
 				label.text = str(cell.value)
 				
 			
-			
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	
+	if selected_cell == Vector2i(-1, -1):
+		cursor.hide()
+	else:
+		cursor.show()
+		
+		# Need to swizzle (row, col) -> (col, row)
+		var coord = current_puzzle.input_to_board_coordinate(selected_cell)
+		cursor.position = Vector2i(coord.y, coord.x) * cell_size_px
+
+func highlight_cell(coordinate) -> void:
+	
+	if coordinate is Vector2i:
+		selected_cell = coordinate
+	else:
+		selected_cell = Vector2i(-1, -1)

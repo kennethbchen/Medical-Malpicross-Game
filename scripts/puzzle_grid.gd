@@ -80,9 +80,7 @@ func _process(delta: float) -> void:
 	
 	# Check for input
 	var selected_cell = _get_selected_cell()
-	
-	if selected_cell != null:
-		print(selected_cell)
+	puzzle_viewport.highlight_cell(selected_cell)
 	
 func _get_selected_cell():
 	

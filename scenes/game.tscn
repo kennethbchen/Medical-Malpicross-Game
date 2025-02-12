@@ -31,6 +31,12 @@ handle_input_locally = false
 size = Vector2i(96, 101)
 script = ExtResource("5_p57ef")
 
+[node name="ColorRect" type="ColorRect" parent="PuzzleViewport"]
+clip_contents = true
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0.986582, 0.827973, 0, 1)
+
 [node name="PuzzleUIContainer" type="Control" parent="PuzzleViewport"]
 layout_mode = 3
 anchors_preset = 0
