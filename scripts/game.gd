@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var point_mass_sim: Node2D = $PointGridSim
+@onready var flesh_sim: Node2D = $FleshSim
 
 @onready var grid_mesh: GridMesh2D = $GridMesh2D
 
@@ -40,7 +40,7 @@ func _ready() -> void:
 	sim_point_rows = board_cell_rows + 3
 	sim_point_columns = board_cell_columns + 3
 	
-	point_mass_sim.generate_point_grid(sim_point_columns, sim_point_rows, 50)
+	flesh_sim.generate_point_grid(sim_point_columns, sim_point_rows, 50)
 	
 	puzzle_viewport.init(puzzle)
 	
@@ -57,10 +57,10 @@ func _ready() -> void:
 			var sim_coord: Vector2i = puzzle.input_to_board_coordinate(Vector2i(row, col)) + Vector2i(1, 1)
 
 			var new_quad: PointMassQuad = PointMassQuad.new(
-				point_mass_sim.get_point(sim_coord.x, sim_coord.y),
-				point_mass_sim.get_point(sim_coord.x + 1, sim_coord.y),
-				point_mass_sim.get_point(sim_coord.x + 1, sim_coord.y + 1),
-				point_mass_sim.get_point(sim_coord.x, sim_coord.y + 1)
+				flesh_sim.get_point(sim_coord.x, sim_coord.y),
+				flesh_sim.get_point(sim_coord.x + 1, sim_coord.y),
+				flesh_sim.get_point(sim_coord.x + 1, sim_coord.y + 1),
+				flesh_sim.get_point(sim_coord.x, sim_coord.y + 1)
 				)
 			row_data.append(new_quad)
 		
@@ -89,7 +89,7 @@ func get_board_points() -> Array[Vector2]:
 	
 	for row in range(1, sim_point_rows - 1):
 		for col in range(1, sim_point_columns - 1):
-			output.push_back(point_mass_sim.get_point(row, col).position)
+			output.push_back(flesh_sim.get_point(row, col).position)
 
 	return output
 

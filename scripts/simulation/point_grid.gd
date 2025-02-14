@@ -14,18 +14,7 @@ var point_map: Dictionary[Vector2i, PointMassSim.PointMass]
 
 var fixed_point_offset: Vector2
 
-var drag: bool = false
-
 var gravity = Vector2(10, 0)
-
-func _ready() -> void:
-	pass
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("debug_click"):
-		drag = true
-	elif event.is_action_released("debug_click"):
-		drag = false
 
 func get_point(row, col) -> PointMassSim.PointMass:
 	return point_map[Vector2i(col, row)]
@@ -71,10 +60,7 @@ func generate_point_grid(point_columns: int, point_rows: int, point_distance: fl
 				constraints.append(constraint)
 
 func _physics_process(delta: float) -> void:
-
-	if drag:
-		fixed_point_offset = get_global_mouse_position() - global_position
-
+	
 	_simulate(delta)
 	
 	for constraint in constraints:
