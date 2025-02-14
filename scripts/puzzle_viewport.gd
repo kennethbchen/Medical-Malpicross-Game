@@ -2,7 +2,7 @@ extends SubViewport
 
 @onready var ui_container: Control = $PuzzleUIContainer
 
-@onready var cursor: Control = $ColorRect
+@onready var cursor: Control = $Cursor
 
 var current_puzzle: Puzzle
 
@@ -61,7 +61,7 @@ func _process(delta: float) -> void:
 		
 		# Need to swizzle (row, col) -> (col, row)
 		var coord = current_puzzle.input_to_board_coordinate(selected_cell)
-		cursor.position = Vector2i(coord.y, coord.x) * cell_size_px
+		cursor.set_cursor_position(Vector2i(coord.y, coord.x) * cell_size_px)
 
 func highlight_cell(coordinate) -> void:
 	selected_cell = coordinate
