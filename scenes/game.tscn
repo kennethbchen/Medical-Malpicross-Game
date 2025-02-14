@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://hwsx8i5h37ma"]
 
-[ext_resource type="Script" uid="uid://clnv3gpmlj01o" path="res://scripts/game.gd" id="1_yqjtg"]
+[ext_resource type="Script" uid="uid://clnv3gpmlj01o" path="res://scripts/puzzle_controller.gd" id="1_yqjtg"]
 [ext_resource type="Script" uid="uid://cgaenjwmwl4gl" path="res://scripts/simulation/flesh_sim.gd" id="2_u5sy4"]
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="3_lnu2h"]
 [ext_resource type="Script" uid="uid://s5lgnr5qn5q2" path="res://scripts/resources/grid_mesh.gd" id="4_lbhrr"]
@@ -9,37 +9,40 @@
 [ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="7_u5sy4"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_iywne"]
-viewport_path = NodePath("PuzzleViewport")
+viewport_path = NodePath("PuzzleController/PuzzleViewport")
 
 [node name="Game" type="Node2D"]
+
+[node name="PuzzleController" type="Node2D" parent="."]
+position = Vector2(199, 44)
 script = ExtResource("1_yqjtg")
 
-[node name="FleshSim" type="Node2D" parent="."]
+[node name="FleshSim" type="Node2D" parent="PuzzleController"]
 script = ExtResource("2_u5sy4")
 draw_sim = true
 metadata/_edit_group_ = true
 
-[node name="DebugCommands" type="Node" parent="."]
+[node name="DebugCommands" type="Node" parent="PuzzleController"]
 script = ExtResource("3_lnu2h")
 
-[node name="GridMesh2D" type="MeshInstance2D" parent="."]
+[node name="GridMesh2D" type="MeshInstance2D" parent="PuzzleController"]
 texture = SubResource("ViewportTexture_iywne")
 script = ExtResource("4_lbhrr")
 metadata/_custom_type_script = ExtResource("4_lbhrr")
 
-[node name="PuzzleViewport" type="SubViewport" parent="."]
+[node name="PuzzleViewport" type="SubViewport" parent="PuzzleController"]
 disable_3d = true
 handle_input_locally = false
 size = Vector2i(96, 101)
 script = ExtResource("5_p57ef")
 
-[node name="PuzzleDrawer" type="Control" parent="PuzzleViewport"]
+[node name="PuzzleDrawer" type="Control" parent="PuzzleController/PuzzleViewport"]
 top_level = true
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("7_u5sy4")
 
-[node name="Cursor" type="Control" parent="PuzzleViewport"]
+[node name="Cursor" type="Control" parent="PuzzleController/PuzzleViewport"]
 top_level = true
 layout_mode = 3
 anchors_preset = 0
@@ -47,7 +50,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("6_p57ef")
 
-[node name="PuzzleUIContainer" type="Control" parent="PuzzleViewport"]
+[node name="PuzzleUIContainer" type="Control" parent="PuzzleController/PuzzleViewport"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 128.0

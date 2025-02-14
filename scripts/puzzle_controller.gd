@@ -98,7 +98,7 @@ func _get_selected_cell():
 	
 	for row in input_quads.size():
 		for col in input_quads[row].size():
-			if input_quads[row][col].contains_point(get_global_mouse_position()):
+			if input_quads[row][col].contains_point(get_global_mouse_position() - global_position):
 				return Vector2i(row, col)
 				
 	return Vector2i(-1, -1)
