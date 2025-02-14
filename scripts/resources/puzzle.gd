@@ -1,7 +1,9 @@
 extends Resource
 
 class_name Puzzle
-	
+
+enum INPUT_TYPE {EMPTY, CROSSED, COLORED}
+
 ## 2D array of bools
 ## Outer array is row, inner is column
 ## Assumes rectangular grid
@@ -36,6 +38,8 @@ var input_size: Vector2i
 ## if each hint number was its own cell
 var board_size: Vector2i
 
+signal input_value_changed(cell: InputCell, row: int, col: int)
+
 func _init(puzzle_string: String):
 	# Separate rows (\n delimited)
 	# Separate colums (space delimeted)
@@ -65,6 +69,14 @@ func _init(puzzle_string: String):
 	board_size = Vector2i(input_size.x + max_hint_column_size, input_size.y + max_hint_row_size)
 	
 	_cells = _create_cell_data()
+	
+	# Connect signals
+	for row in _solution.size():
+		for col in _solution[row].size():
+			var cell: InputCell = get_input_cell(row, col)
+			cell.in_value_changed.connect(input_value_changed.emit.bind(row, col))
+	
+
 
 
 ## Gets cell at (row, col) in board space
@@ -218,15 +230,23 @@ class EmptyCell:
 class InputCell:
 	extends PuzzleCell
 	
-	enum INPUT_TYPE {EMPTY, CROSSED, COLORED}
-	
 	var true_value_is_colored: bool
 	var player_input: INPUT_TYPE
 	
+	signal in_value_changed(cell: InputCell)
+	
 	func _init(correct_input_value: bool) -> void:
 		true_value_is_colored = correct_input_value
-		player_input = INPUT_TYPE.EMPTY
+		set_input_value(INPUT_TYPE.EMPTY)
 	
+	func set_input_value(type: INPUT_TYPE):
+		var prev: INPUT_TYPE = player_input
+		player_input = type
+		
+		if player_input != prev:
+			in_value_changed.emit(self)
+		
+		
 	func is_correct() -> bool:
 		match player_input:
 			INPUT_TYPE.EMPTY or INPUT_TYPE.CROSSED:

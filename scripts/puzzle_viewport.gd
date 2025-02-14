@@ -19,6 +19,8 @@ var selected_cell: Vector2i = Vector2i(-1, -1)
 func init(puzzle: Puzzle) -> void:
 	current_puzzle = puzzle
 	
+	current_puzzle.input_value_changed.connect(_on_cell_input_changed)
+
 	rows = puzzle.board_size.x
 	columns = puzzle.board_size.y
 	
@@ -66,3 +68,6 @@ func highlight_cell(coordinate) -> void:
 		selected_cell = coordinate
 	else:
 		selected_cell = Vector2i(-1, -1)
+
+func _on_cell_input_changed(cell: Puzzle.InputCell, row: int, col: int):
+	print(row, " ", col, " ", cell)
