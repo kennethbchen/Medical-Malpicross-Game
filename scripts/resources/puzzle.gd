@@ -2,7 +2,7 @@ extends Resource
 
 class_name Puzzle
 
-enum INPUT_TYPE {EMPTY, CROSSED, COLORED}
+enum INPUT_TYPE {EMPTY, COLORED, CROSSED}
 
 ## 2D array of bools
 ## Outer array is row, inner is column
@@ -75,9 +75,28 @@ func _init(puzzle_string: String):
 		for col in _solution[row].size():
 			var cell: InputCell = get_input_cell(row, col)
 			cell.in_value_changed.connect(input_value_changed.emit.bind(row, col))
+
+## Set input cell with input coords (row, col) to colored [br]
+## Cell becomes empty if it was already colored
+func toggle_input_colored(row: int, col: int) -> void:
 	
+	var cell: InputCell = get_input_cell(row, col)
+	
+	if cell.player_input == INPUT_TYPE.COLORED:
+		cell.set_input_value(INPUT_TYPE.EMPTY)
+	else:
+		cell.set_input_value(INPUT_TYPE.COLORED)
 
-
+## Set input cell with input coords (row, col) to crossed [br]
+## Cell becomes empty if it was already crossed
+func toggle_input_crossed(row: int, col: int) -> void:
+	
+	var cell: InputCell = get_input_cell(row, col)
+	
+	if cell.player_input == INPUT_TYPE.CROSSED:
+		cell.set_input_value(INPUT_TYPE.EMPTY)
+	else:
+		cell.set_input_value(INPUT_TYPE.CROSSED)
 
 ## Gets cell at (row, col) in board space
 func get_board_cell(row: int, column: int) -> PuzzleCell:

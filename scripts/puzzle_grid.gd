@@ -24,6 +24,8 @@ var puzzle: Puzzle
 # 2D array (row, col) of quads in the input space
 var input_quads: Array
 
+var selected_cell: Vector2i
+
 func _ready() -> void:
 	
 	puzzle = Puzzle.new(puzzle_string)
@@ -51,10 +53,10 @@ func _ready() -> void:
 			
 			# Convert board-space (row, col) to the position of the 
 			# corresponding top left point in sim-space
-			# First, convert from input space to board space ( add (1,1) )
+			# First, convert from input space to board space 
+			# Then, convert from board space to sim space by addding (1,1)
 			var sim_coord: Vector2i = puzzle.input_to_board_coordinate(Vector2i(row, col)) + Vector2i(1, 1)
-			
-			#print(sim_coord)
+
 			var new_quad: PointMassQuad = PointMassQuad.new(
 				point_mass_sim.get_point(sim_coord.x, sim_coord.y),
 				point_mass_sim.get_point(sim_coord.x + 1, sim_coord.y),
@@ -64,6 +66,23 @@ func _ready() -> void:
 			row_data.append(new_quad)
 		
 		input_quads.append(row_data)
+
+func _unhandled_input(event: InputEvent) -> void:
+	
+	if selected_cell != Vector2i(-1, -1):
+
+		if event.is_action_pressed("game_color"):
+			puzzle.toggle_input_colored(selected_cell.x, selected_cell.y)
+			
+		if event.is_action_pressed("game_cross"):
+			puzzle.toggle_input_crossed(selected_cell.x, selected_cell.y)
+
+func _process(delta: float) -> void:
+	grid_mesh.construct_from_points(get_board_points(), sim_point_rows - 2, sim_point_columns - 2)
+	
+	# Check for input
+	selected_cell = _get_selected_cell()
+	puzzle_viewport.highlight_cell(selected_cell)
 
 func get_board_points() -> Array[Vector2]:
 	
@@ -75,13 +94,6 @@ func get_board_points() -> Array[Vector2]:
 
 	return output
 
-func _process(delta: float) -> void:
-	grid_mesh.construct_from_points(get_board_points(), sim_point_rows - 2, sim_point_columns - 2)
-	
-	
-	# Check for input
-	var selected_cell = _get_selected_cell()
-	puzzle_viewport.highlight_cell(selected_cell)
 	
 func _get_selected_cell():
 	
@@ -90,7 +102,7 @@ func _get_selected_cell():
 			if input_quads[row][col].contains_point(get_global_mouse_position()):
 				return Vector2i(row, col)
 				
-	return null
+	return Vector2i(-1, -1)
 
 class PointMassQuad:
 	extends RefCounted

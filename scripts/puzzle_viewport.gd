@@ -14,6 +14,7 @@ var columns: int
 # TODO
 var tile_map: Dictionary[Vector2i, Control]
 
+# (-1, -1) means no selected cell
 var selected_cell: Vector2i = Vector2i(-1, -1)
 
 func init(puzzle: Puzzle) -> void:
@@ -63,11 +64,7 @@ func _process(delta: float) -> void:
 		cursor.position = Vector2i(coord.y, coord.x) * cell_size_px
 
 func highlight_cell(coordinate) -> void:
-	
-	if coordinate is Vector2i:
-		selected_cell = coordinate
-	else:
-		selected_cell = Vector2i(-1, -1)
+	selected_cell = coordinate
 
 func _on_cell_input_changed(cell: Puzzle.InputCell, row: int, col: int):
-	print(row, " ", col, " ", cell)
+	print(row, " ", col, " ", cell.player_input)
