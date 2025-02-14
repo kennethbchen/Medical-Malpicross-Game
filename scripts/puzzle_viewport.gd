@@ -3,6 +3,7 @@ extends SubViewport
 @onready var ui_container: Control = $PuzzleUIContainer
 
 @onready var cursor: Control = $Cursor
+@onready var puzzle_drawer: Control = $PuzzleDrawer
 
 var current_puzzle: Puzzle
 
@@ -20,7 +21,7 @@ var selected_cell: Vector2i = Vector2i(-1, -1)
 func init(puzzle: Puzzle) -> void:
 	current_puzzle = puzzle
 	
-	current_puzzle.input_value_changed.connect(_on_cell_input_changed)
+	puzzle_drawer.init(puzzle)
 
 	rows = puzzle.board_size.x
 	columns = puzzle.board_size.y
@@ -65,6 +66,3 @@ func _process(delta: float) -> void:
 
 func highlight_cell(coordinate) -> void:
 	selected_cell = coordinate
-
-func _on_cell_input_changed(cell: Puzzle.InputCell, row: int, col: int):
-	print(row, " ", col, " ", cell.player_input)

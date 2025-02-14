@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://hwsx8i5h37ma"]
+[gd_scene load_steps=9 format=3 uid="uid://hwsx8i5h37ma"]
 
 [ext_resource type="Script" uid="uid://cn331p8wooovl" path="res://scripts/simulation/point_grid.gd" id="1_uwrxv"]
 [ext_resource type="Script" uid="uid://clnv3gpmlj01o" path="res://scripts/puzzle_grid.gd" id="1_yqjtg"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://s5lgnr5qn5q2" path="res://scripts/resources/grid_mesh.gd" id="4_lbhrr"]
 [ext_resource type="Script" uid="uid://dra4lijujrmwu" path="res://scripts/puzzle_viewport.gd" id="5_p57ef"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="6_p57ef"]
+[ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="7_u5sy4"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_iywne"]
 viewport_path = NodePath("PuzzleViewport")
@@ -31,6 +32,12 @@ disable_3d = true
 handle_input_locally = false
 size = Vector2i(96, 101)
 script = ExtResource("5_p57ef")
+
+[node name="PuzzleDrawer" type="Control" parent="PuzzleViewport"]
+top_level = true
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("7_u5sy4")
 
 [node name="Cursor" type="Control" parent="PuzzleViewport"]
 top_level = true

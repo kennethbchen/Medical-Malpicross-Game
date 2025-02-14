@@ -30,7 +30,6 @@ func _ready() -> void:
 	
 	puzzle = Puzzle.new(puzzle_string)
 	
-	puzzle.get_input_cell(0,0).set_input_value(Puzzle.INPUT_TYPE.CROSSED)
 	board_cell_rows = puzzle.board_size.x
 	board_cell_columns = puzzle.board_size.y
 	
