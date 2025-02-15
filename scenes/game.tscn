@@ -13,17 +13,17 @@ viewport_path = NodePath("PuzzleController/PuzzleViewport")
 
 [node name="Game" type="Node2D"]
 
+[node name="DebugCommands" type="Node" parent="."]
+script = ExtResource("3_lnu2h")
+
 [node name="PuzzleController" type="Node2D" parent="."]
-position = Vector2(199, 44)
+position = Vector2(575, 309)
 script = ExtResource("1_yqjtg")
 
 [node name="FleshSim" type="Node2D" parent="PuzzleController"]
 script = ExtResource("2_u5sy4")
 draw_sim = true
 metadata/_edit_group_ = true
-
-[node name="DebugCommands" type="Node" parent="PuzzleController"]
-script = ExtResource("3_lnu2h")
 
 [node name="GridMesh2D" type="MeshInstance2D" parent="PuzzleController"]
 texture = SubResource("ViewportTexture_iywne")

@@ -82,6 +82,8 @@ func _process(delta: float) -> void:
 	# Check for input
 	selected_cell = _get_selected_cell()
 	puzzle_viewport.highlight_cell(selected_cell)
+	
+
 
 func get_board_points() -> Array[Vector2]:
 	

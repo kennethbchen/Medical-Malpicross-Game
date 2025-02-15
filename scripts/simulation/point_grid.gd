@@ -14,13 +14,18 @@ var point_map: Dictionary[Vector2i, PointMassSim.PointMass]
 
 var fixed_point_offset: Vector2
 
-var gravity = Vector2(10, 0)
+var gravity = Vector2(0, 0)
+
+var grid_origin: Vector2
 
 func get_point(row, col) -> PointMassSim.PointMass:
 	return point_map[Vector2i(col, row)]
 
 # TODO It is kinda weird that generate_point_grid is (col,row) instead of (row,col)
 func generate_point_grid(point_columns: int, point_rows: int, point_distance: float):
+	
+	# Calculate grid origin so that point grid is centered on this node's position
+	grid_origin = -Vector2(point_columns - 1, point_rows - 1) * point_distance / 2
 	
 	var columns = point_columns
 	var rows = point_rows
@@ -29,7 +34,7 @@ func generate_point_grid(point_columns: int, point_rows: int, point_distance: fl
 	var pos = Vector2.ZERO
 	for row in range(rows):
 		for col in range(columns):
-			var point = PointMassSim.PointMass.new(pos)
+			var point = PointMassSim.PointMass.new(grid_origin + pos)
 			
 			points.append(point)
 			original_positions.append(pos)
@@ -59,6 +64,9 @@ func generate_point_grid(point_columns: int, point_rows: int, point_distance: fl
 				var constraint = PointMassSim.SpringConstraint.new(point, point_b, -1, 100, 50)
 				constraints.append(constraint)
 
+func _process(delta: float) -> void:
+	queue_redraw()
+	
 func _physics_process(delta: float) -> void:
 	
 	_simulate(delta)
@@ -78,13 +86,13 @@ func _simulate(delta: float) -> void:
 		
 		if points[i].fixed:
 			points[i].velocity = Vector2.ZERO
-			points[i].position = original_positions[i] + fixed_point_offset
+			points[i].position = grid_origin + original_positions[i] + fixed_point_offset
 			continue
 		
 		points[i].position += points[i].velocity * delta
 
 func _draw():
-
+	
 	if not draw_sim: return
 	
 	for i in range(len(constraints)):
