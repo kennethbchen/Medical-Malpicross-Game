@@ -68,7 +68,7 @@ func _physics_process(delta: float) -> void:
 	var avoidance_contribution = -( get_global_mouse_position() - input_area_center - global_position).normalized() * avoid_intensity
 	
 	var noi_speed: float = lerp(noise_speed, 10.0, trauma_influence)
-	var noi_amplitude: float = lerp(noise_amplitude, noise_amplitude * 1.1, trauma_influence)
+	var noi_amplitude: float = lerp(noise_amplitude, noise_amplitude * 1.04, trauma_influence)
 	var noise_contribution = Vector2(x_noise.get_noise_1d(Time.get_ticks_msec() / 1000.0 * noi_speed), \
 		y_noise.get_noise_1d(Time.get_ticks_msec() / 1000.0 * noi_speed 
 	)) * noi_amplitude
@@ -103,4 +103,4 @@ func _draw() -> void:
 	draw_circle(input_area_center, 5, Color.PURPLE)
 
 func _add_trauma(amount: float) -> void:
-	trauma += clamp(trauma + amount, 0, 1.0)
+	trauma = clamp(trauma + amount, 0, 1.0)
