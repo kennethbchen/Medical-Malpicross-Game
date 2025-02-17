@@ -60,15 +60,15 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	super(delta)
-
+	
 	# Higher trauma = more movement
 	var trauma_influence: float = pow(trauma, trauma_power)
 	
-	var avoid_intensity: float = lerp(avoidance_intensity, avoidance_intensity * 2.112, trauma_influence)
+	var avoid_intensity = lerp(avoidance_intensity, avoidance_intensity * 0.5, trauma_influence)
 	var avoidance_contribution = -( get_global_mouse_position() - input_area_center - global_position).normalized() * avoid_intensity
 	
-	var noi_speed: float = lerp(noise_speed, 25.0, trauma_power)
-	var noi_amplitude: float = lerp(noise_amplitude, noise_amplitude * 1.752, trauma_power)
+	var noi_speed: float = lerp(noise_speed, 10.0, trauma_influence)
+	var noi_amplitude: float = lerp(noise_amplitude, noise_amplitude * 1.1, trauma_influence)
 	var noise_contribution = Vector2(x_noise.get_noise_1d(Time.get_ticks_msec() / 1000.0 * noi_speed), \
 		y_noise.get_noise_1d(Time.get_ticks_msec() / 1000.0 * noi_speed 
 	)) * noi_amplitude
