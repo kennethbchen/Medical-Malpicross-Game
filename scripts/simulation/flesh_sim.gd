@@ -22,7 +22,7 @@ var drag: bool = false
 # https://kidscancode.org/godot_recipes/3.x/2d/screen_shake/index.html
 # https://www.youtube.com/watch?v=tu-Qe66AvtY
 
-@export var trauma_decay: float = 0.12
+@export var trauma_decay: float = 0.1
 
 @export var trauma_power: float = 2
 
@@ -61,14 +61,15 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	super(delta)
 	
+
 	# Higher trauma = more movement
 	var trauma_influence: float = pow(trauma, trauma_power)
 	
-	var avoid_intensity = lerp(avoidance_intensity, avoidance_intensity * 0.5, trauma_influence)
+	var avoid_intensity = lerp(avoidance_intensity, avoidance_intensity * 1.2, trauma_influence)
 	var avoidance_contribution = -( get_global_mouse_position() - input_area_center - global_position).normalized() * avoid_intensity
 	
-	var noi_speed: float = lerp(noise_speed, 10.0, trauma_influence)
-	var noi_amplitude: float = lerp(noise_amplitude, noise_amplitude * 1.04, trauma_influence)
+	var noi_speed: float = lerp(noise_speed, 80.0, trauma_influence)
+	var noi_amplitude: float = lerp(noise_amplitude, noise_amplitude * 4, trauma_influence)
 	var noise_contribution = Vector2(x_noise.get_noise_1d(Time.get_ticks_msec() / 1000.0 * noi_speed), \
 		y_noise.get_noise_1d(Time.get_ticks_msec() / 1000.0 * noi_speed 
 	)) * noi_amplitude
