@@ -27,18 +27,13 @@ var drag: bool = false
 @export var trauma_power: float = 2
 
 var trauma: float = 0
-var min_trauma: float = 0
 
 var target_fixed_point_offset: Vector2
-
-var input_size: Vector2i
 
 var input_area_center: Vector2
 
 func init(puzzle: Puzzle, sim_columns: int, sim_rows: int, cell_size: float) -> void:
-	
-	input_size = puzzle.input_size
-	
+
 	generate_point_grid(sim_columns, sim_rows, cell_size)
 	
 	# Convert from input coordinate to board coordinate
@@ -46,7 +41,7 @@ func init(puzzle: Puzzle, sim_columns: int, sim_rows: int, cell_size: float) -> 
 	# Then convert from sim coordinate to position
 	# Finally, add 1/2 cell size to offset from center of cell instead of top left
 	# This position is the center of the input area in pixel space
-	var offset = puzzle.input_to_board_coordinate((input_size / 2) + Vector2i(1, 1)) * cell_size
+	var offset = puzzle.input_to_board_coordinate((puzzle.input_size / 2) + Vector2i(1, 1)) * cell_size
 	input_area_center = grid_origin + Vector2(offset.y, offset.x) + (Vector2(cell_size, cell_size) / 2)
 
 	
@@ -60,13 +55,13 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 
-	if trauma > min_trauma:
-		trauma = clamp(trauma, min_trauma, trauma - trauma_decay * delta)
+	if trauma > 0:
+		trauma = clamp(trauma, 0, trauma - trauma_decay * delta)
 
 func _physics_process(delta: float) -> void:
 	super(delta)
-	
-	print(trauma)
+
+	# Higher trauma = more movement
 	var trauma_influence: float = pow(trauma, trauma_power)
 	
 	var avoid_intensity: float = lerp(avoidance_intensity, avoidance_intensity * 2.112, trauma_influence)
@@ -74,7 +69,6 @@ func _physics_process(delta: float) -> void:
 	
 	var noi_speed: float = lerp(noise_speed, 25.0, trauma_power)
 	var noi_amplitude: float = lerp(noise_amplitude, noise_amplitude * 1.752, trauma_power)
-	
 	var noise_contribution = Vector2(x_noise.get_noise_1d(Time.get_ticks_msec() / 1000.0 * noi_speed), \
 		y_noise.get_noise_1d(Time.get_ticks_msec() / 1000.0 * noi_speed 
 	)) * noi_amplitude
@@ -82,7 +76,6 @@ func _physics_process(delta: float) -> void:
 	target_fixed_point_offset = (avoidance_contribution * avoidance_influence) + \
 				 (noise_contribution * noise_influence)
 
-	
 	fixed_point_offset = lerp(fixed_point_offset, target_fixed_point_offset, 1 - exp(-0.5 * delta))
 
 func _on_puzzle_input_changed(cell: Puzzle.InputCell, row: int, col: int) -> void:
@@ -91,13 +84,13 @@ func _on_puzzle_input_changed(cell: Puzzle.InputCell, row: int, col: int) -> voi
 	var jerk_direction = -fixed_point_offset.normalized()
 	
 	if cell.player_input == Puzzle.INPUT_TYPE.COLORED:
-		trauma = clamp(trauma + 0.8, min_trauma, 1.0)
 		
-		
+		_add_trauma(0.8)
 		fixed_point_offset =  jerk_direction * 80
 		
 	elif cell.player_input == Puzzle.INPUT_TYPE.CROSSED:
-		trauma = clamp(trauma + 0.2, min_trauma, 1.0)
+		
+		_add_trauma(0.2)
 		fixed_point_offset =  jerk_direction * 20
 		
 func _draw() -> void:
@@ -108,3 +101,6 @@ func _draw() -> void:
 	draw_circle(fixed_point_offset, 10, Color.GREEN)
 	draw_circle(target_fixed_point_offset, 10, Color.BLUE)
 	draw_circle(input_area_center, 5, Color.PURPLE)
+
+func _add_trauma(amount: float) -> void:
+	trauma += clamp(trauma + amount, 0, 1.0)
