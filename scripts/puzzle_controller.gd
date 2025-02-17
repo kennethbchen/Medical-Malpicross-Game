@@ -6,12 +6,26 @@ extends Node2D
 
 @onready var puzzle_viewport: SubViewport = $PuzzleViewport
 
-var puzzle_string: String = \
-"""0 1 1 1 0
+
+var test_puzzles: Array[String] = [
+	"""0 1 1 1 0
 0 0 0 0 0
 0 1 0 1 1
 0 1 0 0 0
-0 1 1 1 0"""
+0 1 1 1 0""",
+
+"""0 1 1 1 0
+0 0 1 0 0
+0 1 0 1 1""",
+
+"""0 1 1 1
+1 1 1 0
+0 1 0 1
+0 1 0 0
+0 1 1 1"""
+]
+
+var puzzle_string: String = ""
 
 var sim_point_rows: int
 var sim_point_columns: int
@@ -27,6 +41,7 @@ var input_quads: Array
 var selected_cell: Vector2i
 
 func _ready() -> void:
+	puzzle_string = test_puzzles.pick_random()
 	
 	puzzle = Puzzle.new(puzzle_string)
 	

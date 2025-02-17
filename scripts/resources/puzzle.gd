@@ -202,10 +202,10 @@ func _create_cell_data() -> Array:
 				# convert from board row/col to hint row/col
 				
 				# Access rows in reverse order
-				var hint_row_index: int = (board_size.y - input_size.y) - row
+				var hint_row_index: int = (board_size.x - input_size.x) - row - 1
 				
-				var hint_column_index: int = col - (board_size.x - input_size.x) + 1
-				
+				var hint_column_index: int = col - (board_size.y - input_size.y)
+
 				if hint_row_index >= hints[0][hint_column_index].size():
 					row_data.append(EmptyCell.new())
 				else:
