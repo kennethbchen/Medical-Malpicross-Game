@@ -8,14 +8,14 @@
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="6_p57ef"]
 [ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="7_u5sy4"]
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_iywne"]
+viewport_path = NodePath("PuzzleController/PuzzleViewport")
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_u5sy4"]
 seed = 3
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_gee14"]
 seed = 16
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_iywne"]
-viewport_path = NodePath("PuzzleController/PuzzleViewport")
 
 [node name="Game" type="Node2D"]
 
@@ -26,19 +26,20 @@ script = ExtResource("3_lnu2h")
 position = Vector2(575, 309)
 script = ExtResource("1_yqjtg")
 
-[node name="FleshSim" type="Node2D" parent="PuzzleController"]
-script = ExtResource("2_u5sy4")
-x_noise = SubResource("FastNoiseLite_u5sy4")
-y_noise = SubResource("FastNoiseLite_gee14")
-noise_influence = 0.5
-oscillation_influence = 0.0
-hide_fixed = false
-metadata/_edit_group_ = true
-
 [node name="GridMesh2D" type="MeshInstance2D" parent="PuzzleController"]
 texture = SubResource("ViewportTexture_iywne")
 script = ExtResource("4_lbhrr")
 metadata/_custom_type_script = ExtResource("4_lbhrr")
+
+[node name="FleshSim" type="Node2D" parent="PuzzleController"]
+script = ExtResource("2_u5sy4")
+draw_offsets = true
+x_noise = SubResource("FastNoiseLite_u5sy4")
+y_noise = SubResource("FastNoiseLite_gee14")
+noise_influence = 0.0
+noise_speed = 4.0
+hide_fixed = false
+metadata/_edit_group_ = true
 
 [node name="PuzzleViewport" type="SubViewport" parent="PuzzleController"]
 disable_3d = true

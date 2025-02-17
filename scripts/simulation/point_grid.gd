@@ -61,7 +61,7 @@ func generate_point_grid(point_columns: int, point_rows: int, point_distance: fl
 				
 				if not point_b: continue
 				
-				var constraint = PointMassSim.SpringConstraint.new(point, point_b, -1, 100, 50)
+				var constraint = PointMassSim.SpringConstraint.new(point, point_b, -1, 200, 50)
 				constraints.append(constraint)
 
 func _process(delta: float) -> void:
