@@ -40,7 +40,7 @@ func _ready() -> void:
 	sim_point_rows = board_cell_rows + 3
 	sim_point_columns = board_cell_columns + 3
 	
-	flesh_sim.generate_point_grid(sim_point_columns, sim_point_rows, 50)
+	flesh_sim.init(puzzle, sim_point_columns, sim_point_rows, 50)
 	
 	puzzle_viewport.init(puzzle)
 	

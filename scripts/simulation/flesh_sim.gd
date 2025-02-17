@@ -20,6 +20,16 @@ var drag: bool = false
 @export var oscillation_amplitude: float = 64
 @export var oscillation_speed: float = 2
 
+@export_group("Trauma")
+@export var trauma_decay: float = 0.7
+
+@export var trauma_power: float = 2
+
+func init(puzzle: Puzzle, sim_columns: int, sim_rows: int, cell_size: float) -> void:
+	
+	generate_point_grid(sim_columns, sim_rows, cell_size)
+	puzzle.input_value_changed.connect(_on_puzzle_input_changed)
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("debug_click"):
 		drag = true
@@ -42,3 +52,7 @@ func _physics_process(delta: float) -> void:
 				 (oscillation_contribution * oscillation_influence)
 		
 	fixed_point_offset = lerp(fixed_point_offset, target, 1 - exp(-20 * delta))
+
+func _on_puzzle_input_changed(cell: Puzzle.InputCell, row: int, col: int) -> void:
+	if cell.player_input == Puzzle.INPUT_TYPE.COLORED:
+		print("ow")
