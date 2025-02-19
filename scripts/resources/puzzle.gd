@@ -33,6 +33,10 @@ var hints: Array
 ## dimensions of the input space of the puzzle
 var input_size: Vector2i
 
+var row_hint_width: int
+
+var column_hint_height: int
+
 ## (rows, columns) [br]
 ## dimension of [member input_size] + dimensions of the hints 
 ## if each hint number was its own cell
@@ -65,7 +69,10 @@ func _init(puzzle_string: String):
 	for row_hint in hints[1]:
 		if row_hint.size() > max_hint_row_size:
 			max_hint_row_size = row_hint.size()
-			
+	
+	column_hint_height =  max_hint_column_size
+	row_hint_width = max_hint_row_size
+	
 	board_size = Vector2i(input_size.x + max_hint_column_size, input_size.y + max_hint_row_size)
 	
 	_cells = _create_cell_data()

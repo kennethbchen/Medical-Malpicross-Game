@@ -12,9 +12,6 @@ var cell_size_px: int = 32
 var rows: int
 var columns: int
 
-# TODO
-var tile_map: Dictionary[Vector2i, Control]
-
 # (-1, -1) means no selected cell
 var selected_cell: Vector2i = Vector2i(-1, -1)
 
@@ -22,7 +19,8 @@ func init(puzzle: Puzzle) -> void:
 	current_puzzle = puzzle
 	
 	puzzle_drawer.init(puzzle)
-
+	cursor.init(puzzle, cell_size_px)
+	
 	rows = puzzle.board_size.x
 	columns = puzzle.board_size.y
 	

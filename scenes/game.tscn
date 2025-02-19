@@ -58,6 +58,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("6_p57ef")
+hint_color = Color(0.529066, 0.529067, 0.529067, 1)
 
 [node name="PuzzleUIContainer" type="Control" parent="PuzzleController/PuzzleViewport"]
 layout_mode = 3
