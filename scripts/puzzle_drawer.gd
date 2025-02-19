@@ -4,8 +4,10 @@ var cell_size_px: float = 32
 
 var puzzle: Puzzle
 
-func init(puz: Puzzle) -> void:
+func init(puz: Puzzle, cell_size: int = 32) -> void:
 	puzzle = puz
+	
+	cell_size_px = cell_size
 
 func _process(delta: float) -> void:
 	queue_redraw()
@@ -34,7 +36,8 @@ func _draw() -> void:
 		b = Vector2(b.y, b.x) * cell_size_px
 		
 		draw_line(a , b, Color.WHITE, 2)
-		
+	
+	# Input Cells
 	for row in puzzle.input_size.x:
 		for col in puzzle.input_size.y:
 			

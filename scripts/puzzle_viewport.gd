@@ -18,7 +18,7 @@ var selected_cell: Vector2i = Vector2i(-1, -1)
 func init(puzzle: Puzzle) -> void:
 	current_puzzle = puzzle
 	
-	puzzle_drawer.init(puzzle)
+	puzzle_drawer.init(puzzle, cell_size_px)
 	cursor.init(puzzle, cell_size_px)
 	
 	rows = puzzle.board_size.x

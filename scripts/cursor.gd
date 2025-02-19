@@ -5,8 +5,6 @@ extends Control
 
 @export var cursor_width: float = 2
 
-
-
 var cursor_position: Vector2
 
 var cell_size_px: int = 32
@@ -17,7 +15,7 @@ var col_hint_size: int
 func _process(_delta: float) -> void:
 	queue_redraw()
 
-func init(puzzle: Puzzle, cell_size: int) -> void:
+func init(puzzle: Puzzle, cell_size: int = 32) -> void:
 	
 	cell_size_px = cell_size
 	
@@ -40,7 +38,6 @@ func _draw() -> void:
 	# Highlight hints
 	# Row
 	var row_rect: Rect2 = Rect2(Vector2(0, cursor_position.y), Vector2(row_hint_size, cell_size_px))
-
 	draw_rect(row_rect, hint_color, true)
 	
 	# Column
