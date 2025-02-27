@@ -2,7 +2,7 @@ extends Node3D
 
 #@onready var flesh_sim: Node2D = $FleshSim
 
-#@onready var grid_mesh: GridMesh2D = $GridMesh2D
+@onready var grid_mesh: GridMesh3D = $GridMesh3D
 
 @onready var puzzle_viewport: SubViewport = $PuzzleViewport
 
@@ -40,6 +40,8 @@ var input_quads: Array
 
 var selected_cell: Vector2i
 
+var cell_size: float = 0.25
+
 func _ready() -> void:
 	puzzle_string = test_puzzles.pick_random()
 	
@@ -58,6 +60,12 @@ func _ready() -> void:
 	#flesh_sim.init(puzzle, sim_point_columns, sim_point_rows, 50)
 	
 	puzzle_viewport.init(puzzle)
+	
+	var grid_mesh_material: StandardMaterial3D = StandardMaterial3D.new()
+	grid_mesh_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	grid_mesh_material.albedo_texture = puzzle_viewport.get_texture()
+	grid_mesh_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	grid_mesh.init(grid_mesh_material)
 	
 	# TODO
 	"""
@@ -95,7 +103,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			puzzle.toggle_input_crossed(selected_cell.x, selected_cell.y)
 
 func _process(delta: float) -> void:
-	#grid_mesh.construct_from_points(get_board_points(), sim_point_rows - 2, sim_point_columns - 2)
+	grid_mesh.construct_from_points(get_board_points(), sim_point_rows - 2, sim_point_columns - 2)
 	
 	# Check for input
 	selected_cell = _get_selected_cell()
@@ -103,11 +111,14 @@ func _process(delta: float) -> void:
 	
 
 
-func get_board_points() -> Array[Vector2]:
+func get_board_points() -> Array[Vector3]:
 	
-	var output: Array[Vector2]
+	var output: Array[Vector3]
 	
-	# TODO
+	# TODO use flesh sim
+	for row in range(1, sim_point_rows - 1):
+		for col in range(1, sim_point_columns - 1):
+			output.push_back(Vector3(col, 0, row) * cell_size)
 	"""
 	for row in range(1, sim_point_rows - 1):
 		for col in range(1, sim_point_columns - 1):
@@ -119,7 +130,6 @@ func get_board_points() -> Array[Vector2]:
 func _get_selected_cell():
 	# TODO
 	"""
-	
 	for row in input_quads.size():
 		for col in input_quads[row].size():
 			if input_quads[row][col].contains_point(get_global_mouse_position() - global_position):
