@@ -1,4 +1,4 @@
-extends "res://scripts/simulation/point_grid_2d.gd"
+extends "res://scripts/simulation/2d/point_grid_2d.gd"
 
 var drag: bool = false
 
