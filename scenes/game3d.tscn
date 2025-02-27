@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=12 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
@@ -19,6 +19,16 @@ sky = SubResource("Sky_b4stf")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_xrhyx"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_ygxcr"]
+viewport_path = NodePath("PuzzleController/PuzzleViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xrhyx"]
+resource_local_to_scene = true
+transparency = 1
+albedo_texture = SubResource("ViewportTexture_ygxcr")
+
 [node name="Game3d" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -36,6 +46,7 @@ script = ExtResource("1_yob6b")
 
 [node name="PuzzleViewport" type="SubViewport" parent="PuzzleController"]
 disable_3d = true
+transparent_bg = true
 handle_input_locally = false
 size = Vector2i(96, 101)
 script = ExtResource("2_f1g4q")
@@ -60,6 +71,10 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 128.0
 offset_bottom = 96.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleController"]
+mesh = SubResource("PlaneMesh_xrhyx")
+surface_material_override/0 = SubResource("StandardMaterial3D_xrhyx")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.8914, 0)
