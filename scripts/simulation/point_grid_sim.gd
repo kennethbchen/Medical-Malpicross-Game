@@ -1,4 +1,6 @@
-extends Node2D
+extends RefCounted
+
+class_name PointGridSim
 
 @export var draw_sim: bool = false
 @export var hide_fixed: bool = true
@@ -64,19 +66,7 @@ func generate_point_grid(point_columns: int, point_rows: int, point_distance: fl
 				var constraint = PointMassSim.SpringConstraint.new(point, point_b, -1, 200, 50)
 				constraints.append(constraint)
 
-func _process(delta: float) -> void:
-	queue_redraw()
-	
-func _physics_process(delta: float) -> void:
-	
-	_simulate(delta)
-	
-	for constraint in constraints:
-		constraint._resolve_constraint(delta)
-		
-	queue_redraw()
-
-func _simulate(delta: float) -> void:
+func simulate(delta: float) -> void:
 
 	# Symplectic Euler integration
 	for i in range(len(points)):
@@ -90,22 +80,7 @@ func _simulate(delta: float) -> void:
 			continue
 		
 		points[i].position += points[i].velocity * delta
-
-func _draw():
-	
-	if not draw_sim: return
-	
-	for i in range(len(constraints)):
 		
-		if (constraints[i].point_a.fixed or constraints[i].point_b.fixed) and hide_fixed:
-			continue
-		
-		var color: Color = Color.WHITE
-		draw_line(constraints[i].point_a.position, constraints[i].point_b.position, color, 4)
-		
-	for i in range(len(points)):
-		
-		if points[i].fixed and hide_fixed:
-			continue
-		
-		draw_circle(points[i].position, 4, Color.LIGHT_GREEN, 5)
+func resolve_constraints(delta: float) -> void:
+	for constraint in constraints:
+		constraint._resolve_constraint(delta)

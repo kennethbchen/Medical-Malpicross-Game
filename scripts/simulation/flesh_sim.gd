@@ -1,4 +1,4 @@
-extends "res://scripts/simulation/point_grid.gd"
+extends "res://scripts/simulation/point_grid_2d.gd"
 
 var drag: bool = false
 
@@ -34,7 +34,7 @@ var input_area_center: Vector2
 
 func init(puzzle: Puzzle, sim_columns: int, sim_rows: int, cell_size: float) -> void:
 
-	generate_point_grid(sim_columns, sim_rows, cell_size)
+	init_sim(sim_columns, sim_rows, cell_size)
 	
 	# Convert from input coordinate to board coordinate
 	# Then convert from board coordinate to sim coordinate (Add (1, 1))
@@ -42,7 +42,7 @@ func init(puzzle: Puzzle, sim_columns: int, sim_rows: int, cell_size: float) -> 
 	# Finally, add 1/2 cell size to offset from center of cell instead of top left
 	# This position is the center of the input area in pixel space
 	var offset = puzzle.input_to_board_coordinate((puzzle.input_size / 2) + Vector2i(1, 1)) * cell_size
-	input_area_center = grid_origin + Vector2(offset.y, offset.x) + (Vector2(cell_size, cell_size) / 2)
+	input_area_center = sim.grid_origin + Vector2(offset.y, offset.x) + (Vector2(cell_size, cell_size) / 2)
 
 	
 	puzzle.input_value_changed.connect(_on_puzzle_input_changed)
@@ -54,7 +54,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		drag = false
 
 func _process(delta: float) -> void:
-
+	super(delta)
+	
 	if trauma > 0:
 		trauma = clamp(trauma, 0, trauma - trauma_decay * delta)
 
@@ -77,29 +78,29 @@ func _physics_process(delta: float) -> void:
 	target_fixed_point_offset = (avoidance_contribution * avoidance_influence) + \
 				 (noise_contribution * noise_influence)
 
-	fixed_point_offset = lerp(fixed_point_offset, target_fixed_point_offset, 1 - exp(-0.5 * delta))
+	sim.fixed_point_offset = lerp(sim.fixed_point_offset, target_fixed_point_offset, 1 - exp(-0.5 * delta))
 
 func _on_puzzle_input_changed(cell: Puzzle.InputCell, row: int, col: int) -> void:
 	
 	# Jerk in the opposite direciton
-	var jerk_direction = -fixed_point_offset.normalized()
+	var jerk_direction = -sim.fixed_point_offset.normalized()
 	
 	if cell.player_input == Puzzle.INPUT_TYPE.COLORED:
 		
 		_add_trauma(0.8)
-		fixed_point_offset =  jerk_direction * 80
+		sim.fixed_point_offset =  jerk_direction * 80
 		
 	elif cell.player_input == Puzzle.INPUT_TYPE.CROSSED:
 		
 		_add_trauma(0.2)
-		fixed_point_offset =  jerk_direction * 20
+		sim.fixed_point_offset =  jerk_direction * 20
 		
 func _draw() -> void:
 	super()
 	
 	if not draw_offsets: return
 	draw_circle(Vector2.ZERO, 10, Color.YELLOW)
-	draw_circle(fixed_point_offset, 10, Color.GREEN)
+	draw_circle(sim.fixed_point_offset, 10, Color.GREEN)
 	draw_circle(target_fixed_point_offset, 10, Color.BLUE)
 	draw_circle(input_area_center, 5, Color.PURPLE)
 
