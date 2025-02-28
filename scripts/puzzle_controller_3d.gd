@@ -1,6 +1,6 @@
 extends Node3D
 
-#@onready var flesh_sim: Node2D = $FleshSim
+@onready var flesh_sim: Node3D = $FleshSim3D
 
 @onready var grid_mesh: GridMesh3D = $GridMesh3D
 
@@ -40,7 +40,7 @@ var input_quads: Array
 
 var selected_cell: Vector2i
 
-var cell_size: float = 0.25
+var cell_size: float = 0.01
 
 func _ready() -> void:
 	puzzle_string = test_puzzles.pick_random()
@@ -57,7 +57,7 @@ func _ready() -> void:
 	sim_point_rows = board_cell_rows + 3
 	sim_point_columns = board_cell_columns + 3
 	
-	#flesh_sim.init(puzzle, sim_point_columns, sim_point_rows, 50)
+	flesh_sim.init(puzzle, sim_point_columns, sim_point_rows, 50)
 	
 	puzzle_viewport.init(puzzle)
 	
@@ -118,7 +118,8 @@ func get_board_points() -> Array[Vector3]:
 	# TODO use flesh sim
 	for row in range(1, sim_point_rows - 1):
 		for col in range(1, sim_point_columns - 1):
-			output.push_back(Vector3(col, 0, row) * cell_size)
+			var sim_position: Vector2 = flesh_sim.get_point(row, col).position
+			output.push_back(Vector3(sim_position.x, 0, sim_position.y) * cell_size)
 	"""
 	for row in range(1, sim_point_rows - 1):
 		for col in range(1, sim_point_columns - 1):
