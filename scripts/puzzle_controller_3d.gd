@@ -115,16 +115,11 @@ func get_board_points() -> Array[Vector3]:
 	
 	var output: Array[Vector3]
 	
-	# TODO use flesh sim
 	for row in range(1, sim_point_rows - 1):
 		for col in range(1, sim_point_columns - 1):
 			var sim_position: Vector2 = flesh_sim.get_point(row, col).position
 			output.push_back(Vector3(sim_position.x, 0, sim_position.y) * cell_size)
-	"""
-	for row in range(1, sim_point_rows - 1):
-		for col in range(1, sim_point_columns - 1):
-			output.push_back(flesh_sim.get_point(row, col).position)
-	"""
+
 	return output
 
 	
