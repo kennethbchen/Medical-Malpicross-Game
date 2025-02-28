@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://hwsx8i5h37ma"]
+[gd_scene load_steps=9 format=3 uid="uid://hwsx8i5h37ma"]
 
 [ext_resource type="Script" uid="uid://clnv3gpmlj01o" path="res://scripts/puzzle_controller.gd" id="1_yqjtg"]
 [ext_resource type="Script" uid="uid://cgaenjwmwl4gl" path="res://scripts/simulation/2d/flesh_sim_2d.gd" id="2_u5sy4"]
@@ -10,12 +10,6 @@
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_iywne"]
 viewport_path = NodePath("PuzzleController/PuzzleViewport")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_u5sy4"]
-seed = 3
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_gee14"]
-seed = 16
 
 [node name="Game" type="Node2D"]
 
@@ -33,10 +27,8 @@ metadata/_custom_type_script = ExtResource("4_lbhrr")
 
 [node name="FleshSim" type="Node2D" parent="PuzzleController"]
 script = ExtResource("2_u5sy4")
-x_noise = SubResource("FastNoiseLite_u5sy4")
-y_noise = SubResource("FastNoiseLite_gee14")
-noise_speed = 4.0
-hide_fixed = false
+hide_fixed = true
+draw_offsets = true
 metadata/_edit_group_ = true
 
 [node name="PuzzleViewport" type="SubViewport" parent="PuzzleController"]

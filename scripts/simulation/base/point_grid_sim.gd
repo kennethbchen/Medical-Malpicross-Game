@@ -2,9 +2,6 @@ extends RefCounted
 
 class_name PointGridSim
 
-@export var draw_sim: bool = false
-@export var hide_fixed: bool = true
-
 var points: Array[PointMassSim.PointMass]
 var constraints: Array[PointMassSim.SpringConstraint]
 

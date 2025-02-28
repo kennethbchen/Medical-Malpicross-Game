@@ -1,108 +1,63 @@
-extends "res://scripts/simulation/2d/point_grid_2d.gd"
+extends Node2D
 
-var drag: bool = false
+## Essentially a wrapper for [FleshSim] for [Node2D] usage
+## Handles some Node2D specific functions like how to get mouse position
+## Or how to draw the sim for debugging
 
+@export var draw_sim: bool = false
+@export var hide_fixed: bool = false
 @export var draw_offsets: bool = false
 
-@export_group("Movement Normal")
-
-@export_subgroup("Avoidance")
-@export_range(0.0, 1.0, 0.1) var avoidance_influence: float = 1.0
-@export var avoidance_intensity: float = 32
-
-@export_subgroup("Noise")
-@export var x_noise: Noise
-@export var y_noise: Noise
-
-@export_range(0.0, 1.0, 0.1) var noise_influence: float = 1.0
-@export var noise_speed: float = 15
-@export var noise_amplitude: float = 164
-
-@export_group("Trauma")
-# https://kidscancode.org/godot_recipes/3.x/2d/screen_shake/index.html
-# https://www.youtube.com/watch?v=tu-Qe66AvtY
-
-@export var trauma_decay: float = 0.1
-
-@export var trauma_power: float = 2
-
-var trauma: float = 0
-
-var target_fixed_point_offset: Vector2
-
-var input_area_center: Vector2
+var sim: FleshSim
 
 func init(puzzle: Puzzle, sim_columns: int, sim_rows: int, cell_size: float) -> void:
-
-	init_sim(sim_columns, sim_rows, cell_size)
 	
-	# Convert from input coordinate to board coordinate
-	# Then convert from board coordinate to sim coordinate (Add (1, 1))
-	# Then convert from sim coordinate to position
-	# Finally, add 1/2 cell size to offset from center of cell instead of top left
-	# This position is the center of the input area in pixel space
-	var offset = puzzle.input_to_board_coordinate((puzzle.input_size / 2) + Vector2i(1, 1)) * cell_size
-	input_area_center = sim.grid_origin + Vector2(offset.y, offset.x) + (Vector2(cell_size, cell_size) / 2)
-
+	sim = FleshSim.new()
+	sim.init(puzzle, sim_columns, sim_rows, cell_size)
 	
-	puzzle.input_value_changed.connect(_on_puzzle_input_changed)
+	puzzle.input_value_changed.connect(sim._on_puzzle_input_changed)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("debug_click"):
-		drag = true
-	elif event.is_action_released("debug_click"):
-		drag = false
+func get_point(row, col) -> PointMassSim.PointMass:
+	return sim.get_point(row, col)
 
 func _process(delta: float) -> void:
-	super(delta)
-	
-	if trauma > 0:
-		trauma = clamp(trauma, 0, trauma - trauma_decay * delta)
 
+	sim.process_trauma(delta)
+	sim.set_cursor_position(get_global_mouse_position() - global_position)
+	
+	queue_redraw()
+	
 func _physics_process(delta: float) -> void:
-	super(delta)
-	
-
-	# Higher trauma = more movement
-	var trauma_influence: float = pow(trauma, trauma_power)
-	
-	var avoid_intensity = lerp(avoidance_intensity, avoidance_intensity * 1.2, trauma_influence)
-	var avoidance_contribution = -( get_global_mouse_position() - input_area_center - global_position).normalized() * avoid_intensity
-	
-	var noi_speed: float = lerp(noise_speed, 80.0, trauma_influence)
-	var noi_amplitude: float = lerp(noise_amplitude, noise_amplitude * 4, trauma_influence)
-	var noise_contribution = Vector2(x_noise.get_noise_1d(Time.get_ticks_msec() / 1000.0 * noi_speed), \
-		y_noise.get_noise_1d(Time.get_ticks_msec() / 1000.0 * noi_speed 
-	)) * noi_amplitude
-	
-	target_fixed_point_offset = (avoidance_contribution * avoidance_influence) + \
-				 (noise_contribution * noise_influence)
-
-	sim.fixed_point_offset = lerp(sim.fixed_point_offset, target_fixed_point_offset, 1 - exp(-0.5 * delta))
-
-func _on_puzzle_input_changed(cell: Puzzle.InputCell, row: int, col: int) -> void:
-	
-	# Jerk in the opposite direciton
-	var jerk_direction = -sim.fixed_point_offset.normalized()
-	
-	if cell.player_input == Puzzle.INPUT_TYPE.COLORED:
-		
-		_add_trauma(0.8)
-		sim.fixed_point_offset =  jerk_direction * 80
-		
-	elif cell.player_input == Puzzle.INPUT_TYPE.CROSSED:
-		
-		_add_trauma(0.2)
-		sim.fixed_point_offset =  jerk_direction * 20
-		
-func _draw() -> void:
-	super()
-	
-	if not draw_offsets: return
-	draw_circle(Vector2.ZERO, 10, Color.YELLOW)
-	draw_circle(sim.fixed_point_offset, 10, Color.GREEN)
-	draw_circle(target_fixed_point_offset, 10, Color.BLUE)
-	draw_circle(input_area_center, 5, Color.PURPLE)
+	sim.simulate(delta)
+	sim.resolve_constraints(delta)
 
 func _add_trauma(amount: float) -> void:
-	trauma = clamp(trauma + amount, 0, 1.0)
+	sim._add_trauma(amount)
+
+func get_cursor_position() -> Vector2:
+	return get_global_mouse_position() - global_position
+	
+func _draw() -> void:
+	
+	if draw_sim:
+	
+		for i in range(len(sim.constraints)):
+			
+			if (sim.constraints[i].point_a.fixed or sim.constraints[i].point_b.fixed) and hide_fixed:
+				continue
+			
+			var color: Color = Color.WHITE
+			draw_line(sim.constraints[i].point_a.position, sim.constraints[i].point_b.position, color, 4)
+			
+		for i in range(len(sim.points)):
+			
+			if sim.points[i].fixed and hide_fixed:
+				continue
+			
+			draw_circle(sim.points[i].position, 4, Color.LIGHT_GREEN, 5)
+		
+	if draw_offsets:
+		draw_circle(Vector2.ZERO, 10, Color.YELLOW)
+		draw_circle(sim.fixed_point_offset, 10, Color.GREEN)
+		draw_circle(sim.target_fixed_point_offset, 10, Color.BLUE)
+		draw_circle(sim.input_area_center, 5, Color.PURPLE)
