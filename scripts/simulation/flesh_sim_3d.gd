@@ -64,6 +64,7 @@ func _process(delta: float) -> void:
 		DebugDraw3D.draw_sphere(Vector3(sim.input_area_center.x, y_offset, sim.input_area_center.y) * draw_scale, 0.02, Color.PURPLE)
 	
 func _physics_process(delta: float) -> void:
+	sim.fixed_point_offset *= 0
 	sim.simulate(delta)
 	sim.resolve_constraints(delta)
 

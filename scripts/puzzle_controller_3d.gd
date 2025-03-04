@@ -8,6 +8,7 @@ extends Node3D
 
 @onready var puzzle_viewport: SubViewport = $PuzzleViewport
 
+@onready var body_mesh: BodyMesh3D = $BodyMesh3D
 
 var test_puzzles: Array[String] = [
 	"""0 1 1 1 0
@@ -43,7 +44,11 @@ var input_quads: Array
 # In input space
 var selected_cell: Vector2i
 
-var cell_size: float = 0.01
+var sim_segment_size: float = 100
+
+var cell_size: float = 0.5
+
+var cell_scale_factor: float = cell_size / sim_segment_size
 
 # In sim space
 var cursor_position: Vector2i
@@ -63,7 +68,7 @@ func _ready() -> void:
 	sim_point_rows = board_cell_rows + 3
 	sim_point_columns = board_cell_columns + 3
 	
-	flesh_sim.init(puzzle, sim_point_columns, sim_point_rows, 50)
+	flesh_sim.init(puzzle, sim_point_columns, sim_point_rows, sim_segment_size)
 	
 	puzzle_viewport.init(puzzle)
 	
@@ -72,6 +77,8 @@ func _ready() -> void:
 	grid_mesh_material.albedo_texture = puzzle_viewport.get_texture()
 	grid_mesh_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	grid_mesh.init(grid_mesh_material)
+	
+	body_mesh.init(puzzle.input_size.x, puzzle.input_size.y, cell_size)
 	
 	# Create input_quads so that we can interpret mouse input
 	for row in puzzle.input_size.x:
@@ -147,7 +154,7 @@ func _physics_process(delta: float) -> void:
 			
 			# Then, convert from puzzle plane local space to sim space
 			# Essentially converting from 3D space to pixel space
-			local_intersect_position /= cell_size
+			local_intersect_position /= cell_scale_factor
 
 			cursor_position = Vector2i(local_intersect_position.x, local_intersect_position.z)
 
@@ -159,7 +166,10 @@ func get_board_points() -> Array[Vector3]:
 	for row in range(1, sim_point_rows - 1):
 		for col in range(1, sim_point_columns - 1):
 			var sim_position: Vector2 = flesh_sim.get_point(row, col).position
-			output.push_back(Vector3(sim_position.x, 0, sim_position.y) * cell_size)
+			
+			# Convert from sim space (basically pixels) to 3D space (units)
+			# by multiplying by cell_scale_factor
+			output.push_back(Vector3(sim_position.x, 0, sim_position.y) * cell_scale_factor)
 
 	return output
 

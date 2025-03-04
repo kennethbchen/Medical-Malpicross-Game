@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=13 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://dcnqwn1puo4h" path="res://scripts/resources/grid_mesh_3d.gd" id="3_ygxcr"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]
 [ext_resource type="Script" uid="uid://brmgweuwi3o8i" path="res://scripts/simulation/flesh_sim_3d.gd" id="7_xrhyx"]
+[ext_resource type="Script" uid="uid://bk1vxm6ujfddn" path="res://scripts/resources/body_mesh_3d.gd" id="8_gl5h8"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f1g4q"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -21,6 +22,9 @@ sky = SubResource("Sky_b4stf")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xrhyx"]
+albedo_color = Color(0.811694, 0.561665, 0.386574, 1)
+
 [node name="Game3d" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -34,9 +38,13 @@ shadow_enabled = true
 script = ExtResource("1_b4stf")
 
 [node name="PuzzleController" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 script = ExtResource("1_yob6b")
 camera = NodePath("../Camera3D")
+
+[node name="BodyMesh3D" type="MeshInstance3D" parent="PuzzleController"]
+skeleton = NodePath("../..")
+script = ExtResource("8_gl5h8")
+metadata/_custom_type_script = ExtResource("8_gl5h8")
 
 [node name="GridMesh3D" type="MeshInstance3D" parent="PuzzleController"]
 gi_mode = 0
@@ -73,6 +81,11 @@ offset_bottom = 96.0
 
 [node name="FleshSim3D" type="Node3D" parent="PuzzleController"]
 script = ExtResource("7_xrhyx")
+hide_fixed = false
+
+[node name="CSGBox3D" type="CSGBox3D" parent="PuzzleController"]
+transform = Transform3D(1, 0, 0, 0, 0.999995, 0, 0, 0, 0.999995, 0.58714, -2.01603, 0.498107)
+material = SubResource("StandardMaterial3D_xrhyx")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.581271, 0.81371, 0, -0.81371, 0.581271, 0, 3.19418, 2.45204)
