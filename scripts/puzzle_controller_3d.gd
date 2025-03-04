@@ -1,5 +1,7 @@
 extends Node3D
 
+@export var camera: Camera3D
+
 @onready var flesh_sim: Node3D = $FleshSim3D
 
 @onready var grid_mesh: GridMesh3D = $GridMesh3D
@@ -38,9 +40,13 @@ var puzzle: Puzzle
 # 2D array (row, col) of quads in the input space
 var input_quads: Array
 
+# In input space
 var selected_cell: Vector2i
 
 var cell_size: float = 0.01
+
+# In sim space
+var cursor_position: Vector2i
 
 func _ready() -> void:
 	puzzle_string = test_puzzles.pick_random()
@@ -67,8 +73,6 @@ func _ready() -> void:
 	grid_mesh_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	grid_mesh.init(grid_mesh_material)
 	
-	# TODO
-	"""
 	# Create input_quads so that we can interpret mouse input
 	for row in puzzle.input_size.x:
 		
@@ -88,9 +92,8 @@ func _ready() -> void:
 				flesh_sim.get_point(sim_coord.x, sim_coord.y + 1)
 				)
 			row_data.append(new_quad)
-		
+
 		input_quads.append(row_data)
-	"""
 
 func _unhandled_input(event: InputEvent) -> void:
 	
@@ -103,12 +106,50 @@ func _unhandled_input(event: InputEvent) -> void:
 			puzzle.toggle_input_crossed(selected_cell.x, selected_cell.y)
 
 func _process(delta: float) -> void:
+	
+	# Update mesh
 	grid_mesh.construct_from_points(get_board_points(), sim_point_rows - 2, sim_point_columns - 2)
 	
-	# Check for input
+	# Propagate Mouse input
 	selected_cell = _get_selected_cell()
 	puzzle_viewport.highlight_cell(selected_cell)
+	flesh_sim.set_cursor_position(cursor_position)
 	
+
+func _physics_process(delta: float) -> void:
+	
+	# Raycast camera mouse position to get cursor position
+	# We don't need to do a physics raycast, 
+	# just project the vector onto the puzzle plane
+	# The puzzle plane is the infinite plane in which the puzzle is drawn
+	
+	# https://samsymons.com/blog/math-notes-ray-plane-intersection/
+	var ray_origin: Vector3 = camera.project_ray_origin(get_viewport().get_mouse_position())
+	var ray_normal: Vector3 = camera.project_ray_normal(get_viewport().get_mouse_position())
+	
+	var plane_normal: Vector3 = basis.y
+	var plane_origin: Vector3 = global_position
+	
+	var denominator = plane_normal.dot(ray_normal)
+	
+	# Avoid dividing by 0
+	if abs(denominator) > 0.0001:
+		var difference: Vector3 = plane_origin - ray_origin
+		var intersect_distance = difference.dot(plane_normal) / denominator
+	
+		if intersect_distance > 0.001:
+			# Successful Projection
+			
+			var intersect_position: Vector3 = ray_origin + (ray_normal * intersect_distance)
+			
+			# Convert from global space to puzzle plane's local space
+			var local_intersect_position: Vector3 = transform.inverse() * intersect_position
+			
+			# Then, convert from puzzle plane local space to sim space
+			# Essentially converting from 3D space to pixel space
+			local_intersect_position /= cell_size
+
+			cursor_position = Vector2i(local_intersect_position.x, local_intersect_position.z)
 
 
 func get_board_points() -> Array[Vector3]:
@@ -124,13 +165,13 @@ func get_board_points() -> Array[Vector3]:
 
 	
 func _get_selected_cell():
-	# TODO
-	"""
+	
+	# Check every input quad to see if the mouse is inside of it
 	for row in input_quads.size():
 		for col in input_quads[row].size():
-			if input_quads[row][col].contains_point(get_global_mouse_position() - global_position):
+			if input_quads[row][col].contains_point(cursor_position):
 				return Vector2i(row, col)
-	"""		
+
 	return Vector2i(-1, -1)
 
 class PointMassQuad:
@@ -161,3 +202,6 @@ class PointMassQuad:
 
 		return test_position.x >= x_vals[0] and test_position.y >= y_vals[0] and \
 			test_position.x < x_vals[-1] and test_position.y < y_vals[-1]
+	
+	func _to_string() -> String:
+		return "{0} {1} {2} {3}".format([p1.position, p2.position, p3.position, p4.position])

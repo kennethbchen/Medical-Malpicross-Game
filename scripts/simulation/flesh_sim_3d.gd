@@ -23,8 +23,7 @@ func get_point(row, col) -> PointMassSim.PointMass:
 func _process(delta: float) -> void:
 
 	sim.process_trauma(delta)
-	sim.set_cursor_position(Vector2(-1, -1))
-	
+	var space_state = get_world_3d().direct_space_state
 	
 	if not OS.is_debug_build(): return
 	
@@ -70,3 +69,6 @@ func _physics_process(delta: float) -> void:
 
 func _add_trauma(amount: float) -> void:
 	sim._add_trauma(amount)
+
+func set_cursor_position(pos: Vector2) -> void:
+	sim.set_cursor_position(pos)
