@@ -78,8 +78,22 @@ func _ready() -> void:
 	grid_mesh_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	grid_mesh.init(grid_mesh_material)
 	
-	var offset = puzzle.input_to_board_coordinate((puzzle.input_size / 2) + Vector2i(1, 1)) * cell_size
-	var input_area_center = Vector2(offset.y, offset.x) + (Vector2(cell_size, cell_size) / 2)
+	# Offset nodes so that the center of the input space
+	# is the origin of the puzzle controller
+	
+	# Calculate the center of input space
+	var middle_input = (puzzle.input_size / 2.0)
+	
+	# Convert that to board space
+	var offset_board_coord = Vector2(middle_input.x + (puzzle.board_size.x - puzzle.input_size.x), middle_input.y + (puzzle.board_size.y - puzzle.input_size.y))
+	
+	# Convert that to sim space (by adding (1, 0, 1))
+	# And convert sim space to 3D space by multiplying by cell_size
+	var offset = (Vector3(offset_board_coord.y, 0, offset_board_coord.x) + Vector3(1, 0, 1)) * cell_size
+	
+	grid_mesh.position = -offset
+	flesh_sim.position = -offset
+
 	body_mesh.init(puzzle.input_size.x, puzzle.input_size.y, cell_size)
 	
 	# Create input_quads so that we can interpret mouse input
@@ -116,6 +130,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	
+	
+	
 	# Update mesh
 	grid_mesh.construct_from_points(get_board_points(), sim_point_rows - 2, sim_point_columns - 2)
 	
@@ -136,6 +152,7 @@ func _physics_process(delta: float) -> void:
 	var ray_origin: Vector3 = camera.project_ray_origin(get_viewport().get_mouse_position())
 	var ray_normal: Vector3 = camera.project_ray_normal(get_viewport().get_mouse_position())
 	
+	# Grid mesh's transform defines the puzzle plane
 	var plane_normal: Vector3 = grid_mesh.global_basis.y
 	var plane_origin: Vector3 = grid_mesh.global_position
 	

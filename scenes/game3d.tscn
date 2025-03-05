@@ -80,12 +80,13 @@ offset_bottom = 96.0
 
 [node name="FleshSim3D" type="Node3D" parent="PuzzleController"]
 script = ExtResource("7_xrhyx")
+disable_sim = true
+draw_sim = true
 hide_fixed = false
-draw_offsets = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="PuzzleController"]
 transform = Transform3D(1, 0, 0, 0, 0.999995, 0, 0, 0, 0.999995, 0.58714, -2.01603, 0.498107)
 material = SubResource("StandardMaterial3D_xrhyx")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.581271, 0.81371, 0, -0.81371, 0.581271, 0, 3.19418, 2.45204)
+transform = Transform3D(1, 0, 0, 0, 0.360127, 0.932903, 0, -0.932903, 0.360127, 0, 3.46195, 1.75838)

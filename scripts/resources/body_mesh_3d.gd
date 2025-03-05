@@ -24,7 +24,6 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 		((flexible_rows + flexible_cells_margin_rows * 2) * cell_size) / 2 
 		)
 		
-	print(top_left_start)
 
 ## Assumes rectangular array of points
 func construct_from_points(points: Array[Vector3], rows: int, columns: int) -> void:

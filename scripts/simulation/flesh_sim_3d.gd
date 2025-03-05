@@ -4,6 +4,8 @@ extends Node3D
 ## Handles some Node3D specific functions like how to get mouse position
 ## Or how to draw the sim for debugging using [DebugDraw3D]
 
+@export var disable_sim: bool = false
+
 @export var draw_sim: bool = false
 @export var hide_fixed: bool = true
 @export var draw_offsets: bool = false
@@ -64,7 +66,8 @@ func _process(delta: float) -> void:
 		DebugDraw3D.draw_sphere(global_position + Vector3(sim.input_area_center.x, y_offset, sim.input_area_center.y) * draw_scale, 0.02, Color.PURPLE)
 	
 func _physics_process(delta: float) -> void:
-	sim.fixed_point_offset *= 0
+	if disable_sim: return
+
 	sim.simulate(delta)
 	sim.resolve_constraints(delta)
 
