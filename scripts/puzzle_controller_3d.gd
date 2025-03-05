@@ -25,7 +25,10 @@ var test_puzzles: Array[String] = [
 1 1 1 0
 0 1 0 1
 0 1 0 0
-0 1 1 1"""
+0 1 1 1""",
+
+"""0 1 1 1
+1 1 1 0"""
 ]
 
 var puzzle_string: String = ""
@@ -118,7 +121,7 @@ func _ready() -> void:
 
 		input_quads.append(row_data)
 		
-	print(get_input_points())
+	
 
 func _unhandled_input(event: InputEvent) -> void:
 	
@@ -132,8 +135,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 
-	# Update mesh
+	# Update meshes
 	grid_mesh.construct_from_points(get_board_points(), sim_point_rows - 2, sim_point_columns - 2)
+	body_mesh.set_flexible_vertices(get_input_points())
 	
 	# Propagate Mouse input
 	selected_cell = _get_selected_cell()

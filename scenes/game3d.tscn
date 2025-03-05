@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=16 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
@@ -22,6 +22,15 @@ sky = SubResource("Sky_b4stf")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gl5h8"]
+frequency = 0.071
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_inhaj"]
+noise = SubResource("FastNoiseLite_gl5h8")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g68k2"]
+albedo_texture = SubResource("NoiseTexture2D_inhaj")
+
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_gl5h8"]
 
 [node name="Game3d" type="Node3D"]
@@ -41,14 +50,24 @@ script = ExtResource("1_yob6b")
 camera = NodePath("../Camera3D")
 
 [node name="BodyMesh3D" type="MeshInstance3D" parent="PuzzleController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.736268, 0)
 skeleton = NodePath("../..")
 script = ExtResource("8_gl5h8")
+temp_mat = SubResource("StandardMaterial3D_g68k2")
 metadata/_custom_type_script = ExtResource("8_gl5h8")
 
 [node name="GridMesh3D" type="MeshInstance3D" parent="PuzzleController"]
 gi_mode = 0
 script = ExtResource("3_ygxcr")
 metadata/_custom_type_script = ExtResource("3_ygxcr")
+
+[node name="FleshSim3D" type="Node3D" parent="PuzzleController"]
+script = ExtResource("7_xrhyx")
+disable_sim = true
+hide_fixed = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleController"]
+mesh = SubResource("ImmediateMesh_gl5h8")
 
 [node name="PuzzleViewport" type="SubViewport" parent="PuzzleController"]
 disable_3d = true
@@ -77,15 +96,6 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 128.0
 offset_bottom = 96.0
-
-[node name="FleshSim3D" type="Node3D" parent="PuzzleController"]
-script = ExtResource("7_xrhyx")
-disable_sim = true
-draw_sim = true
-hide_fixed = false
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleController"]
-mesh = SubResource("ImmediateMesh_gl5h8")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.360127, 0.932903, 0, -0.932903, 0.360127, 0, 2.83699, 1.30274)

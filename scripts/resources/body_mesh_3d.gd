@@ -2,6 +2,8 @@ extends MeshInstance3D
 
 class_name BodyMesh3D
 
+@export var temp_mat: StandardMaterial3D
+
 var flexible_cells_margin_rows: int = 1
 var flexible_cells_margin_columns: int = 1
 
@@ -11,9 +13,12 @@ var flexible_columns: int
 # (x, y) / (column, row)
 var flexible_area_bounds: Rect2i
 
+var total_point_grid_size : Vector2i
+
 var cell_size = 0
 var vertices: PackedVector3Array
 var indices: PackedInt32Array
+var uvs: PackedVector2Array
 
 func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	
@@ -28,13 +33,16 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	var total_grid_size: Vector2i = Vector2i(input_columns + flexible_cells_margin_columns * 2, input_rows + flexible_cells_margin_rows * 2)
 	
 	# Count fenceposts instead of fence segments
-	var total_point_grid_size: Vector2i = total_grid_size + Vector2i(1, 1)
-	
+	total_point_grid_size = total_grid_size + Vector2i(1, 1)
+	print(total_point_grid_size)
 	# Create base array of vertex positions
 	var vert_count: int = total_point_grid_size.x * total_point_grid_size.y
 	
 	vertices = PackedVector3Array()
 	vertices.resize(vert_count)
+	
+	uvs = PackedVector2Array()
+	uvs.resize(vert_count)
 	
 	for row in total_point_grid_size.y:
 		for col in total_point_grid_size.x:
@@ -42,6 +50,8 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 			var ind = col + (total_point_grid_size.x) * row
 			
 			vertices[ind] = Vector3(col, 0, row) * cell_size
+			
+			uvs[ind] = Vector2(col, row) / Vector2(total_point_grid_size)
 
 	
 	# Create array of triangle vertex indices to define triangles
@@ -79,94 +89,61 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	
 	# Offset position so that mesh is centered around the origin
 	var offset = total_grid_size * cell_size / 2
-	position = Vector3(-offset.x, 0, -offset.y)
+	#position = Vector3(-offset.x, -0.1, -offset.y)
 	
 	mesh = ArrayMesh.new()
 
 func _process(delta: float) -> void:
+	
+	var x_coord_center = flexible_columns / 2.0
+	
+	# Apply height biases
+	for vert_index in vertices.size():
+		if vert_index % 2 == 0:
+			vertices[vert_index].y = -1
+		"""
+		# (x, y) / (column, row)
+		var vert_coord: Vector2 = Vector2(vert_index % total_point_grid_size.x, vert_index / total_point_grid_size.x )
+		
+		var x_diff = abs(x_coord_center - vert_coord.x)
+		vertices[vert_index].y = -x_diff
+		
+		#print(vert_coord)
+		"""
+		pass
 	
 	# Regenerate mesh
 	var surface_array = []
 	surface_array.resize(Mesh.ARRAY_MAX)
 	
 	surface_array[Mesh.ARRAY_VERTEX] = vertices
+	surface_array[Mesh.ARRAY_TEX_UV] = uvs
 	surface_array[Mesh.ARRAY_INDEX] = indices
 	
 	mesh.clear_surfaces()
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_array)
-
+	mesh.surface_set_material(0, temp_mat)
+	
 ## Assumes rectangular array of points that matches size of flex rows / columns
-func set_flexible_vertices(vertices: Array[Vector3]) -> void:
-	pass
-
-## Assumes rectangular array of points
-func construct_from_points(points: Array[Vector3], rows: int, columns: int) -> void:
+func set_flexible_vertices(new_vertices: Array[Vector3]) -> void:
+	#print(new_vertices)
+	#print(flexible_area_bounds)
 	
-	if not is_inside_tree() or not is_node_ready():
-		return
-
-	if not is_instance_valid(mesh):
-		mesh = ArrayMesh.new()
-
-	var am := mesh as ArrayMesh
-	if am.get_surface_count() > 0:
-		am.clear_surfaces()
-	
-	var vertices = PackedVector3Array()
-	
-	var uvs = PackedVector2Array()
-
-	# Each point that isn't on the rightmost / bottommost edge is the
-	# top left point of a quad
-	for row in range(rows - 1):
-		for col in range(columns - 1):
-
-			# (row, col) defines the top left position of the quad
-			# we are currently looking at
-			
-			# convert (row, col) to an index in points
-			# https://softwareengineering.stackexchange.com/questions/212808/treating-a-1d-data-structure-as-2d-grid
-			
-			# Make two triangles to construct one quad
-			
-			var tl: = points[col + columns * row]
-			var tr: = points[(col + 1) + columns * row]
-			var bl: = points[col + (columns * (row + 1))]
-			var br: = points[(col + 1) + columns * (row + 1)]
-			
-			# First triangle
-			
-			# Top Left
-			vertices.push_back(tl)
-			uvs.push_back(Vector2(float(col) / (columns - 1), float(row) / (rows - 1) ))
-			
-			# Top Right
-			vertices.push_back(tr)
-			uvs.push_back(Vector2(float(col + 1) / (columns - 1), float(row) / (rows - 1) ))
-
-			# Bottom Left
-			vertices.push_back(bl)
-			uvs.push_back(Vector2(float(col) / (columns - 1), float(row + 1) / (rows - 1) ))
-
-			# Second Triangle
-			
-			# Top Right
-			vertices.push_back(tr)
-			uvs.push_back(Vector2(float(col + 1) / (columns - 1), float(row) / (rows - 1) ))
-
-			# Bottom Right
-			vertices.push_back(br)
-			uvs.push_back(Vector2(float(col + 1) / (columns - 1), float(row + 1) / (rows - 1) ))
-
-			# Bottom Left
-			vertices.push_back(bl)
-			uvs.push_back(Vector2(float(col) / (columns - 1), float(row + 1) / (rows - 1) ))
-
-	#print(vertices)
-	var arrays = []
-	arrays.resize(Mesh.ARRAY_MAX)
-	arrays[Mesh.ARRAY_VERTEX] = vertices
-	arrays[Mesh.ARRAY_TEX_UV] = uvs
-	
-	am.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
-	
+	# TODO fix this so that mesh isn't broken
+	for new_vert_index in range(new_vertices.size()):
+		
+		
+		# row column
+		# Add +1 to flexible_columns/rows to convert from grid space to point space
+		var new_flexible_coord: Vector2i = Vector2i(new_vert_index / (flexible_columns + 1), new_vert_index % (flexible_columns + 1) )
+		
+		# Add more to new_flexible_coord to account for margins
+		var offset: Vector2i = Vector2i(flexible_cells_margin_rows, flexible_cells_margin_columns)
+		new_flexible_coord += offset
+		
+		#print(new_flexible_coord)
+		
+		# Now, convert this vertex position into an index for vertices array
+		var new_flexible_index: int = new_flexible_coord.y + (total_point_grid_size.x) * new_flexible_coord.x
+		
+		vertices[new_flexible_index] = new_vertices[new_vert_index]
