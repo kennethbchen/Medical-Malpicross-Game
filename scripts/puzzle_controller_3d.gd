@@ -44,7 +44,7 @@ var input_quads: Array
 # In input space
 var selected_cell: Vector2i
 
-var sim_segment_size: float = 100
+var sim_segment_size: float = 50
 
 var cell_size: float = 0.5
 

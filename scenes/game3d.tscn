@@ -53,6 +53,7 @@ metadata/_custom_type_script = ExtResource("3_ygxcr")
 
 [node name="PuzzleViewport" type="SubViewport" parent="PuzzleController"]
 disable_3d = true
+transparent_bg = true
 handle_input_locally = false
 size = Vector2i(100, 100)
 script = ExtResource("2_f1g4q")
@@ -80,9 +81,8 @@ offset_bottom = 96.0
 
 [node name="FleshSim3D" type="Node3D" parent="PuzzleController"]
 script = ExtResource("7_xrhyx")
-disable_sim = true
-draw_sim = true
 hide_fixed = false
+draw_offsets = true
 
 [node name="CSGBox3D" type="CSGBox3D" parent="PuzzleController"]
 transform = Transform3D(1, 0, 0, 0, 0.999995, 0, 0, 0, 0.999995, 0.58714, -2.01603, 0.498107)
