@@ -1,5 +1,6 @@
 extends Resource
 
+## Resource that represents a picross puzzle
 class_name Puzzle
 
 enum INPUT_TYPE {EMPTY, COLORED, CROSSED}

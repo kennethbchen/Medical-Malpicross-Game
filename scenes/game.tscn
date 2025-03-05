@@ -17,7 +17,7 @@ viewport_path = NodePath("PuzzleController/PuzzleViewport")
 script = ExtResource("3_lnu2h")
 
 [node name="PuzzleController" type="Node2D" parent="."]
-position = Vector2(575, 309)
+position = Vector2(206, 47)
 script = ExtResource("1_yqjtg")
 
 [node name="GridMesh2D" type="MeshInstance2D" parent="PuzzleController"]
@@ -27,7 +27,7 @@ metadata/_custom_type_script = ExtResource("4_lbhrr")
 
 [node name="FleshSim" type="Node2D" parent="PuzzleController"]
 script = ExtResource("2_u5sy4")
-hide_fixed = true
+draw_sim = true
 draw_offsets = true
 metadata/_edit_group_ = true
 

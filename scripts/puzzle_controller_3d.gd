@@ -78,6 +78,8 @@ func _ready() -> void:
 	grid_mesh_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	grid_mesh.init(grid_mesh_material)
 	
+	var offset = puzzle.input_to_board_coordinate((puzzle.input_size / 2) + Vector2i(1, 1)) * cell_size
+	var input_area_center = Vector2(offset.y, offset.x) + (Vector2(cell_size, cell_size) / 2)
 	body_mesh.init(puzzle.input_size.x, puzzle.input_size.y, cell_size)
 	
 	# Create input_quads so that we can interpret mouse input
@@ -134,8 +136,8 @@ func _physics_process(delta: float) -> void:
 	var ray_origin: Vector3 = camera.project_ray_origin(get_viewport().get_mouse_position())
 	var ray_normal: Vector3 = camera.project_ray_normal(get_viewport().get_mouse_position())
 	
-	var plane_normal: Vector3 = basis.y
-	var plane_origin: Vector3 = global_position
+	var plane_normal: Vector3 = grid_mesh.global_basis.y
+	var plane_origin: Vector3 = grid_mesh.global_position
 	
 	var denominator = plane_normal.dot(ray_normal)
 	
@@ -150,7 +152,7 @@ func _physics_process(delta: float) -> void:
 			var intersect_position: Vector3 = ray_origin + (ray_normal * intersect_distance)
 			
 			# Convert from global space to puzzle plane's local space
-			var local_intersect_position: Vector3 = transform.inverse() * intersect_position
+			var local_intersect_position: Vector3 = grid_mesh.global_transform.inverse() * intersect_position
 			
 			# Then, convert from puzzle plane local space to sim space
 			# Essentially converting from 3D space to pixel space

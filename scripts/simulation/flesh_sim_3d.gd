@@ -29,7 +29,7 @@ func _process(delta: float) -> void:
 	
 	# Draw sim
 	
-	var draw_scale = 0.01
+	var draw_scale = 0.005
 	
 	if draw_sim:
 	
@@ -44,7 +44,7 @@ func _process(delta: float) -> void:
 			var b: Vector3 = Vector3(sim.constraints[i].point_b.position.x, 0, sim.constraints[i].point_b.position.y)
 			b *= draw_scale
 			
-			DebugDraw3D.draw_line(a, b, color)
+			DebugDraw3D.draw_line(global_position + a, global_position + b, color)
 			
 		for i in range(len(sim.points)):
 			
@@ -52,16 +52,16 @@ func _process(delta: float) -> void:
 				continue
 			
 			var a: Vector2 = sim.points[i].position
-			a *= 0.01
-			DebugDraw3D.draw_sphere(Vector3(a.x, 0, a.y), 0.03, Color.LIGHT_GREEN)
+			a *= draw_scale
+			DebugDraw3D.draw_sphere(global_position + Vector3(a.x, 0, a.y), 0.03, Color.LIGHT_GREEN)
 			
 	if draw_offsets:
 		
 		var y_offset = 0.4
-		DebugDraw3D.draw_sphere(Vector3(0, y_offset, 0) * draw_scale, 0.02, Color.YELLOW)
-		DebugDraw3D.draw_sphere(Vector3(sim.fixed_point_offset.x, y_offset, sim.fixed_point_offset.y) * draw_scale, 0.02, Color.GREEN)
-		DebugDraw3D.draw_sphere(Vector3(sim.target_fixed_point_offset.x, y_offset, sim.target_fixed_point_offset.y) * draw_scale, 0.02, Color.BLUE)
-		DebugDraw3D.draw_sphere(Vector3(sim.input_area_center.x, y_offset, sim.input_area_center.y) * draw_scale, 0.02, Color.PURPLE)
+		DebugDraw3D.draw_sphere(global_position + Vector3(0, y_offset, 0) * draw_scale, 0.02, Color.YELLOW)
+		DebugDraw3D.draw_sphere(global_position + Vector3(sim.fixed_point_offset.x, y_offset, sim.fixed_point_offset.y) * draw_scale, 0.02, Color.GREEN)
+		DebugDraw3D.draw_sphere(global_position + Vector3(sim.target_fixed_point_offset.x, y_offset, sim.target_fixed_point_offset.y) * draw_scale, 0.02, Color.BLUE)
+		DebugDraw3D.draw_sphere(global_position + Vector3(sim.input_area_center.x, y_offset, sim.input_area_center.y) * draw_scale, 0.02, Color.PURPLE)
 	
 func _physics_process(delta: float) -> void:
 	sim.fixed_point_offset *= 0
@@ -72,4 +72,4 @@ func _add_trauma(amount: float) -> void:
 	sim._add_trauma(amount)
 
 func set_cursor_position(pos: Vector2) -> void:
-	sim.set_cursor_position(pos)
+	sim.set_cursor_position(Vector2(global_position.x, global_position.z) + pos)

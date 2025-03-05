@@ -24,7 +24,8 @@ func get_point(row, col) -> PointMassSim.PointMass:
 func generate_point_grid(point_columns: int, point_rows: int, point_distance: float):
 	
 	# Calculate grid origin so that point grid is centered on this node's position
-	grid_origin = -Vector2(point_columns - 1, point_rows - 1) * point_distance / 2
+	# Disabled so that alignment can be done by puzzle_controller instead
+	grid_origin = Vector2.ZERO #-Vector2(point_columns - 1, point_rows - 1) * point_distance / 2
 	
 	var columns = point_columns
 	var rows = point_rows
