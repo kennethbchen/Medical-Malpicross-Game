@@ -12,19 +12,51 @@ var flexible_columns: int
 
 var top_left_start: Vector3
 
+var input_area_bounds: Rect2i
+
+var st: SurfaceTool
+
 func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	
 	flexible_rows = input_rows
 	flexible_columns = input_columns
 	cell_size = cell_size
 	
-	top_left_start = Vector3(
-		((flexible_columns + flexible_cells_margin_columns * 2) * cell_size) / 2,
-		0,
-		((flexible_rows + flexible_cells_margin_rows * 2) * cell_size) / 2 
-		)
-		
+	# Add small amount to column / row count so that bottom and right edges are considered "in" the rect
+	input_area_bounds = Rect2(flexible_cells_margin_columns, flexible_cells_margin_rows, input_columns + 0.00001, input_rows + 0.00001)
+	
+	var total_grid_size: Vector2i = Vector2i(input_columns + flexible_cells_margin_columns * 2, input_rows + flexible_cells_margin_rows * 2)
 
+	st = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	# Make quads
+	for row in total_grid_size.y:
+		for col in total_grid_size.x:
+			
+			if input_area_bounds.has_point(Vector2i(col, row)):
+				continue
+			
+			var cur_coord = Vector3(col, 0, row) * cell_size
+			var top_right_coord = Vector3(col + 1, 0, row) * cell_size
+			var bottom_left_coord = Vector3(col, 0, row + 1) * cell_size
+			var bottom_right_coord = Vector3(col + 1, 0, row + 1) * cell_size
+			
+			# Two triangles
+			st.add_vertex(cur_coord)
+			st.add_vertex(top_right_coord)
+			st.add_vertex(bottom_left_coord)
+			
+			st.add_vertex(bottom_left_coord)
+			st.add_vertex(top_right_coord)
+			st.add_vertex(bottom_right_coord)
+	
+	mesh = st.commit()
+	
+	# Offset position so that mesh is centered around the origin
+	var offset = total_grid_size * cell_size / 2
+	position = Vector3(-offset.x, -0.5, -offset.y)
+	
 ## Assumes rectangular array of points
 func construct_from_points(points: Array[Vector3], rows: int, columns: int) -> void:
 	

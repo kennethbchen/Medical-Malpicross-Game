@@ -22,8 +22,7 @@ sky = SubResource("Sky_b4stf")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xrhyx"]
-albedo_color = Color(0.811694, 0.561665, 0.386574, 1)
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_gl5h8"]
 
 [node name="Game3d" type="Node3D"]
 
@@ -84,9 +83,8 @@ script = ExtResource("7_xrhyx")
 hide_fixed = false
 draw_offsets = true
 
-[node name="CSGBox3D" type="CSGBox3D" parent="PuzzleController"]
-transform = Transform3D(1, 0, 0, 0, 0.999995, 0, 0, 0, 0.999995, 0.58714, -2.01603, 0.498107)
-material = SubResource("StandardMaterial3D_xrhyx")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleController"]
+mesh = SubResource("ImmediateMesh_gl5h8")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.360127, 0.932903, 0, -0.932903, 0.360127, 0, 3.46195, 1.75838)
+transform = Transform3D(1, 0, 0, 0, 0.360127, 0.932903, 0, -0.932903, 0.360127, 0, 2.83699, 1.30274)
