@@ -80,8 +80,8 @@ offset_bottom = 96.0
 
 [node name="FleshSim3D" type="Node3D" parent="PuzzleController"]
 script = ExtResource("7_xrhyx")
+disable_sim = true
 hide_fixed = false
-draw_offsets = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleController"]
 mesh = SubResource("ImmediateMesh_gl5h8")

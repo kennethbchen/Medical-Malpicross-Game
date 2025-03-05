@@ -10,11 +10,14 @@ var flexible_cells_margin_columns: int = 1
 var flexible_rows: int
 var flexible_columns: int
 
-var top_left_start: Vector3
 
 var input_area_bounds: Rect2i
 
 var st: SurfaceTool
+
+var vertices: PackedVector3Array
+
+var temp_offset
 
 func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	
@@ -25,38 +28,70 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	# Add small amount to column / row count so that bottom and right edges are considered "in" the rect
 	input_area_bounds = Rect2(flexible_cells_margin_columns, flexible_cells_margin_rows, input_columns + 0.00001, input_rows + 0.00001)
 	
+	# (x, y) / (columns, rows)
 	var total_grid_size: Vector2i = Vector2i(input_columns + flexible_cells_margin_columns * 2, input_rows + flexible_cells_margin_rows * 2)
-
-	st = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	# Make quads
+	# Count fenceposts instead of fence segments
+	var total_point_grid_size: Vector2i = total_grid_size + Vector2i(1, 1)
+	
+	# Create base array of vertex positions
+	var vert_count: int = total_point_grid_size.x * total_point_grid_size.y
+	
+	vertices = PackedVector3Array()
+	vertices.resize(vert_count)
+	
+	for row in total_point_grid_size.y:
+		for col in total_point_grid_size.x:
+			
+			var ind = col + (total_point_grid_size.x) * row
+			
+			vertices[ind] = Vector3(col, 0, row) * cell_size
+
+	
+	# Create array of triangle vertex indices to define triangles
+	
+	# quad count = total_grid_size.x * total_grid_size.y
+	# triangle count = quad count * 2 triangles per quad
+	# tri_indices_count = triangle count * 3 vertices per triangle
+	var tri_indices_count: int = total_grid_size.x * total_grid_size.y * 2 * 3
+	
+	var indices = PackedInt32Array()
+	indices.resize(tri_indices_count)
+	
+	# Make 1 quad / 2 triangles / 6 indices at a time
 	for row in total_grid_size.y:
+		
 		for col in total_grid_size.x:
 			
-			if input_area_bounds.has_point(Vector2i(col, row)):
-				continue
+			# index for indices array
+			var tri_ind = (col * 6) + ( total_grid_size.x * row * 6 ) 
 			
-			var cur_coord = Vector3(col, 0, row) * cell_size
-			var top_right_coord = Vector3(col + 1, 0, row) * cell_size
-			var bottom_left_coord = Vector3(col, 0, row + 1) * cell_size
-			var bottom_right_coord = Vector3(col + 1, 0, row + 1) * cell_size
+			# index for vertices array
+			var vertex_ind = col + (total_point_grid_size.x) * row
 			
-			# Two triangles
-			st.add_vertex(cur_coord)
-			st.add_vertex(top_right_coord)
-			st.add_vertex(bottom_left_coord)
+			# Upper triangle
+			indices[tri_ind + 0] = vertex_ind + 0
+			indices[tri_ind + 1] = vertex_ind + 1
+			indices[tri_ind + 2] = vertex_ind + total_point_grid_size.x
 			
-			st.add_vertex(bottom_left_coord)
-			st.add_vertex(top_right_coord)
-			st.add_vertex(bottom_right_coord)
+			# Lower triangle
+			indices[tri_ind + 3] = vertex_ind + 1
+			indices[tri_ind + 4] = vertex_ind + 1 + total_point_grid_size.x
+			indices[tri_ind + 5] = vertex_ind + total_point_grid_size.x
+
+	var surface_array = []
+	surface_array.resize(Mesh.ARRAY_MAX)
 	
-	mesh = st.commit()
+	surface_array[Mesh.ARRAY_VERTEX] = vertices
+	surface_array[Mesh.ARRAY_INDEX] = indices
 	
+	mesh = ArrayMesh.new()
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_array)
+
 	# Offset position so that mesh is centered around the origin
 	var offset = total_grid_size * cell_size / 2
-	position = Vector3(-offset.x, -0.5, -offset.y)
-	
+	position = Vector3(-offset.x, 0, -offset.y)
+
 ## Assumes rectangular array of points
 func construct_from_points(points: Array[Vector3], rows: int, columns: int) -> void:
 	
@@ -128,6 +163,3 @@ func construct_from_points(points: Array[Vector3], rows: int, columns: int) -> v
 	
 	am.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
 	
-func _process(delta: float) -> void:
-		DebugDraw3D.draw_sphere(Vector3.ZERO, 0.125, Color.GREEN)
-		DebugDraw3D.draw_sphere(top_left_start, 0.125, Color.WHITE)
