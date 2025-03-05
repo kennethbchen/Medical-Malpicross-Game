@@ -2,22 +2,18 @@ extends MeshInstance3D
 
 class_name BodyMesh3D
 
-var cell_size = 0.5
-
 var flexible_cells_margin_rows: int = 1
 var flexible_cells_margin_columns: int = 1
 
 var flexible_rows: int
 var flexible_columns: int
 
+# (x, y) / (column, row)
+var flexible_area_bounds: Rect2i
 
-var input_area_bounds: Rect2i
-
-var st: SurfaceTool
-
+var cell_size = 0
 var vertices: PackedVector3Array
-
-var temp_offset
+var indices: PackedInt32Array
 
 func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	
@@ -26,7 +22,7 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	cell_size = cell_size
 	
 	# Add small amount to column / row count so that bottom and right edges are considered "in" the rect
-	input_area_bounds = Rect2(flexible_cells_margin_columns, flexible_cells_margin_rows, input_columns + 0.00001, input_rows + 0.00001)
+	flexible_area_bounds = Rect2(flexible_cells_margin_columns, flexible_cells_margin_rows, input_columns + 0.00001, input_rows + 0.00001)
 	
 	# (x, y) / (columns, rows)
 	var total_grid_size: Vector2i = Vector2i(input_columns + flexible_cells_margin_columns * 2, input_rows + flexible_cells_margin_rows * 2)
@@ -55,7 +51,7 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	# tri_indices_count = triangle count * 3 vertices per triangle
 	var tri_indices_count: int = total_grid_size.x * total_grid_size.y * 2 * 3
 	
-	var indices = PackedInt32Array()
+	indices = PackedInt32Array()
 	indices.resize(tri_indices_count)
 	
 	# Make 1 quad / 2 triangles / 6 indices at a time
@@ -79,18 +75,29 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 			indices[tri_ind + 4] = vertex_ind + 1 + total_point_grid_size.x
 			indices[tri_ind + 5] = vertex_ind + total_point_grid_size.x
 
+	
+	
+	# Offset position so that mesh is centered around the origin
+	var offset = total_grid_size * cell_size / 2
+	position = Vector3(-offset.x, 0, -offset.y)
+	
+	mesh = ArrayMesh.new()
+
+func _process(delta: float) -> void:
+	
+	# Regenerate mesh
 	var surface_array = []
 	surface_array.resize(Mesh.ARRAY_MAX)
 	
 	surface_array[Mesh.ARRAY_VERTEX] = vertices
 	surface_array[Mesh.ARRAY_INDEX] = indices
 	
-	mesh = ArrayMesh.new()
+	mesh.clear_surfaces()
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_array)
 
-	# Offset position so that mesh is centered around the origin
-	var offset = total_grid_size * cell_size / 2
-	position = Vector3(-offset.x, 0, -offset.y)
+## Assumes rectangular array of points that matches size of flex rows / columns
+func set_flexible_vertices(vertices: Array[Vector3]) -> void:
+	pass
 
 ## Assumes rectangular array of points
 func construct_from_points(points: Array[Vector3], rows: int, columns: int) -> void:

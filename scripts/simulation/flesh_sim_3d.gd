@@ -46,7 +46,7 @@ func _process(delta: float) -> void:
 			var b: Vector3 = Vector3(sim.constraints[i].point_b.position.x, 0, sim.constraints[i].point_b.position.y)
 			b *= draw_scale
 			
-			DebugDraw3D.draw_line(global_position + a, global_position + b, color)
+			DebugDraw3D.draw_line(a, b, color)
 			
 		for i in range(len(sim.points)):
 			

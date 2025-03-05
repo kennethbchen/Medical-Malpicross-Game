@@ -117,6 +117,8 @@ func _ready() -> void:
 			row_data.append(new_quad)
 
 		input_quads.append(row_data)
+		
+	print(get_input_points())
 
 func _unhandled_input(event: InputEvent) -> void:
 	
@@ -129,9 +131,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			puzzle.toggle_input_crossed(selected_cell.x, selected_cell.y)
 
 func _process(delta: float) -> void:
-	
-	
-	
+
 	# Update mesh
 	grid_mesh.construct_from_points(get_board_points(), sim_point_rows - 2, sim_point_columns - 2)
 	
@@ -177,6 +177,25 @@ func _physics_process(delta: float) -> void:
 
 			cursor_position = Vector2i(local_intersect_position.x, local_intersect_position.z)
 
+func get_input_points() -> Array[Vector3]:
+	
+	var output: Array[Vector3]
+	
+	for row in puzzle.input_size.x + 1:
+		for col in puzzle.input_size.y + 1:
+			
+			# Convert points from input space to simulation point space
+			# First convert input space -> board space
+			# Then convert board space -> sim space (add 1,1)
+			var sim_coords: Vector2i = puzzle.input_to_board_coordinate(Vector2i(row, col)) + Vector2i(1, 1)
+			
+			var sim_position: Vector2 = flesh_sim.get_point(sim_coords.x, sim_coords.y).position
+			
+			# Convert from sim space (basically pixels) to 3D space (units)
+			# by multiplying by cell_scale_factor
+			output.push_back(Vector3(sim_position.x, 0, sim_position.y) * cell_scale_factor)
+			
+	return output
 
 func get_board_points() -> Array[Vector3]:
 	
