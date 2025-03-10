@@ -7,6 +7,9 @@ class_name BodyMesh3D
 var flexible_cells_margin_rows: int = 1
 var flexible_cells_margin_columns: int = 1
 
+var margin_cell_column_size: float = 1
+var margin_cell_row_size: float = 1
+
 var flexible_rows: int
 var flexible_columns: int
 
@@ -28,7 +31,6 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	flexible_rows = input_rows
 	flexible_columns = input_columns
 	cell_size = cell_size
-	
 	
 	# Add small amount to column / row count so that bottom and right edges are considered "in" the rect
 	flexible_area_bounds = Rect2(flexible_cells_margin_columns, flexible_cells_margin_rows, input_columns + 0.00001, input_rows + 0.00001)
@@ -52,7 +54,6 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	uvs = PackedVector2Array()
 	uvs.resize(vert_count)
 	
-	
 	for row in total_point_grid_size.y:
 		for col in total_point_grid_size.x:
 			
@@ -60,6 +61,24 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 			
 			vertices[ind] = origin_position_offset + Vector3(col, 0, row) * cell_size
 			
+			# Margins have different size
+			if row < flexible_cells_margin_rows:
+				vertices[ind].z += -margin_cell_row_size * (flexible_cells_margin_rows - row)
+				
+			if row > flexible_cells_margin_rows + input_rows:
+				# NOTE: Might not be the right multiplier calculation
+				vertices[ind].z += margin_cell_row_size * (flexible_cells_margin_rows - (total_point_grid_size.y - row) + 1)
+			
+			if col < flexible_cells_margin_columns:
+				vertices[ind].x += -margin_cell_column_size * (flexible_cells_margin_columns - col)
+
+			if col > flexible_cells_margin_columns + input_columns:
+				# NOTE: Might not be the right multiplier calculation
+				vertices[ind].x += margin_cell_column_size * (flexible_cells_margin_columns - (total_point_grid_size.x - col) + 1)
+			
+			# TODO: Because the cell sizes are variable on the margins,
+			# we can't calculate the UVs correctly only based on row / col
+			# we need to use real coordinate space positions
 			uvs[ind] = Vector2(col, row) / (Vector2(total_point_grid_size) - Vector2(1, 1))
 
 	

@@ -25,6 +25,7 @@ glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g68k2"]
 albedo_texture = ExtResource("4_inhaj")
+metallic = 1.0
 texture_filter = 0
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_gl5h8"]
@@ -46,7 +47,7 @@ script = ExtResource("1_yob6b")
 camera = NodePath("../Camera3D")
 
 [node name="BodyMesh3D" type="MeshInstance3D" parent="PuzzleController"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.736268, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.478336, 0)
 skeleton = NodePath("../..")
 script = ExtResource("8_gl5h8")
 temp_mat = SubResource("StandardMaterial3D_g68k2")
@@ -94,6 +95,3 @@ offset_bottom = 96.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.360127, 0.932903, 0, -0.932903, 0.360127, 0, 2.83699, 1.30274)
-
-[node name="CSGBox3D" type="CSGBox3D" parent="."]
-size = Vector3(0.1, 0.1, 0.1)
