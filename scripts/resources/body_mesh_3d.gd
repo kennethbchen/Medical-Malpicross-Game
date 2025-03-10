@@ -52,6 +52,7 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	uvs = PackedVector2Array()
 	uvs.resize(vert_count)
 	
+	
 	for row in total_point_grid_size.y:
 		for col in total_point_grid_size.x:
 			
@@ -59,7 +60,7 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 			
 			vertices[ind] = origin_position_offset + Vector3(col, 0, row) * cell_size
 			
-			uvs[ind] = Vector2(col, row) / Vector2(total_point_grid_size)
+			uvs[ind] = Vector2(col, row) / (Vector2(total_point_grid_size) - Vector2(1, 1))
 
 	
 	# Create array of triangle vertex indices to define triangles

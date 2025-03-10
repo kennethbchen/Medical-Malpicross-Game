@@ -1,10 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=15 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
 [ext_resource type="Script" uid="uid://dra4lijujrmwu" path="res://scripts/puzzle_viewport.gd" id="2_f1g4q"]
 [ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="3_b4stf"]
 [ext_resource type="Script" uid="uid://dcnqwn1puo4h" path="res://scripts/resources/grid_mesh_3d.gd" id="3_ygxcr"]
+[ext_resource type="Texture2D" uid="uid://dbwc55h75l4r2" path="res://icon.svg" id="4_inhaj"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]
 [ext_resource type="Script" uid="uid://brmgweuwi3o8i" path="res://scripts/simulation/flesh_sim_3d.gd" id="7_xrhyx"]
 [ext_resource type="Script" uid="uid://bk1vxm6ujfddn" path="res://scripts/resources/body_mesh_3d.gd" id="8_gl5h8"]
@@ -22,14 +23,9 @@ sky = SubResource("Sky_b4stf")
 tonemap_mode = 2
 glow_enabled = true
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_gl5h8"]
-frequency = 0.071
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_inhaj"]
-noise = SubResource("FastNoiseLite_gl5h8")
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g68k2"]
-albedo_texture = SubResource("NoiseTexture2D_inhaj")
+albedo_texture = ExtResource("4_inhaj")
+texture_filter = 0
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_gl5h8"]
 
