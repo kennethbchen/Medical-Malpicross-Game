@@ -21,11 +21,10 @@ func get_point(row, col) -> PointMassSim.PointMass:
 	return point_map[Vector2i(col, row)]
 
 # TODO It is kinda weird that generate_point_grid is (col,row) instead of (row,col)
-func generate_point_grid(point_columns: int, point_rows: int, point_distance: float):
+func generate_point_grid(point_columns: int, point_rows: int, point_distance: float, origin_offset: Vector2 = Vector2.ZERO):
 	
 	# Calculate grid origin so that point grid is centered on this node's position
-	# Disabled so that alignment can be done by puzzle_controller instead
-	grid_origin = Vector2.ZERO #-Vector2(point_columns - 1, point_rows - 1) * point_distance / 2
+	grid_origin = origin_offset
 	
 	var columns = point_columns
 	var rows = point_rows

@@ -94,8 +94,8 @@ func _ready() -> void:
 	# And convert sim space to 3D space by multiplying by cell_size
 	var offset = (Vector3(offset_board_coord.y, 0, offset_board_coord.x) + Vector3(1, 0, 1)) * cell_size
 	
-	grid_mesh.position = -offset
-	flesh_sim.position = -offset
+	#grid_mesh.position = -offset
+	#flesh_sim.position = -offset
 
 	body_mesh.init(puzzle.input_size.x, puzzle.input_size.y, cell_size)
 	
@@ -195,9 +195,12 @@ func get_input_points() -> Array[Vector3]:
 			
 			var sim_position: Vector2 = flesh_sim.get_point(sim_coords.x, sim_coords.y).position
 			
+			
 			# Convert from sim space (basically pixels) to 3D space (units)
 			# by multiplying by cell_scale_factor
-			output.push_back(Vector3(sim_position.x, 0, sim_position.y) * cell_scale_factor)
+			var posi = Vector3(sim_position.x, 0, sim_position.y) * cell_scale_factor
+			#DebugDraw3D.draw_sphere(Vector3(-2, 0, -2) + posi, 0.012, Color.GREEN)
+			output.push_back(posi)
 			
 	return output
 

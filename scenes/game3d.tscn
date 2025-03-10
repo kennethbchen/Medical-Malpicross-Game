@@ -63,7 +63,6 @@ metadata/_custom_type_script = ExtResource("3_ygxcr")
 
 [node name="FleshSim3D" type="Node3D" parent="PuzzleController"]
 script = ExtResource("7_xrhyx")
-disable_sim = true
 hide_fixed = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleController"]
@@ -99,3 +98,6 @@ offset_bottom = 96.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.360127, 0.932903, 0, -0.932903, 0.360127, 0, 2.83699, 1.30274)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+size = Vector3(0.1, 0.1, 0.1)

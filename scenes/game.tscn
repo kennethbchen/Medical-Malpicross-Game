@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://hwsx8i5h37ma"]
+[gd_scene load_steps=10 format=3 uid="uid://hwsx8i5h37ma"]
 
 [ext_resource type="Script" uid="uid://clnv3gpmlj01o" path="res://scripts/puzzle_controller.gd" id="1_yqjtg"]
 [ext_resource type="Script" uid="uid://cgaenjwmwl4gl" path="res://scripts/simulation/2d/flesh_sim_2d.gd" id="2_u5sy4"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://dra4lijujrmwu" path="res://scripts/puzzle_viewport.gd" id="5_p57ef"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="6_p57ef"]
 [ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="7_u5sy4"]
+[ext_resource type="Texture2D" uid="uid://dbwc55h75l4r2" path="res://icon.svg" id="8_gee14"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_iywne"]
 viewport_path = NodePath("PuzzleController/PuzzleViewport")
@@ -17,7 +18,7 @@ viewport_path = NodePath("PuzzleController/PuzzleViewport")
 script = ExtResource("3_lnu2h")
 
 [node name="PuzzleController" type="Node2D" parent="."]
-position = Vector2(206, 47)
+position = Vector2(551, 322)
 script = ExtResource("1_yqjtg")
 
 [node name="GridMesh2D" type="MeshInstance2D" parent="PuzzleController"]
@@ -27,7 +28,9 @@ metadata/_custom_type_script = ExtResource("4_lbhrr")
 
 [node name="FleshSim" type="Node2D" parent="PuzzleController"]
 script = ExtResource("2_u5sy4")
+disable_sim = true
 draw_sim = true
+hide_fixed = true
 draw_offsets = true
 metadata/_edit_group_ = true
 
@@ -57,3 +60,6 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 128.0
 offset_bottom = 96.0
+
+[node name="Sprite2D" type="Sprite2D" parent="PuzzleController"]
+texture = ExtResource("8_gee14")

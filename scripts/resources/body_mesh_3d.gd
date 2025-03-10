@@ -10,6 +10,8 @@ var flexible_cells_margin_columns: int = 1
 var flexible_rows: int
 var flexible_columns: int
 
+var origin_position_offset: Vector3
+
 # (x, y) / (column, row)
 var flexible_area_bounds: Rect2i
 
@@ -22,9 +24,11 @@ var uvs: PackedVector2Array
 
 func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	
+
 	flexible_rows = input_rows
 	flexible_columns = input_columns
 	cell_size = cell_size
+	
 	
 	# Add small amount to column / row count so that bottom and right edges are considered "in" the rect
 	flexible_area_bounds = Rect2(flexible_cells_margin_columns, flexible_cells_margin_rows, input_columns + 0.00001, input_rows + 0.00001)
@@ -34,7 +38,12 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	
 	# Count fenceposts instead of fence segments
 	total_point_grid_size = total_grid_size + Vector2i(1, 1)
-	print(total_point_grid_size)
+	
+	# Calculate offset so that mesh is generated such that
+	# The center of the input area is at the origin
+	origin_position_offset = -Vector3((total_grid_size.x * cell_size) / 2.0, 0, (total_grid_size.y * cell_size) / 2.0)
+	
+	
 	# Create base array of vertex positions
 	var vert_count: int = total_point_grid_size.x * total_point_grid_size.y
 	
@@ -49,7 +58,7 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 			
 			var ind = col + (total_point_grid_size.x) * row
 			
-			vertices[ind] = Vector3(col, 0, row) * cell_size
+			vertices[ind] = origin_position_offset + Vector3(col, 0, row) * cell_size
 			
 			uvs[ind] = Vector2(col, row) / Vector2(total_point_grid_size)
 
@@ -99,8 +108,9 @@ func _process(delta: float) -> void:
 	
 	# Apply height biases
 	for vert_index in vertices.size():
-		if vert_index % 2 == 0:
-			vertices[vert_index].y = -1
+		pass
+		#if vert_index % 2 == 0:
+		#	vertices[vert_index].y = -1
 		"""
 		# (x, y) / (column, row)
 		var vert_coord: Vector2 = Vector2(vert_index % total_point_grid_size.x, vert_index / total_point_grid_size.x )
@@ -130,6 +140,7 @@ func set_flexible_vertices(new_vertices: Array[Vector3]) -> void:
 	#print(flexible_area_bounds)
 	
 	# TODO fix this so that mesh isn't broken
+	# We have to convert sim coordinates i think
 	for new_vert_index in range(new_vertices.size()):
 		
 		

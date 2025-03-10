@@ -119,6 +119,13 @@ func get_input_cell(row: int, column: int) -> InputCell:
 func input_to_board_coordinate(input_coord: Vector2) -> Vector2i:
 	return Vector2i(input_coord.x + (board_size.x - input_size.x), input_coord.y + (board_size.y - input_size.y))
 
+## Input: [param input_coord] (row, column) in input space  [br]
+## Output: [Vector2] (row, column) of input coordinate in board space 
+## Allows for fractional coordinate values
+func input_to_board_coordinate_fractional(input_coord: Vector2) -> Vector2:
+		return Vector2(input_coord.x + (board_size.x - input_size.x), input_coord.y + (board_size.y - input_size.y))
+
+
 func _calculate_hints() -> Array:
 	var rows: int = input_size.x
 	var columns: int = input_size.y

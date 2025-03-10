@@ -4,6 +4,7 @@ extends Node2D
 ## Handles some Node2D specific functions like how to get mouse position
 ## Or how to draw the sim for debugging
 
+@export var disable_sim: bool = false
 @export var draw_sim: bool = false
 @export var hide_fixed: bool = false
 @export var draw_offsets: bool = false
@@ -28,6 +29,8 @@ func _process(delta: float) -> void:
 	queue_redraw()
 	
 func _physics_process(delta: float) -> void:
+	if disable_sim: return
+	
 	sim.simulate(delta)
 	sim.resolve_constraints(delta)
 

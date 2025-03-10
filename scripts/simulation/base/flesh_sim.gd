@@ -42,15 +42,19 @@ func init(puzzle: Puzzle, sim_columns: int, sim_rows: int, cell_size: float) -> 
 	y_noise = FastNoiseLite.new()
 	y_noise.seed = 1
 	
-	generate_point_grid(sim_columns, sim_rows, cell_size)
-	
 	# Convert from input coordinate to board coordinate
 	# Then convert from board coordinate to sim coordinate (Add (1, 1))
 	# Then convert from sim coordinate to position
-	# Finally, add 1/2 cell size to offset from center of cell instead of top left
+	# Then convert from (row, column) to (x, y) by swizzling x and y
 	# This position is the center of the input area in pixel space
-	var offset = puzzle.input_to_board_coordinate((puzzle.input_size / 2) + Vector2i(1, 1)) * cell_size
-	input_area_center = grid_origin + Vector2(offset.y, offset.x) + (Vector2(cell_size, cell_size) / 2)
+	
+	var offset = puzzle.input_to_board_coordinate_fractional((Vector2(puzzle.input_size) / 2.0) + Vector2(1, 1)) * cell_size
+	input_area_center = Vector2(offset.y, offset.x)
+	
+	generate_point_grid(sim_columns, sim_rows, cell_size, -input_area_center)
+
+
+	
 
 func process_trauma(delta: float) -> void:
 	if trauma > 0:
