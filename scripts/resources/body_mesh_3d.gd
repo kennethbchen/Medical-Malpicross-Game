@@ -4,11 +4,11 @@ class_name BodyMesh3D
 
 @export var temp_mat: StandardMaterial3D
 
-var flexible_cells_margin_rows: int = 1
-var flexible_cells_margin_columns: int = 1
+var flexible_cells_margin_rows: int = 2
+var flexible_cells_margin_columns: int = 2
 
-var margin_cell_column_size: float = 1
-var margin_cell_row_size: float = 1
+var margin_cell_column_size: float = 0.75
+var margin_cell_row_size: float = 0.75
 
 var flexible_rows: int
 var flexible_columns: int
@@ -123,23 +123,18 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 
 func _process(delta: float) -> void:
 	
-	var x_coord_center = flexible_columns / 2.0
+	var x_coord_center = (flexible_columns + flexible_cells_margin_columns * 2) / 2.0
 	
 	# Apply height biases
+	# The closer a column is to the center of the body -> The higher the vert is
 	for vert_index in vertices.size():
-		pass
-		#if vert_index % 2 == 0:
-		#	vertices[vert_index].y = -1
-		"""
+		
 		# (x, y) / (column, row)
 		var vert_coord: Vector2 = Vector2(vert_index % total_point_grid_size.x, vert_index / total_point_grid_size.x )
 		
-		var x_diff = abs(x_coord_center - vert_coord.x)
+		var x_diff = abs(pow(x_coord_center - vert_coord.x, 2) * 0.05)
 		vertices[vert_index].y = -x_diff
 		
-		#print(vert_coord)
-		"""
-		pass
 	
 	# Regenerate mesh
 	var surface_array = []
