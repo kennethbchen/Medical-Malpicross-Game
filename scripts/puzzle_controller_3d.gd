@@ -79,23 +79,8 @@ func _ready() -> void:
 	grid_mesh_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	grid_mesh_material.albedo_texture = puzzle_viewport.get_texture()
 	grid_mesh_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	
 	grid_mesh.init(grid_mesh_material)
-	
-	# Offset nodes so that the center of the input space
-	# is the origin of the puzzle controller
-	
-	# Calculate the center of input space
-	var middle_input = (puzzle.input_size / 2.0)
-	
-	# Convert that to board space
-	var offset_board_coord = Vector2(middle_input.x + (puzzle.board_size.x - puzzle.input_size.x), middle_input.y + (puzzle.board_size.y - puzzle.input_size.y))
-	
-	# Convert that to sim space (by adding (1, 0, 1))
-	# And convert sim space to 3D space by multiplying by cell_size
-	var offset = (Vector3(offset_board_coord.y, 0, offset_board_coord.x) + Vector3(1, 0, 1)) * cell_size
-	
-	#grid_mesh.position = -offset
-	#flesh_sim.position = -offset
 
 	body_mesh.init(puzzle.input_size.x, puzzle.input_size.y, cell_size)
 	

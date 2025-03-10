@@ -23,7 +23,7 @@ func get_point(row, col) -> PointMassSim.PointMass:
 # TODO It is kinda weird that generate_point_grid is (col,row) instead of (row,col)
 func generate_point_grid(point_columns: int, point_rows: int, point_distance: float, origin_offset: Vector2 = Vector2.ZERO):
 	
-	# Calculate grid origin so that point grid is centered on this node's position
+	# Store grid origin so that origin_offset centered on this node's position
 	grid_origin = origin_offset
 	
 	var columns = point_columns

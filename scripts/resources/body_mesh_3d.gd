@@ -43,7 +43,6 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	# The center of the input area is at the origin
 	origin_position_offset = -Vector3((total_grid_size.x * cell_size) / 2.0, 0, (total_grid_size.y * cell_size) / 2.0)
 	
-	
 	# Create base array of vertex positions
 	var vert_count: int = total_point_grid_size.x * total_point_grid_size.y
 	
