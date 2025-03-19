@@ -180,12 +180,22 @@ func _process(delta: float) -> void:
 			# Convert from flexible cell space to body cell space by adding a margin offset
 			var margin_offset: Vector3 = Vector3(flexible_area_bounds.position.x, 0, flexible_area_bounds.position.y)
 			
-			# Vertices on the cube that this cell represents
+			# Vertices on the cube (so, 8 vertices) that this cell represents
+			
+			# We can calculate these as new based on row / col
 			var lower_back_left: Vector3 = origin_position_offset + (Vector3(col, -inner_body_depth, row) + margin_offset) * cell_size
 			var lower_back_right: Vector3 = origin_position_offset + (Vector3(col + 1, -inner_body_depth, row) + margin_offset) * cell_size
 			var lower_front_left: Vector3 = origin_position_offset + (Vector3(col, -inner_body_depth, row + 1) + margin_offset) * cell_size
 			var lower_front_right: Vector3 = origin_position_offset + (Vector3(col + 1, -inner_body_depth, row + 1) + margin_offset) * cell_size
 			
+			# We grab the correct vertex from the vertices array
+			# Take row / col and convert from flexible space to body space by adding margin size
+			var upper_back_left: Vector3 = vertices[(col + flexible_cells_margin_columns) + (total_point_grid_size.x) * (row + flexible_cells_margin_rows)]
+			var upper_back_right: Vector3 = vertices[(col + flexible_cells_margin_columns + 1) + (total_point_grid_size.x) * (row + flexible_cells_margin_rows)]
+			var upper_front_left: Vector3 = vertices[(col + flexible_cells_margin_columns) + (total_point_grid_size.x) * (row + flexible_cells_margin_rows + 1)]
+			var upper_front_right: Vector3 = vertices[(col + flexible_cells_margin_columns + 1) + (total_point_grid_size.x) * (row + flexible_cells_margin_rows + 1)]
+
+
 			# Create floor, which does not move
 			# Create triangles
 			inner_body_vertices.push_back(lower_back_left)
@@ -202,7 +212,49 @@ func _process(delta: float) -> void:
 			inner_body_normals.push_back(Vector3(0, 1, 0))
 			inner_body_normals.push_back(Vector3(0, 1, 0))
 			inner_body_normals.push_back(Vector3(0, 1, 0))
-	
+			
+			# Create wall triangles
+			# Back wall
+			inner_body_vertices.push_back(upper_back_left)
+			inner_body_vertices.push_back(upper_back_right)
+			inner_body_vertices.push_back(lower_back_left)
+			
+			inner_body_vertices.push_back(upper_back_right)
+			inner_body_vertices.push_back(lower_back_right)
+			inner_body_vertices.push_back(lower_back_left)
+			
+			# Left Wall
+			inner_body_vertices.push_back(upper_front_left)
+			inner_body_vertices.push_back(upper_back_left)
+			inner_body_vertices.push_back(lower_front_left)
+			
+			inner_body_vertices.push_back(upper_back_left)
+			inner_body_vertices.push_back(lower_back_left)
+			inner_body_vertices.push_back(lower_front_left)
+			
+			# Right Wall
+			inner_body_vertices.push_back(upper_back_right)
+			inner_body_vertices.push_back(upper_front_right)
+			inner_body_vertices.push_back(lower_back_right)
+			
+			inner_body_vertices.push_back(upper_front_right)
+			inner_body_vertices.push_back(lower_front_right)
+			inner_body_vertices.push_back(lower_back_right)
+			
+			# Front wall (faces away from camera normally)
+			inner_body_vertices.push_back(upper_front_right)
+			inner_body_vertices.push_back(upper_front_left)
+			inner_body_vertices.push_back(lower_front_right)
+			
+			inner_body_vertices.push_back(upper_front_left)
+			inner_body_vertices.push_back(lower_front_left)
+			inner_body_vertices.push_back(lower_front_right)
+			
+			
+			
+			
+			
+			
 	if not new_geometry: return
 	
 	#print(inner_body_vertices)
