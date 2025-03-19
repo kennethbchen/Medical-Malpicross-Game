@@ -52,8 +52,9 @@ func _draw() -> void:
 			var offset = Vector2(cell_size_px, cell_size_px) / 2
 			
 			if cell.player_input == Puzzle.INPUT_TYPE.COLORED:
-				var rect: = Rect2(pos, Vector2(cell_size_px, cell_size_px))
-				draw_rect(rect, Color.BLACK)
+				#var rect: = Rect2(pos, Vector2(cell_size_px, cell_size_px))
+				#draw_rect(rect, Color.BLACK)
+				pass
 			elif cell.player_input == Puzzle.INPUT_TYPE.CROSSED:
 				var center = pos + offset
 				draw_line(center - Vector2(cell_size_px, cell_size_px) / 4, center + Vector2(cell_size_px, cell_size_px) / 4, Color.WHITE, 2)

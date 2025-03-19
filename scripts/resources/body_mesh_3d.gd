@@ -2,7 +2,8 @@ extends MeshInstance3D
 
 class_name BodyMesh3D
 
-@export var temp_mat: StandardMaterial3D
+@export var temp_outer_mat: StandardMaterial3D
+@export var temp_inner_mat: StandardMaterial3D
 
 var flexible_cells_margin_rows: int = 2
 var flexible_cells_margin_columns: int = 2
@@ -18,6 +19,9 @@ var origin_position_offset: Vector3
 # (x, y) / (column, row)
 var flexible_area_bounds: Rect2i
 
+# (x, y) / (columns, rows)
+var total_grid_size: Vector2i
+
 var total_point_grid_size : Vector2i
 
 var cell_size = 0
@@ -25,18 +29,20 @@ var vertices: PackedVector3Array
 var indices: PackedInt32Array
 var uvs: PackedVector2Array
 
+var cell_visibility_mask: Array[bool]
+
 func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	
 
-	flexible_rows = input_rows
-	flexible_columns = input_columns
-	cell_size = cell_size
+	self.flexible_rows = input_rows
+	self.flexible_columns = input_columns
+	self.cell_size = cell_size
 	
 	# Add small amount to column / row count so that bottom and right edges are considered "in" the rect
 	flexible_area_bounds = Rect2(flexible_cells_margin_columns, flexible_cells_margin_rows, input_columns + 0.00001, input_rows + 0.00001)
 	
-	# (x, y) / (columns, rows)
-	var total_grid_size: Vector2i = Vector2i(input_columns + flexible_cells_margin_columns * 2, input_rows + flexible_cells_margin_rows * 2)
+	
+	total_grid_size = Vector2i(input_columns + flexible_cells_margin_columns * 2, input_rows + flexible_cells_margin_rows * 2)
 	
 	# Count fenceposts instead of fence segments
 	total_point_grid_size = total_grid_size + Vector2i(1, 1)
@@ -113,16 +119,12 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 			indices[tri_ind + 4] = vertex_ind + 1 + total_point_grid_size.x
 			indices[tri_ind + 5] = vertex_ind + total_point_grid_size.x
 
-	
-	
-	# Offset position so that mesh is centered around the origin
-	var offset = total_grid_size * cell_size / 2
-	#position = Vector3(-offset.x, -0.1, -offset.y)
-	
+
 	mesh = ArrayMesh.new()
 
 func _process(delta: float) -> void:
 	
+	# Regenerate outer body
 	var x_coord_center = (flexible_columns + flexible_cells_margin_columns * 2) / 2.0
 	
 	# Apply height biases
@@ -136,7 +138,7 @@ func _process(delta: float) -> void:
 		vertices[vert_index].y = -x_diff
 		
 	
-	# Regenerate mesh
+	
 	var surface_array = []
 	surface_array.resize(Mesh.ARRAY_MAX)
 	
@@ -146,29 +148,131 @@ func _process(delta: float) -> void:
 	
 	mesh.clear_surfaces()
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_array)
-	mesh.surface_set_material(0, temp_mat)
+	mesh.surface_set_material(0, temp_outer_mat)
 	
+	if cell_visibility_mask.size() != flexible_rows * flexible_columns:
+		push_warning("cell_visibility_mask for body_mesh_3d.set_flexible_vertices() has an invalid size")
+		return
+		
+	# Generate inner body
+	surface_array = []
+	surface_array.resize(Mesh.ARRAY_MAX)
+	
+	var inner_body_vertices: PackedVector3Array
+	var inner_body_normals: PackedVector3Array
+	
+	var new_geometry: bool = false
+	
+	for row in flexible_rows:
+		for col in flexible_columns:
+			
+			var inner_body_depth: float = 1
+			
+			# First, check if we need to draw the inner body for this cell
+			var mask_index: int = col + (row * (flexible_columns))
+			
+			if cell_visibility_mask[mask_index]:
+				# Skip
+				continue
+			
+			new_geometry = true
+		
+			# Convert from flexible cell space to body cell space by adding a margin offset
+			var margin_offset: Vector3 = Vector3(flexible_area_bounds.position.x, 0, flexible_area_bounds.position.y)
+			
+			# Vertices on the cube that this cell represents
+			var lower_back_left: Vector3 = origin_position_offset + (Vector3(col, -inner_body_depth, row) + margin_offset) * cell_size
+			var lower_back_right: Vector3 = origin_position_offset + (Vector3(col + 1, -inner_body_depth, row) + margin_offset) * cell_size
+			var lower_front_left: Vector3 = origin_position_offset + (Vector3(col, -inner_body_depth, row + 1) + margin_offset) * cell_size
+			var lower_front_right: Vector3 = origin_position_offset + (Vector3(col + 1, -inner_body_depth, row + 1) + margin_offset) * cell_size
+			
+			# Create floor, which does not move
+			# Create triangles
+			inner_body_vertices.push_back(lower_back_left)
+			inner_body_vertices.push_back(lower_back_right)
+			inner_body_vertices.push_back(lower_front_left)
+			
+			inner_body_vertices.push_back(lower_back_right)
+			inner_body_vertices.push_back(lower_front_right)
+			inner_body_vertices.push_back(lower_front_left)
+			
+			inner_body_normals.push_back(Vector3(0, 1, 0))
+			inner_body_normals.push_back(Vector3(0, 1, 0))
+			inner_body_normals.push_back(Vector3(0, 1, 0))
+			inner_body_normals.push_back(Vector3(0, 1, 0))
+			inner_body_normals.push_back(Vector3(0, 1, 0))
+			inner_body_normals.push_back(Vector3(0, 1, 0))
+	
+	if not new_geometry: return
+	
+	#print(inner_body_vertices)
+	surface_array[Mesh.ARRAY_VERTEX] = inner_body_vertices
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_array)
+	mesh.surface_set_material(1, temp_inner_mat)
+
+func flexible_to_body_coordinate(column: int, row: int) -> Vector2:
+	
+	return Vector2.ZERO
+
 ## Assumes rectangular array of points that matches size of flex rows / columns
-func set_flexible_vertices(new_vertices: Array[Vector3]) -> void:
-	#print(new_vertices)
-	#print(flexible_area_bounds)
+func set_flexible_vertices(new_vertices: Array[Vector3], cell_vis_mask: Array[bool] = []) -> void:
 	
-	# TODO fix this so that mesh isn't broken
-	# We have to convert sim coordinates i think
+	cell_visibility_mask = cell_vis_mask
 	for new_vert_index in range(new_vertices.size()):
-		
-		
 		# row column
 		# Add +1 to flexible_columns/rows to convert from grid space to point space
-		var new_flexible_coord: Vector2i = Vector2i(new_vert_index / (flexible_columns + 1), new_vert_index % (flexible_columns + 1) )
+		var flexible_vertex_coord: Vector2i = Vector2i(new_vert_index / (flexible_columns + 1), new_vert_index % (flexible_columns + 1) )
 		
-		# Add more to new_flexible_coord to account for margins
-		var offset: Vector2i = Vector2i(flexible_cells_margin_rows, flexible_cells_margin_columns)
-		new_flexible_coord += offset
-		
-		#print(new_flexible_coord)
+		# Add offset to account for margins
+		flexible_vertex_coord += Vector2i(flexible_cells_margin_rows, flexible_cells_margin_columns)
 		
 		# Now, convert this vertex position into an index for vertices array
-		var new_flexible_index: int = new_flexible_coord.y + (total_point_grid_size.x) * new_flexible_coord.x
+		var flexible_vertex_index: int = flexible_vertex_coord.y + (total_point_grid_size.x) * flexible_vertex_coord.x
 		
-		vertices[new_flexible_index] = new_vertices[new_vert_index]
+		vertices[flexible_vertex_index] = new_vertices[new_vert_index]
+	
+	# Handle cell visibility
+	if cell_visibility_mask.size() != flexible_rows * flexible_columns:
+		push_warning("cell_visibility_mask for body_mesh_3d.set_flexible_vertices() has an invalid size")
+		return
+
+	for row in flexible_rows:
+		for col in flexible_columns:
+			
+			# Calculate the index where the triangles that define this cell is found
+			# Start with vertex coord in flexible space
+			var vertex_coord: Vector2i = Vector2i(row, col)
+			
+			# convert from flexible row/col space to total point grid space
+			# by adding margin sizes
+			vertex_coord += Vector2i(flexible_cells_margin_rows, flexible_cells_margin_columns)
+			
+			# Convert this vertex coord to triangle index
+			# The next 5 indexes are a part of the cell
+			var first_tri_index = (vertex_coord.y * 6) + ( total_grid_size.x * vertex_coord.x * 6 )
+			
+			var mask_index: int = col + (row * (flexible_columns))
+			# Hide this cell by making the trangles that it is made of have negative indexes
+			# NOTE: negative index on surface_mesh array seems to be undefined behavior
+			# but it does seem to work...?
+			
+			# It's convenient because we don't have to change the size of the indices array to exclude triangles
+			# and we don't have to change the numerical value of the index (so we don't have to remember what the original value was)
+			
+			# This weirdness could be avoided by just regenerating the index array every time
+			# That way, we could skip triangles by just not including them in the array
+			
+			if cell_visibility_mask[mask_index]:
+				indices[first_tri_index + 0] = abs(indices[first_tri_index + 0])
+				indices[first_tri_index + 1] = abs(indices[first_tri_index + 1])
+				indices[first_tri_index + 2] = abs(indices[first_tri_index + 2])
+				indices[first_tri_index + 3] = abs(indices[first_tri_index + 3])
+				indices[first_tri_index + 4] = abs(indices[first_tri_index + 4])
+				indices[first_tri_index + 5] = abs(indices[first_tri_index + 5])
+			else:
+				indices[first_tri_index + 0] = -abs(indices[first_tri_index + 0])
+				indices[first_tri_index + 1] = -abs(indices[first_tri_index + 1])
+				indices[first_tri_index + 2] = -abs(indices[first_tri_index + 2])
+				indices[first_tri_index + 3] = -abs(indices[first_tri_index + 3])
+				indices[first_tri_index + 4] = -abs(indices[first_tri_index + 4])
+				indices[first_tri_index + 5] = -abs(indices[first_tri_index + 5])

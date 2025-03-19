@@ -1,11 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=17 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
 [ext_resource type="Script" uid="uid://dra4lijujrmwu" path="res://scripts/puzzle_viewport.gd" id="2_f1g4q"]
 [ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="3_b4stf"]
 [ext_resource type="Script" uid="uid://dcnqwn1puo4h" path="res://scripts/resources/grid_mesh_3d.gd" id="3_ygxcr"]
-[ext_resource type="Texture2D" uid="uid://dbwc55h75l4r2" path="res://icon.svg" id="4_inhaj"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]
 [ext_resource type="Script" uid="uid://brmgweuwi3o8i" path="res://scripts/simulation/flesh_sim_3d.gd" id="7_xrhyx"]
 [ext_resource type="Script" uid="uid://bk1vxm6ujfddn" path="res://scripts/resources/body_mesh_3d.gd" id="8_gl5h8"]
@@ -23,12 +22,18 @@ sky = SubResource("Sky_b4stf")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inhaj"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g68k2"]
-albedo_texture = ExtResource("4_inhaj")
-metallic = 1.0
-texture_filter = 0
+albedo_color = Color(0.929412, 0.372549, 0.360784, 1)
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_gl5h8"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_gl5h8"]
+size = Vector2(4, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gl5h8"]
+albedo_color = Color(0.803922, 0.352941, 0.392157, 1)
 
 [node name="Game3d" type="Node3D"]
 
@@ -36,7 +41,7 @@ texture_filter = 0
 environment = SubResource("Environment_ygxcr")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+transform = Transform3D(0.999999, 0, 0, 0, 0.0836779, 0.996493, 0, -0.996493, 0.0836779, 0, -3.35877, 1.46817e-07)
 shadow_enabled = true
 
 [node name="DebugCommands" type="Node" parent="."]
@@ -47,10 +52,11 @@ script = ExtResource("1_yob6b")
 camera = NodePath("../Camera3D")
 
 [node name="BodyMesh3D" type="MeshInstance3D" parent="PuzzleController"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.478336, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0162085, 0)
 skeleton = NodePath("../..")
 script = ExtResource("8_gl5h8")
-temp_mat = SubResource("StandardMaterial3D_g68k2")
+temp_outer_mat = SubResource("StandardMaterial3D_inhaj")
+temp_inner_mat = SubResource("StandardMaterial3D_g68k2")
 metadata/_custom_type_script = ExtResource("8_gl5h8")
 
 [node name="GridMesh3D" type="MeshInstance3D" parent="PuzzleController"]
@@ -94,4 +100,15 @@ offset_right = 128.0
 offset_bottom = 96.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.360127, 0.932903, 0, -0.932903, 0.360127, 0, 2.83699, 1.30274)
+transform = Transform3D(1, 0, 0, 0, 0.360127, 0.932903, 0, -0.932903, 0.360127, 0, 2.45724, 1.15614)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -4.54868, -8.22142)
+radius = 4.0
+height = 8.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.756648, 0)
+visible = false
+mesh = SubResource("PlaneMesh_gl5h8")
+surface_material_override/0 = SubResource("StandardMaterial3D_gl5h8")

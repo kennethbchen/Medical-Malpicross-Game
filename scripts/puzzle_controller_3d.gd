@@ -122,7 +122,7 @@ func _process(delta: float) -> void:
 
 	# Update meshes
 	grid_mesh.construct_from_points(get_board_points(), sim_point_rows - 2, sim_point_columns - 2)
-	body_mesh.set_flexible_vertices(get_input_points())
+	body_mesh.set_flexible_vertices(get_input_points(), get_input_cell_visibility_mask())
 	
 	# Propagate Mouse input
 	selected_cell = _get_selected_cell()
@@ -165,6 +165,20 @@ func _physics_process(delta: float) -> void:
 			local_intersect_position /= cell_scale_factor
 
 			cursor_position = Vector2i(local_intersect_position.x, local_intersect_position.z)
+
+func get_input_cell_visibility_mask() -> Array[bool]:
+	
+	var output: Array[bool]
+	
+	
+	for row in puzzle.input_size.x:
+		for col in puzzle.input_size.y:
+			var input_cell = puzzle.get_input_cell(row, col)
+			
+			# Colored cells are not visible
+			output.push_back(input_cell.player_input != Puzzle.INPUT_TYPE.COLORED)
+
+	return output
 
 func get_input_points() -> Array[Vector3]:
 	
