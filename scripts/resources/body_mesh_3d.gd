@@ -166,7 +166,7 @@ func _process(delta: float) -> void:
 	for row in flexible_rows:
 		for col in flexible_columns:
 			
-			var inner_body_depth: float = 1
+			var inner_body_depth: float = 2
 			
 			# First, check if we need to draw the inner body for this cell
 			var mask_index: int = col + (row * (flexible_columns))
@@ -215,40 +215,50 @@ func _process(delta: float) -> void:
 			
 			# Create wall triangles
 			# Back wall
-			inner_body_vertices.push_back(upper_back_left)
-			inner_body_vertices.push_back(upper_back_right)
-			inner_body_vertices.push_back(lower_back_left)
+			if row == 0 or cell_visibility_mask[col + ( (row - 1) * (flexible_columns))]: 
+
+				inner_body_vertices.push_back(upper_back_left)
+				inner_body_vertices.push_back(upper_back_right)
+				inner_body_vertices.push_back(lower_back_left)
+				
+				inner_body_vertices.push_back(upper_back_right)
+				inner_body_vertices.push_back(lower_back_right)
+				inner_body_vertices.push_back(lower_back_left)
 			
-			inner_body_vertices.push_back(upper_back_right)
-			inner_body_vertices.push_back(lower_back_right)
-			inner_body_vertices.push_back(lower_back_left)
+			# Check if each wall needs to be made
+			# Doesn't need to be made if it neighbors another hole
 			
 			# Left Wall
-			inner_body_vertices.push_back(upper_front_left)
-			inner_body_vertices.push_back(upper_back_left)
-			inner_body_vertices.push_back(lower_front_left)
 			
-			inner_body_vertices.push_back(upper_back_left)
-			inner_body_vertices.push_back(lower_back_left)
-			inner_body_vertices.push_back(lower_front_left)
+			if col == 0 or cell_visibility_mask[col - 1 + (row * (flexible_columns))]: 
+				inner_body_vertices.push_back(upper_front_left)
+				inner_body_vertices.push_back(upper_back_left)
+				inner_body_vertices.push_back(lower_front_left)
+			
+				inner_body_vertices.push_back(upper_back_left)
+				inner_body_vertices.push_back(lower_back_left)
+				inner_body_vertices.push_back(lower_front_left)
 			
 			# Right Wall
-			inner_body_vertices.push_back(upper_back_right)
-			inner_body_vertices.push_back(upper_front_right)
-			inner_body_vertices.push_back(lower_back_right)
-			
-			inner_body_vertices.push_back(upper_front_right)
-			inner_body_vertices.push_back(lower_front_right)
-			inner_body_vertices.push_back(lower_back_right)
+			if col == flexible_area_bounds.size.x - 1 or cell_visibility_mask[col + 1 + (row * (flexible_columns))]: 
+				inner_body_vertices.push_back(upper_back_right)
+				inner_body_vertices.push_back(upper_front_right)
+				inner_body_vertices.push_back(lower_back_right)
+				
+				inner_body_vertices.push_back(upper_front_right)
+				inner_body_vertices.push_back(lower_front_right)
+				inner_body_vertices.push_back(lower_back_right)
 			
 			# Front wall (faces away from camera normally)
-			inner_body_vertices.push_back(upper_front_right)
-			inner_body_vertices.push_back(upper_front_left)
-			inner_body_vertices.push_back(lower_front_right)
 			
-			inner_body_vertices.push_back(upper_front_left)
-			inner_body_vertices.push_back(lower_front_left)
-			inner_body_vertices.push_back(lower_front_right)
+			if row == flexible_area_bounds.size.y - 1 or cell_visibility_mask[col + ( (row + 1) * (flexible_columns))]: 
+				inner_body_vertices.push_back(upper_front_right)
+				inner_body_vertices.push_back(upper_front_left)
+				inner_body_vertices.push_back(lower_front_right)
+				
+				inner_body_vertices.push_back(upper_front_left)
+				inner_body_vertices.push_back(lower_front_left)
+				inner_body_vertices.push_back(lower_front_right)
 			
 			
 			

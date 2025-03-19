@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://dra4lijujrmwu" path="res://scripts/puzzle_viewport.gd" id="2_f1g4q"]
 [ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="3_b4stf"]
 [ext_resource type="Script" uid="uid://dcnqwn1puo4h" path="res://scripts/resources/grid_mesh_3d.gd" id="3_ygxcr"]
-[ext_resource type="Texture2D" uid="uid://dbwc55h75l4r2" path="res://icon.svg" id="4_inhaj"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]
 [ext_resource type="Script" uid="uid://brmgweuwi3o8i" path="res://scripts/simulation/flesh_sim_3d.gd" id="7_xrhyx"]
 [ext_resource type="Script" uid="uid://bk1vxm6ujfddn" path="res://scripts/resources/body_mesh_3d.gd" id="8_gl5h8"]
@@ -24,12 +23,15 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inhaj"]
-albedo_texture = ExtResource("4_inhaj")
+albedo_color = Color(1, 0.826259, 0.699963, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g68k2"]
 albedo_color = Color(0.929412, 0.372549, 0.360784, 1)
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_gl5h8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v280i"]
+albedo_color = Color(0.847059, 0.215686, 0.368627, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_gl5h8"]
 size = Vector2(4, 5)
@@ -43,7 +45,7 @@ albedo_color = Color(0.803922, 0.352941, 0.392157, 1)
 environment = SubResource("Environment_ygxcr")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.999999, 0, 0, 0, 0.0836779, 0.996493, 0, -0.996493, 0.0836779, 0, -3.35877, 1.46817e-07)
+transform = Transform3D(0.999999, 0, 0, 0, 0.519773, 0.854305, 0, -0.854305, 0.519773, 0, -3.35877, 1.46817e-07)
 shadow_enabled = true
 
 [node name="DebugCommands" type="Node" parent="."]
@@ -100,6 +102,11 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 128.0
 offset_bottom = 96.0
+
+[node name="TempOrgans" type="CSGBox3D" parent="PuzzleController"]
+transform = Transform3D(0.882382, 0, -0.470535, 0, 1, 0, 0.470535, 0, 0.882382, 0.243781, -1.1113, 0.0280095)
+size = Vector3(1.49426, 1, 1.53906)
+material = SubResource("StandardMaterial3D_v280i")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.360127, 0.932903, 0, -0.932903, 0.360127, 0, 2.45724, 1.15614)
