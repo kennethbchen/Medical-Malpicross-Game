@@ -88,7 +88,7 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 
 	mesh = ArrayMesh.new()
 
-func _get_init_vertex_position(row, col) -> Vector3:
+func _get_init_vertex_position(row, col, skip_height_offset: bool = false) -> Vector3:
 	var new_vert: Vector3 = origin_position_offset + Vector3(col, 0, row) * cell_size
 			
 	# Margins have different size
@@ -106,12 +106,15 @@ func _get_init_vertex_position(row, col) -> Vector3:
 		# NOTE: Might not be the right multiplier calculation
 		new_vert.x += margin_cell_column_size * (flexible_cells_margin_columns - (total_point_grid_size.x - col) + 1)
 		
-		
+	if skip_height_offset:
+		return new_vert
+	
 	# Modify height to give body mesh curvature
 	# Based on coordinate
 	var x_coord_center = (flexible_columns + flexible_cells_margin_columns * 2) / 2.0
 	var x_diff = abs(pow(x_coord_center - col, 2) * 0.05)
 	new_vert.y = -x_diff
+	
 	return new_vert
 	
 
@@ -175,11 +178,29 @@ func _process(delta: float) -> void:
 				st.add_vertex(bottom_left)
 			elif is_flexible_vertex and not generate_outer:
 				# Generate inner body instead
-				pass
+				
+				var body_depth_offset: Vector3 = Vector3(0, -1, 0)
+				
+				# Vertices on the cube (so, 8 vertices) that this cell represents
+				
+				# Floor vertices. We can calculate these as new based on row / col
+				var lower_back_left: Vector3 = _get_init_vertex_position(row, col, true) + body_depth_offset
+				var lower_back_right: Vector3 = _get_init_vertex_position(row, col + 1, true) + body_depth_offset
+				var lower_front_left: Vector3 = _get_init_vertex_position(row + 1, col, true) + body_depth_offset
+				var lower_front_right: Vector3 = _get_init_vertex_position(row + 1, col + 1, true) + body_depth_offset
+				
+				# TODO: seems like we need a separate surface tool if we want multiple materials
+				st.set_material(temp_inner_mat)
+				
+				# Floor tris
+				st.add_vertex(lower_back_left)
+				st.add_vertex(lower_back_right)
+				st.add_vertex(lower_front_left)
+				
+				st.add_vertex(lower_back_right)
+				st.add_vertex(lower_front_right)
+				st.add_vertex(lower_front_left)
 			
-			
-			
-	
 	st.generate_normals()
 	st.generate_tangents()
 	mesh = st.commit()
