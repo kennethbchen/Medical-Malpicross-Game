@@ -45,7 +45,7 @@ albedo_color = Color(0.803922, 0.352941, 0.392157, 1)
 environment = SubResource("Environment_ygxcr")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.999999, 0, 0, 0, 0.519773, 0.854305, 0, -0.854305, 0.519773, 0, -3.35877, 1.46817e-07)
+transform = Transform3D(0.189695, 0, -0.981844, 0.838792, 0.519773, 0.162058, 0.510335, -0.854305, 0.0985985, 0, -3.35877, 1.46817e-07)
 shadow_enabled = true
 
 [node name="DebugCommands" type="Node" parent="."]
@@ -70,6 +70,7 @@ metadata/_custom_type_script = ExtResource("3_ygxcr")
 
 [node name="FleshSim3D" type="Node3D" parent="PuzzleController"]
 script = ExtResource("7_xrhyx")
+disable_sim = true
 hide_fixed = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleController"]

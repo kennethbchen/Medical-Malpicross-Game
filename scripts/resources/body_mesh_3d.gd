@@ -25,9 +25,7 @@ var total_grid_size: Vector2i
 var total_point_grid_size : Vector2i
 
 var cell_size = 0
-var vertices: PackedVector3Array
-var indices: PackedInt32Array
-var uvs: PackedVector2Array
+
 
 var cell_visibility_mask: Array[bool]
 
@@ -39,55 +37,23 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 	self.cell_size = cell_size
 	
 	# Add small amount to column / row count so that bottom and right edges are considered "in" the rect
-	flexible_area_bounds = Rect2(flexible_cells_margin_columns, flexible_cells_margin_rows, input_columns + 0.00001, input_rows + 0.00001)
+	self.flexible_area_bounds = Rect2(flexible_cells_margin_columns, flexible_cells_margin_rows, input_columns + 0.00001, input_rows + 0.00001)
 	
 	
-	total_grid_size = Vector2i(input_columns + flexible_cells_margin_columns * 2, input_rows + flexible_cells_margin_rows * 2)
+	self.total_grid_size = Vector2i(input_columns + flexible_cells_margin_columns * 2, input_rows + flexible_cells_margin_rows * 2)
 	
 	# Count fenceposts instead of fence segments
-	total_point_grid_size = total_grid_size + Vector2i(1, 1)
+	self.total_point_grid_size = total_grid_size + Vector2i(1, 1)
 	
 	# Calculate offset so that mesh is generated such that
 	# The center of the input area is at the origin
-	origin_position_offset = -Vector3((total_grid_size.x * cell_size) / 2.0, 0, (total_grid_size.y * cell_size) / 2.0)
+	self.origin_position_offset = -Vector3((total_grid_size.x * cell_size) / 2.0, 0, (total_grid_size.y * cell_size) / 2.0)
 	
-	# Create base array of vertex positions
-	var vert_count: int = total_point_grid_size.x * total_point_grid_size.y
 	
-	vertices = PackedVector3Array()
-	vertices.resize(vert_count)
-	
-	uvs = PackedVector2Array()
-	uvs.resize(vert_count)
-	
-	for row in total_point_grid_size.y:
-		for col in total_point_grid_size.x:
-			
-			var ind = col + (total_point_grid_size.x) * row
-			
-			vertices[ind] = origin_position_offset + Vector3(col, 0, row) * cell_size
-			
-			# Margins have different size
-			if row < flexible_cells_margin_rows:
-				vertices[ind].z += -margin_cell_row_size * (flexible_cells_margin_rows - row)
-				
-			if row > flexible_cells_margin_rows + input_rows:
-				# NOTE: Might not be the right multiplier calculation
-				vertices[ind].z += margin_cell_row_size * (flexible_cells_margin_rows - (total_point_grid_size.y - row) + 1)
-			
-			if col < flexible_cells_margin_columns:
-				vertices[ind].x += -margin_cell_column_size * (flexible_cells_margin_columns - col)
-
-			if col > flexible_cells_margin_columns + input_columns:
-				# NOTE: Might not be the right multiplier calculation
-				vertices[ind].x += margin_cell_column_size * (flexible_cells_margin_columns - (total_point_grid_size.x - col) + 1)
-			
-			# TODO: Because the cell sizes are variable on the margins,
-			# we can't calculate the UVs correctly only based on row / col
-			# we need to use real coordinate space positions
-			uvs[ind] = Vector2(col, row) / (Vector2(total_point_grid_size) - Vector2(1, 1))
 
 	
+
+	"""
 	# Create array of triangle vertex indices to define triangles
 	
 	# quad count = total_grid_size.x * total_grid_size.y
@@ -118,12 +84,107 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 			indices[tri_ind + 3] = vertex_ind + 1
 			indices[tri_ind + 4] = vertex_ind + 1 + total_point_grid_size.x
 			indices[tri_ind + 5] = vertex_ind + total_point_grid_size.x
-
+	"""
 
 	mesh = ArrayMesh.new()
 
+func _get_init_vertex_position(row, col) -> Vector3:
+	var new_vert: Vector3 = origin_position_offset + Vector3(col, 0, row) * cell_size
+			
+	# Margins have different size
+	if row < flexible_cells_margin_rows:
+		new_vert.z += -margin_cell_row_size * (flexible_cells_margin_rows - row)
+		
+	if row > flexible_cells_margin_rows + flexible_rows:
+		# NOTE: Might not be the right multiplier calculation
+		new_vert.z += margin_cell_row_size * (flexible_cells_margin_rows - (total_point_grid_size.y - row) + 1)
+	
+	if col < flexible_cells_margin_columns:
+		new_vert.x += -margin_cell_column_size * (flexible_cells_margin_columns - col)
+
+	if col > flexible_cells_margin_columns + flexible_columns:
+		# NOTE: Might not be the right multiplier calculation
+		new_vert.x += margin_cell_column_size * (flexible_cells_margin_columns - (total_point_grid_size.x - col) + 1)
+		
+		
+	# Modify height to give body mesh curvature
+	# Based on coordinate
+	var x_coord_center = (flexible_columns + flexible_cells_margin_columns * 2) / 2.0
+	var x_diff = abs(pow(x_coord_center - col, 2) * 0.05)
+	new_vert.y = -x_diff
+	return new_vert
+	
+
 func _process(delta: float) -> void:
 	
+	if cell_size <= 0: 
+		# Not initalized yet
+		return
+	
+	var st = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	# Generate mesh one quad (2 tris, 6 verts) at a time.
+	# NOTE: Do we really subtract 1 from total_point_grid size?
+	for row in total_point_grid_size.y - 1:
+		for col in total_point_grid_size.x - 1:
+			
+			var is_flexible_vertex: bool = flexible_area_bounds.has_point(Vector2i(col, row))
+			var generate_outer: bool = true
+			
+			if is_flexible_vertex:
+				
+				# Convert from point grid space to flexible point space by subtracting margin sizes
+				var mask_index: int = col - flexible_cells_margin_columns + ( (row - flexible_cells_margin_rows) * (flexible_columns))
+				
+				# Flexible cell might be missing
+				generate_outer = cell_visibility_mask[mask_index]
+				
+
+			if generate_outer:
+				var ind = col + (total_point_grid_size.x) * row
+				
+				var top_left: Vector3 = _get_init_vertex_position(row, col)
+				var top_right: Vector3 = _get_init_vertex_position(row, col + 1)
+				var bottom_left: Vector3 = _get_init_vertex_position(row + 1, col)
+				var bottom_right: Vector3 = _get_init_vertex_position(row + 1, col + 1)
+				
+				# TODO: Because the cell sizes are variable on the margins,
+				# we can't calculate the UVs correctly only based on row / col
+				# we need to use real coordinate space positions
+				
+				st.set_material(temp_outer_mat)
+				# Tri 1
+				st.set_uv(Vector2(col, row) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
+				st.add_vertex(top_left)
+				
+				st.set_uv(Vector2(col + 1, row) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
+				st.add_vertex(top_right)
+				
+				st.set_uv(Vector2(col, row + 1) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
+				st.add_vertex(bottom_left)
+				
+				# Tri 2
+				st.set_uv(Vector2(col + 1, row) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
+				st.add_vertex(top_right)
+				
+				st.set_uv(Vector2(col + 1, row + 1) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
+				st.add_vertex(bottom_right)
+				
+				st.set_uv(Vector2(col, row + 1) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
+				st.add_vertex(bottom_left)
+			elif is_flexible_vertex and not generate_outer:
+				# Generate inner body instead
+				pass
+			
+			
+			
+	
+	st.generate_normals()
+	st.generate_tangents()
+	mesh = st.commit()
+
+	"""
 	# Regenerate outer body
 	var x_coord_center = (flexible_columns + flexible_cells_margin_columns * 2) / 2.0
 	
@@ -271,6 +332,7 @@ func _process(delta: float) -> void:
 	surface_array[Mesh.ARRAY_VERTEX] = inner_body_vertices
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, surface_array)
 	mesh.surface_set_material(1, temp_inner_mat)
+	"""
 
 func flexible_to_body_coordinate(column: int, row: int) -> Vector2:
 	
@@ -280,6 +342,8 @@ func flexible_to_body_coordinate(column: int, row: int) -> Vector2:
 func set_flexible_vertices(new_vertices: Array[Vector3], cell_vis_mask: Array[bool] = []) -> void:
 	
 	cell_visibility_mask = cell_vis_mask
+	
+	"""
 	for new_vert_index in range(new_vertices.size()):
 		# row column
 		# Add +1 to flexible_columns/rows to convert from grid space to point space
@@ -338,3 +402,5 @@ func set_flexible_vertices(new_vertices: Array[Vector3], cell_vis_mask: Array[bo
 				indices[first_tri_index + 3] = -abs(indices[first_tri_index + 3])
 				indices[first_tri_index + 4] = -abs(indices[first_tri_index + 4])
 				indices[first_tri_index + 5] = -abs(indices[first_tri_index + 5])
+				
+	"""
