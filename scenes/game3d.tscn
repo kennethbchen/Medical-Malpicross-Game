@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=19 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
 [ext_resource type="Script" uid="uid://dra4lijujrmwu" path="res://scripts/puzzle_viewport.gd" id="2_f1g4q"]
 [ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="3_b4stf"]
 [ext_resource type="Script" uid="uid://dcnqwn1puo4h" path="res://scripts/resources/grid_mesh_3d.gd" id="3_ygxcr"]
+[ext_resource type="Texture2D" uid="uid://dbwc55h75l4r2" path="res://icon.svg" id="4_inhaj"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]
 [ext_resource type="Script" uid="uid://brmgweuwi3o8i" path="res://scripts/simulation/flesh_sim_3d.gd" id="7_xrhyx"]
 [ext_resource type="Script" uid="uid://bk1vxm6ujfddn" path="res://scripts/resources/body_mesh_3d.gd" id="8_gl5h8"]
@@ -24,6 +25,7 @@ glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inhaj"]
 albedo_color = Color(1, 0.826259, 0.699963, 1)
+albedo_texture = ExtResource("4_inhaj")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g68k2"]
 albedo_color = Color(0.929412, 0.372549, 0.360784, 1)
@@ -45,7 +47,7 @@ albedo_color = Color(0.803922, 0.352941, 0.392157, 1)
 environment = SubResource("Environment_ygxcr")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.189695, 0, -0.981844, 0.838792, 0.519773, 0.162058, 0.510335, -0.854305, 0.0985985, 0, -3.35877, 1.46817e-07)
+transform = Transform3D(0.999979, 0, -0.00628289, 0.00536764, 0.519773, 0.854289, 0.00326607, -0.854305, 0.519763, 0, -3.35877, 1.46817e-07)
 shadow_enabled = true
 
 [node name="DebugCommands" type="Node" parent="."]
@@ -70,7 +72,6 @@ metadata/_custom_type_script = ExtResource("3_ygxcr")
 
 [node name="FleshSim3D" type="Node3D" parent="PuzzleController"]
 script = ExtResource("7_xrhyx")
-disable_sim = true
 hide_fixed = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleController"]

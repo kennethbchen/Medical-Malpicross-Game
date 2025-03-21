@@ -26,7 +26,7 @@ var total_point_grid_size : Vector2i
 
 var cell_size = 0
 
-
+var flexible_vertices: Array[Vector3]
 var cell_visibility_mask: Array[bool]
 
 func init(input_rows: int, input_columns: int, cell_size: float) -> void:
@@ -88,6 +88,15 @@ func init(input_rows: int, input_columns: int, cell_size: float) -> void:
 
 	mesh = ArrayMesh.new()
 
+func _get_height_bias(row, col) -> Vector3:
+	
+	# Modify height to give body mesh curvature
+	# Based on coordinate
+	var x_coord_center = (flexible_columns + flexible_cells_margin_columns * 2) / 2.0
+	var x_diff = abs(pow(x_coord_center - col, 2) * 0.05)
+	
+	return Vector3(0, -x_diff, 0)
+	
 func _get_init_vertex_position(row, col, skip_height_offset: bool = false) -> Vector3:
 	var new_vert: Vector3 = origin_position_offset + Vector3(col, 0, row) * cell_size
 			
@@ -109,14 +118,20 @@ func _get_init_vertex_position(row, col, skip_height_offset: bool = false) -> Ve
 	if skip_height_offset:
 		return new_vert
 	
-	# Modify height to give body mesh curvature
-	# Based on coordinate
-	var x_coord_center = (flexible_columns + flexible_cells_margin_columns * 2) / 2.0
-	var x_diff = abs(pow(x_coord_center - col, 2) * 0.05)
-	new_vert.y = -x_diff
+	new_vert += _get_height_bias(row, col)
 	
 	return new_vert
 	
+
+func _point_coord_to_flexible_point_index(row, col) -> int:
+	# Convert from grid row / col to flexible row / col by subtracting margin dimensions
+	# Then convert from flexible row / col to flexible_vertices index by multiplying row by flexible columns + 1 and adding columns
+	# We add 1 to flexible columns to convert from cell space to point space (fencepost error)
+	return col - flexible_cells_margin_columns + ( (row - flexible_cells_margin_rows) * (flexible_columns + 1))
+
+func _point_coord_to_flexible_mask_index(row, col) -> int:
+	
+	return col - flexible_cells_margin_columns + ( (row - flexible_cells_margin_rows) * (flexible_columns))
 
 func _process(delta: float) -> void:
 	
@@ -151,6 +166,24 @@ func _process(delta: float) -> void:
 				var top_right: Vector3 = _get_init_vertex_position(row, col + 1)
 				var bottom_left: Vector3 = _get_init_vertex_position(row + 1, col)
 				var bottom_right: Vector3 = _get_init_vertex_position(row + 1, col + 1)
+				
+				if is_flexible_vertex:
+					#if flexible_area_bounds.has_point(Vector2i(row, col)):
+						top_left = flexible_vertices[_point_coord_to_flexible_point_index(row, col)]
+						top_left += _get_height_bias(row, col)
+					
+					
+					#if flexible_area_bounds.has_point(Vector2i(row, col + 1)):
+						top_right = flexible_vertices[_point_coord_to_flexible_point_index(row, col + 1)]
+						top_right += _get_height_bias(row, col + 1)
+					
+					#if flexible_area_bounds.has_point(Vector2i(row + 1, col)):
+						bottom_left = flexible_vertices[_point_coord_to_flexible_point_index(row + 1, col)]
+						bottom_left += _get_height_bias(row + 1, col)
+					
+					#if flexible_area_bounds.has_point(Vector2i(row + 1, col + 1)):
+						bottom_right = flexible_vertices[_point_coord_to_flexible_point_index(row + 1, col + 1)]
+						bottom_right += _get_height_bias(row + 1, col + 1)
 				
 				# TODO: Because the cell sizes are variable on the margins,
 				# we can't calculate the UVs correctly only based on row / col
@@ -189,6 +222,20 @@ func _process(delta: float) -> void:
 				var lower_front_left: Vector3 = _get_init_vertex_position(row + 1, col, true) + body_depth_offset
 				var lower_front_right: Vector3 = _get_init_vertex_position(row + 1, col + 1, true) + body_depth_offset
 				
+				# Outer body vertices. Sample these from flexible_vertices array
+			
+				var upper_back_left: Vector3 = flexible_vertices[_point_coord_to_flexible_point_index(row, col)]
+				upper_back_left += _get_height_bias(row, col)
+				
+				var upper_back_right: Vector3 = flexible_vertices[_point_coord_to_flexible_point_index(row, col + 1)]
+				upper_back_right += _get_height_bias(row, col + 1)
+				
+				var upper_front_left: Vector3 = flexible_vertices[_point_coord_to_flexible_point_index(row + 1, col)]
+				upper_front_left += _get_height_bias(row + 1, col)
+				
+				var upper_front_right: Vector3 = flexible_vertices[_point_coord_to_flexible_point_index(row + 1, col + 1)]
+				upper_front_right += _get_height_bias(row + 1, col + 1)
+				
 				# TODO: seems like we need a separate surface tool if we want multiple materials
 				st.set_material(temp_inner_mat)
 				
@@ -200,6 +247,51 @@ func _process(delta: float) -> void:
 				st.add_vertex(lower_back_right)
 				st.add_vertex(lower_front_right)
 				st.add_vertex(lower_front_left)
+				
+				# Wall tris
+				# Check if each wall needs to be made
+				# Doesn't need to be made if it neighbors another hole
+				
+				# Back wall
+				
+				if row - flexible_cells_margin_rows == 0 or cell_visibility_mask[_point_coord_to_flexible_mask_index(row - 1, col)]: 
+					st.add_vertex(upper_back_left)
+					st.add_vertex(upper_back_right)
+					st.add_vertex(lower_back_left)
+					
+					st.add_vertex(upper_back_right)
+					st.add_vertex(lower_back_right)
+					st.add_vertex(lower_back_left)
+				
+				# Left Wall
+				if col - flexible_cells_margin_columns == 0 or cell_visibility_mask[_point_coord_to_flexible_mask_index(row, col - 1)]: 
+					st.add_vertex(upper_front_left)
+					st.add_vertex(upper_back_left)
+					st.add_vertex(lower_front_left)
+				
+					st.add_vertex(upper_back_left)
+					st.add_vertex(lower_back_left)
+					st.add_vertex(lower_front_left)
+				
+				# Right Wall
+				if col - flexible_cells_margin_columns == flexible_area_bounds.size.x - 1 or cell_visibility_mask[_point_coord_to_flexible_mask_index(row, col + 1)]: 
+					st.add_vertex(upper_back_right)
+					st.add_vertex(upper_front_right)
+					st.add_vertex(lower_back_right)
+					
+					st.add_vertex(upper_front_right)
+					st.add_vertex(lower_front_right)
+					st.add_vertex(lower_back_right)
+				
+				# Front wall (faces away from camera normally, so vertex winding is reversed)
+				if row - flexible_cells_margin_rows == flexible_area_bounds.size.y - 1 or cell_visibility_mask[_point_coord_to_flexible_mask_index(row + 1, col)]: 
+					st.add_vertex(upper_front_right)
+					st.add_vertex(upper_front_left)
+					st.add_vertex(lower_front_right)
+					
+					st.add_vertex(upper_front_left)
+					st.add_vertex(lower_front_left)
+					st.add_vertex(lower_front_right)
 			
 	st.generate_normals()
 	st.generate_tangents()
@@ -207,19 +299,6 @@ func _process(delta: float) -> void:
 
 	"""
 	# Regenerate outer body
-	var x_coord_center = (flexible_columns + flexible_cells_margin_columns * 2) / 2.0
-	
-	# Apply height biases
-	# The closer a column is to the center of the body -> The higher the vert is
-	for vert_index in vertices.size():
-		
-		# (x, y) / (column, row)
-		var vert_coord: Vector2 = Vector2(vert_index % total_point_grid_size.x, vert_index / total_point_grid_size.x )
-		
-		var x_diff = abs(pow(x_coord_center - vert_coord.x, 2) * 0.05)
-		vertices[vert_index].y = -x_diff
-		
-	
 	
 	var surface_array = []
 	surface_array.resize(Mesh.ARRAY_MAX)
@@ -362,6 +441,7 @@ func flexible_to_body_coordinate(column: int, row: int) -> Vector2:
 ## Assumes rectangular array of points that matches size of flex rows / columns
 func set_flexible_vertices(new_vertices: Array[Vector3], cell_vis_mask: Array[bool] = []) -> void:
 	
+	flexible_vertices = new_vertices
 	cell_visibility_mask = cell_vis_mask
 	
 	"""
