@@ -114,8 +114,17 @@ func _process(delta: float) -> void:
 		# Not initalized yet
 		return
 	
-	var st = SurfaceTool.new()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	# We need two surface tools because we are generating
+	# both the outer and inner body at the same time, but they use different materials
+	# and we can't change material mid-surface
+	var outer_surface_tool = SurfaceTool.new()
+	var inner_surface_tool = SurfaceTool.new()
+	
+	outer_surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	outer_surface_tool.set_material(temp_outer_mat)
+	
+	inner_surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	inner_surface_tool.set_material(temp_inner_mat)
 	
 	# Generate mesh one cell at a time
 	# (row, col) represents the top left vertex of the cell we are currently looking at
@@ -163,26 +172,27 @@ func _process(delta: float) -> void:
 				# we can't calculate the UVs correctly only based on row / col
 				# we need to use real coordinate space positions
 				
-				st.set_material(temp_outer_mat)
+				
 				# Tri 1
-				st.set_uv(Vector2(col, row) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
-				st.add_vertex(upper_back_left)
+				outer_surface_tool.set_uv(Vector2(col, row) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
+				outer_surface_tool.add_vertex(upper_back_left)
 				
-				st.set_uv(Vector2(col + 1, row) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
-				st.add_vertex(upper_back_right)
+				outer_surface_tool.set_uv(Vector2(col + 1, row) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
+				outer_surface_tool.add_vertex(upper_back_right)
 				
-				st.set_uv(Vector2(col, row + 1) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
-				st.add_vertex(upper_front_left)
+				outer_surface_tool.set_uv(Vector2(col, row + 1) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
+				outer_surface_tool.add_vertex(upper_front_left)
 				
 				# Tri 2
-				st.set_uv(Vector2(col + 1, row) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
-				st.add_vertex(upper_back_right)
+				outer_surface_tool.set_uv(Vector2(col + 1, row) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
+				outer_surface_tool.add_vertex(upper_back_right)
 				
-				st.set_uv(Vector2(col + 1, row + 1) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
-				st.add_vertex(upper_front_right)
+				outer_surface_tool.set_uv(Vector2(col + 1, row + 1) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
+				outer_surface_tool.add_vertex(upper_front_right)
 				
-				st.set_uv(Vector2(col, row + 1) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
-				st.add_vertex(upper_front_left)
+				outer_surface_tool.set_uv(Vector2(col, row + 1) / (Vector2(total_point_grid_size) - Vector2(1, 1)))
+				outer_surface_tool.add_vertex(upper_front_left)
+				
 			elif is_flexible_cell and not generate_outer:
 				# Generate inner body instead
 				
@@ -196,17 +206,16 @@ func _process(delta: float) -> void:
 				var lower_front_left: Vector3 = _get_init_vertex_position(row + 1, col, true) + body_depth_offset
 				var lower_front_right: Vector3 = _get_init_vertex_position(row + 1, col + 1, true) + body_depth_offset
 
-				# TODO: seems like we need a separate surface tool if we want multiple materials
-				st.set_material(temp_inner_mat)
+				
 				
 				# Floor tris
-				st.add_vertex(lower_back_left)
-				st.add_vertex(lower_back_right)
-				st.add_vertex(lower_front_left)
+				inner_surface_tool.add_vertex(lower_back_left)
+				inner_surface_tool.add_vertex(lower_back_right)
+				inner_surface_tool.add_vertex(lower_front_left)
 				
-				st.add_vertex(lower_back_right)
-				st.add_vertex(lower_front_right)
-				st.add_vertex(lower_front_left)
+				inner_surface_tool.add_vertex(lower_back_right)
+				inner_surface_tool.add_vertex(lower_front_right)
+				inner_surface_tool.add_vertex(lower_front_left)
 				
 				# Wall tris
 				# Check if each wall needs to be made
@@ -215,47 +224,54 @@ func _process(delta: float) -> void:
 				# Back wall
 				
 				if row - flexible_cells_margin_rows == 0 or cell_visibility_mask[_point_coord_to_flexible_mask_index(row - 1, col)]: 
-					st.add_vertex(upper_back_left)
-					st.add_vertex(upper_back_right)
-					st.add_vertex(lower_back_left)
+					inner_surface_tool.add_vertex(upper_back_left)
+					inner_surface_tool.add_vertex(upper_back_right)
+					inner_surface_tool.add_vertex(lower_back_left)
 					
-					st.add_vertex(upper_back_right)
-					st.add_vertex(lower_back_right)
-					st.add_vertex(lower_back_left)
+					inner_surface_tool.add_vertex(upper_back_right)
+					inner_surface_tool.add_vertex(lower_back_right)
+					inner_surface_tool.add_vertex(lower_back_left)
 				
 				# Left Wall
 				if col - flexible_cells_margin_columns == 0 or cell_visibility_mask[_point_coord_to_flexible_mask_index(row, col - 1)]: 
-					st.add_vertex(upper_front_left)
-					st.add_vertex(upper_back_left)
-					st.add_vertex(lower_front_left)
+					inner_surface_tool.add_vertex(upper_front_left)
+					inner_surface_tool.add_vertex(upper_back_left)
+					inner_surface_tool.add_vertex(lower_front_left)
 				
-					st.add_vertex(upper_back_left)
-					st.add_vertex(lower_back_left)
-					st.add_vertex(lower_front_left)
+					inner_surface_tool.add_vertex(upper_back_left)
+					inner_surface_tool.add_vertex(lower_back_left)
+					inner_surface_tool.add_vertex(lower_front_left)
 				
 				# Right Wall
 				if col - flexible_cells_margin_columns == flexible_cell_area_bounds.size.x - 1 or cell_visibility_mask[_point_coord_to_flexible_mask_index(row, col + 1)]: 
-					st.add_vertex(upper_back_right)
-					st.add_vertex(upper_front_right)
-					st.add_vertex(lower_back_right)
+					inner_surface_tool.add_vertex(upper_back_right)
+					inner_surface_tool.add_vertex(upper_front_right)
+					inner_surface_tool.add_vertex(lower_back_right)
 					
-					st.add_vertex(upper_front_right)
-					st.add_vertex(lower_front_right)
-					st.add_vertex(lower_back_right)
+					inner_surface_tool.add_vertex(upper_front_right)
+					inner_surface_tool.add_vertex(lower_front_right)
+					inner_surface_tool.add_vertex(lower_back_right)
 				
 				# Front wall (faces away from camera normally, so vertex winding is reversed)
 				if row - flexible_cells_margin_rows == flexible_cell_area_bounds.size.y - 1 or cell_visibility_mask[_point_coord_to_flexible_mask_index(row + 1, col)]: 
-					st.add_vertex(upper_front_right)
-					st.add_vertex(upper_front_left)
-					st.add_vertex(lower_front_right)
+					inner_surface_tool.add_vertex(upper_front_right)
+					inner_surface_tool.add_vertex(upper_front_left)
+					inner_surface_tool.add_vertex(lower_front_right)
 					
-					st.add_vertex(upper_front_left)
-					st.add_vertex(lower_front_left)
-					st.add_vertex(lower_front_right)
-			
-	st.generate_normals()
-	st.generate_tangents()
-	mesh = st.commit()
+					inner_surface_tool.add_vertex(upper_front_left)
+					inner_surface_tool.add_vertex(lower_front_left)
+					inner_surface_tool.add_vertex(lower_front_right)
+	
+	outer_surface_tool.generate_normals()
+	outer_surface_tool.generate_tangents()
+	
+	inner_surface_tool.generate_normals()
+	
+	# TODO: Generate UVs for inner body
+	#inner_surface_tool.generate_tangents()
+	
+	mesh = outer_surface_tool.commit()
+	inner_surface_tool.commit(mesh)
 
 ## Assumes rectangular array of points that matches size of flex rows / columns
 func set_flexible_vertices(new_vertices: Array[Vector3], cell_vis_mask: Array[bool] = []) -> void:
