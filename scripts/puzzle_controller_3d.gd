@@ -58,7 +58,7 @@ var cursor_position: Vector2i
 
 func _ready() -> void:
 	puzzle_string = test_puzzles.pick_random()
-	
+
 	puzzle = Puzzle.new(puzzle_string)
 	
 	board_cell_rows = puzzle.board_size.x
