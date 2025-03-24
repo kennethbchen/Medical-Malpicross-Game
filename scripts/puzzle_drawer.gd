@@ -1,5 +1,8 @@
 extends Control
 
+var text_color: Color = Color.WHITE
+var line_color: Color = Color(1, 1, 1, 0.7)
+
 var cell_size_px: float = 32
 
 var puzzle: Puzzle
@@ -25,7 +28,7 @@ func _draw() -> void:
 		var b: Vector2 = puzzle.input_to_board_coordinate(Vector2i(row, puzzle.input_size.y))
 		b = Vector2(b.y, b.x) * cell_size_px
 		
-		draw_line(a , b, Color.WHITE, 2)
+		draw_line(a , b, line_color, 2)
 	
 	# Vertical
 	for col in puzzle.input_size.y + 1:
@@ -35,7 +38,7 @@ func _draw() -> void:
 		var b: Vector2 = puzzle.input_to_board_coordinate(Vector2i(puzzle.input_size.x, col))
 		b = Vector2(b.y, b.x) * cell_size_px
 		
-		draw_line(a , b, Color.WHITE, 2)
+		draw_line(a , b, line_color, 2)
 	
 	# Input Cells
 	for row in puzzle.input_size.x:

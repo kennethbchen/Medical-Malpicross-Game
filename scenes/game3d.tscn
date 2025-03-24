@@ -64,6 +64,7 @@ temp_inner_mat = SubResource("StandardMaterial3D_g68k2")
 metadata/_custom_type_script = ExtResource("8_gl5h8")
 
 [node name="GridMesh3D" type="MeshInstance3D" parent="PuzzleController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0686853, 0)
 gi_mode = 0
 script = ExtResource("3_ygxcr")
 metadata/_custom_type_script = ExtResource("3_ygxcr")
