@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=21 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
@@ -22,11 +22,21 @@ sky = SubResource("Sky_b4stf")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="Gradient" id="Gradient_gl5h8"]
+colors = PackedColorArray(0.89059, 0.89059, 0.89059, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_inhaj"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_g68k2"]
+color_ramp = SubResource("Gradient_gl5h8")
+noise = SubResource("FastNoiseLite_inhaj")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inhaj"]
 albedo_color = Color(0.7, 0.5334, 0.406, 1)
+albedo_texture = SubResource("NoiseTexture2D_g68k2")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g68k2"]
-albedo_color = Color(0.929412, 0.372549, 0.360784, 1)
+albedo_color = Color(0.79, 0.237, 0.246217, 1)
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_gl5h8"]
 
