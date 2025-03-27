@@ -81,7 +81,7 @@ roll_noise = SubResource("FastNoiseLite_uhc1k")
 max_pitch = 4.0
 max_yaw = 4.0
 max_roll = 4.0
-decay = 0.8
+decay = 0.85
 
 [node name="Camera3D" type="Camera3D" parent="CameraSystem/CameraShake"]
 transform = Transform3D(1, 0, 0, 0, 0.360127, 0.932903, 0, -0.932903, 0.360127, 0, 0, 0)
