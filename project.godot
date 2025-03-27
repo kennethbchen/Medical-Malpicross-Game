@@ -22,10 +22,11 @@ EventBus="*res://scripts/util/event_bus.gd"
 [file_customization]
 
 folder_colors={
+"res://materials/": "purple",
 "res://scenes/": "green",
 "res://scripts/": "blue",
 "res://scripts/resources/": "blue",
-"res://sprites/": "purple"
+"res://sprites/": "yellow"
 }
 
 [input]

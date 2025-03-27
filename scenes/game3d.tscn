@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=26 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
@@ -7,6 +7,8 @@
 [ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="3_b4stf"]
 [ext_resource type="Script" uid="uid://dcnqwn1puo4h" path="res://scripts/resources/grid_mesh_3d.gd" id="3_ygxcr"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]
+[ext_resource type="Material" uid="uid://ciby5iqxnlkkt" path="res://materials/outer_body.tres" id="5_g68k2"]
+[ext_resource type="Material" uid="uid://cvrl3d5xlg44d" path="res://materials/inner_body.tres" id="6_v280i"]
 [ext_resource type="Script" uid="uid://brmgweuwi3o8i" path="res://scripts/simulation/flesh_sim_3d.gd" id="7_xrhyx"]
 [ext_resource type="Script" uid="uid://bk1vxm6ujfddn" path="res://scripts/resources/body_mesh_3d.gd" id="8_gl5h8"]
 
@@ -18,8 +20,11 @@ ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
 sky_material = SubResource("ProceduralSkyMaterial_f1g4q")
 
 [sub_resource type="Environment" id="Environment_ygxcr"]
-background_mode = 2
+background_mode = 1
+background_color = Color(0.0375587, 0.0434715, 0.0536116, 1)
 sky = SubResource("Sky_b4stf")
+ambient_light_source = 2
+ambient_light_color = Color(0.328767, 0.3255, 0.35, 1)
 tonemap_mode = 2
 glow_enabled = true
 
@@ -31,41 +36,53 @@ seed = 1
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_uhc1k"]
 seed = 3
 
-[sub_resource type="Gradient" id="Gradient_gl5h8"]
-colors = PackedColorArray(0.89059, 0.89059, 0.89059, 1, 1, 1, 1, 1)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_inhaj"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_g68k2"]
-color_ramp = SubResource("Gradient_gl5h8")
-noise = SubResource("FastNoiseLite_inhaj")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inhaj"]
-albedo_color = Color(0.7, 0.5334, 0.406, 1)
-albedo_texture = SubResource("NoiseTexture2D_g68k2")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g68k2"]
-albedo_color = Color(0.79, 0.237, 0.246217, 1)
-
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_gl5h8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v280i"]
 albedo_color = Color(0.847059, 0.215686, 0.368627, 1)
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_gl5h8"]
-size = Vector2(4, 5)
+[sub_resource type="Gradient" id="Gradient_inhaj"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.172727, 0.333333)
+colors = PackedColorArray(0.94, 0.1504, 0.1504, 1, 1, 1, 1, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gl5h8"]
-albedo_color = Color(0.803922, 0.352941, 0.392157, 1)
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_swwbn"]
+seed = -2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_u2txl"]
+width = 128
+height = 128
+color_ramp = SubResource("Gradient_inhaj")
+noise = SubResource("FastNoiseLite_swwbn")
+
+[sub_resource type="Gradient" id="Gradient_v280i"]
+offsets = PackedFloat32Array(0, 0.351515)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_v280i"]
+width = 128
+height = 128
+color_ramp = SubResource("Gradient_v280i")
+noise = SubResource("FastNoiseLite_swwbn")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1koi6"]
+albedo_color = Color(0.778308, 0.807507, 0.853954, 1)
+albedo_texture = SubResource("NoiseTexture2D_u2txl")
+metallic = 0.63
+metallic_specular = 1.0
+metallic_texture = SubResource("NoiseTexture2D_v280i")
+roughness = 0.59
 
 [node name="Game3d" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ygxcr")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.999979, 0, -0.00628289, 0.00536764, 0.519773, 0.854289, 0.00326607, -0.854305, 0.519763, 0, -3.35877, 1.46817e-07)
-shadow_enabled = true
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.474518, 0.880246, 0, -0.880246, -0.474518, 0, 4.52919, 0)
+light_energy = 5.144
+spot_range = 14.594
+spot_angle = 101.3
+spot_angle_attenuation = 3.24901
 
 [node name="DebugCommands" type="Node" parent="."]
 script = ExtResource("1_b4stf")
@@ -94,8 +111,8 @@ camera = NodePath("../CameraSystem/CameraShake/Camera3D")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0162085, 0)
 skeleton = NodePath("../..")
 script = ExtResource("8_gl5h8")
-temp_outer_mat = SubResource("StandardMaterial3D_inhaj")
-temp_inner_mat = SubResource("StandardMaterial3D_g68k2")
+temp_outer_mat = ExtResource("5_g68k2")
+temp_inner_mat = ExtResource("6_v280i")
 metadata/_custom_type_script = ExtResource("8_gl5h8")
 
 [node name="GridMesh3D" type="MeshInstance3D" parent="PuzzleController"]
@@ -145,12 +162,13 @@ size = Vector3(1.49426, 1, 1.53906)
 material = SubResource("StandardMaterial3D_v280i")
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -4.54868, -8.22142)
-radius = 4.0
-height = 8.0
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -7.0395, -11.5171)
+material_override = ExtResource("5_g68k2")
+radius = 6.76855
+height = 14.5913
+sides = 16
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.756648, 0)
-visible = false
-mesh = SubResource("PlaneMesh_gl5h8")
-surface_material_override/0 = SubResource("StandardMaterial3D_gl5h8")
+[node name="OperatingTable" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.39389, 0)
+size = Vector3(17.208, 1, 34.3005)
+material = SubResource("StandardMaterial3D_1koi6")
