@@ -161,7 +161,7 @@ transform = Transform3D(0.882382, 0, -0.470535, 0, 1, 0, 0.470535, 0, 0.882382, 
 size = Vector3(1.49426, 1, 1.53906)
 material = SubResource("StandardMaterial3D_v280i")
 
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+[node name="StaticBody" type="CSGCylinder3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -7.0395, -11.5171)
 material_override = ExtResource("5_g68k2")
 radius = 6.76855
