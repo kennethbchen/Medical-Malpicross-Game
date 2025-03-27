@@ -1,8 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=25 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
 [ext_resource type="Script" uid="uid://dra4lijujrmwu" path="res://scripts/puzzle_viewport.gd" id="2_f1g4q"]
+[ext_resource type="Script" path="res://scripts/camera/camera_shake.gd" id="2_inhaj"]
 [ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="3_b4stf"]
 [ext_resource type="Script" uid="uid://dcnqwn1puo4h" path="res://scripts/resources/grid_mesh_3d.gd" id="3_ygxcr"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]
@@ -21,6 +22,14 @@ background_mode = 2
 sky = SubResource("Sky_b4stf")
 tonemap_mode = 2
 glow_enabled = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_g68k2"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_v280i"]
+seed = 1
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_uhc1k"]
+seed = 3
 
 [sub_resource type="Gradient" id="Gradient_gl5h8"]
 colors = PackedColorArray(0.89059, 0.89059, 0.89059, 1, 1, 1, 1, 1)
@@ -61,9 +70,25 @@ shadow_enabled = true
 [node name="DebugCommands" type="Node" parent="."]
 script = ExtResource("1_b4stf")
 
+[node name="CameraSystem" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45724, 1.15614)
+
+[node name="CameraShake" type="Node3D" parent="CameraSystem"]
+script = ExtResource("2_inhaj")
+pitch_noise = SubResource("FastNoiseLite_g68k2")
+yaw_noise = SubResource("FastNoiseLite_v280i")
+roll_noise = SubResource("FastNoiseLite_uhc1k")
+max_pitch = 4.0
+max_yaw = 4.0
+max_roll = 4.0
+decay = 0.8
+
+[node name="Camera3D" type="Camera3D" parent="CameraSystem/CameraShake"]
+transform = Transform3D(1, 0, 0, 0, 0.360127, 0.932903, 0, -0.932903, 0.360127, 0, 0, 0)
+
 [node name="PuzzleController" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
 script = ExtResource("1_yob6b")
-camera = NodePath("../Camera3D")
+camera = NodePath("../CameraSystem/CameraShake/Camera3D")
 
 [node name="BodyMesh3D" type="MeshInstance3D" parent="PuzzleController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0162085, 0)
@@ -118,9 +143,6 @@ offset_bottom = 96.0
 transform = Transform3D(0.882382, 0, -0.470535, 0, 1, 0, 0.470535, 0, 0.882382, 0.243781, -1.1113, 0.0280095)
 size = Vector3(1.49426, 1, 1.53906)
 material = SubResource("StandardMaterial3D_v280i")
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.360127, 0.932903, 0, -0.932903, 0.360127, 0, 2.45724, 1.15614)
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -4.54868, -8.22142)

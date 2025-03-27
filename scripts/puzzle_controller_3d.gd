@@ -114,6 +114,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 		if event.is_action_pressed("game_color"):
 			puzzle.toggle_input_colored(selected_cell.x, selected_cell.y)
+			EventBus.screen_shake_requested.emit(0.75)
 			
 		if event.is_action_pressed("game_cross"):
 			puzzle.toggle_input_crossed(selected_cell.x, selected_cell.y)
