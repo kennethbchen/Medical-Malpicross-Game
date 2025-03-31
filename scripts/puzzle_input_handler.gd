@@ -3,8 +3,9 @@ extends Node
 enum STATE {IDLE, COOLDOWN}
 
 @export var cursor: Node3D
+@export var cursor_particles: CPUParticles3D
 
-var cursor_travel_time: float = 0.1
+var cursor_travel_time: float = 0.2
 
 var cursor_hover_height: float = 1.5
 
@@ -37,6 +38,7 @@ func color_cell(row, col) -> void:
 		puzzle.toggle_input_colored(row, col)
 		EventBus.screen_shake_requested.emit(0.75)
 		current_state = STATE.IDLE
+		cursor_particles.emitting = true
 		)
 
 func cross_cell(row, col) -> void:
@@ -52,5 +54,5 @@ func _process(delta: float) -> void:
 			var new_cursor_position: Vector3 = Vector3(cursor_position.x, 0, cursor_position.y) * cell_scale_factor
 			new_cursor_position.y = cursor_hover_height
 			
-			cursor.position = cursor.position.move_toward(new_cursor_position, delta * 10)
+			cursor.position = cursor.position.move_toward(new_cursor_position, delta * 20)
 	

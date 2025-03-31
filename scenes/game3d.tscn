@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=31 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
@@ -36,6 +36,18 @@ seed = 1
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_uhc1k"]
 seed = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uhc1k"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_uhc1k"]
+material = SubResource("StandardMaterial3D_uhc1k")
+radius = 0.125
+height = 0.25
+
+[sub_resource type="Curve" id="Curve_uhc1k"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.78378, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="PrismMesh" id="PrismMesh_uhc1k"]
 left_to_right = 1.0
@@ -115,21 +127,40 @@ camera = NodePath("../CameraSystem/CameraShake/Camera3D")
 [node name="KnifeCursor" type="Node3D" parent="PuzzleController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42609, 0)
 
+[node name="BloodParticles" type="CPUParticles3D" parent="PuzzleController/KnifeCursor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.46833, 0)
+emitting = false
+amount = 32
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.93
+seed = 660250254
+lifetime_randomness = 0.5
+mesh = SubResource("SphereMesh_uhc1k")
+direction = Vector3(0, 1, 0)
+spread = 48.05
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+scale_amount_min = 0.25
+scale_amount_max = 1.5
+scale_amount_curve = SubResource("Curve_uhc1k")
+
 [node name="Mesh" type="Node3D" parent="PuzzleController/KnifeCursor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.494684, 0)
 
 [node name="CSGBox3D" type="CSGBox3D" parent="PuzzleController/KnifeCursor/Mesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.93132, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42748, 0)
 size = Vector3(0.135254, 3.13184, 0.12207)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleController/KnifeCursor/Mesh"]
-transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0.0600144, 0.165606, 0)
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0.0600144, -0.338235, 0)
 mesh = SubResource("PrismMesh_uhc1k")
 skeleton = NodePath("../..")
 
-[node name="PuzzleInputHandler" type="Node" parent="PuzzleController" node_paths=PackedStringArray("cursor")]
+[node name="PuzzleInputHandler" type="Node" parent="PuzzleController" node_paths=PackedStringArray("cursor", "cursor_particles")]
 script = ExtResource("4_uhc1k")
 cursor = NodePath("../KnifeCursor")
+cursor_particles = NodePath("../KnifeCursor/BloodParticles")
 
 [node name="BodyMesh3D" type="MeshInstance3D" parent="PuzzleController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0162085, 0)
