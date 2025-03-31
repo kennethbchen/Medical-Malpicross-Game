@@ -2,6 +2,8 @@ extends Node3D
 
 @export var camera: Camera3D
 
+@onready var input_handler = $PuzzleInputHandler
+
 @onready var flesh_sim: Node3D = $FleshSim3D
 
 @onready var grid_mesh: GridMesh3D = $GridMesh3D
@@ -57,10 +59,13 @@ var cell_scale_factor: float = cell_size / sim_segment_size
 var cursor_position: Vector2i
 
 func _ready() -> void:
+	
 	puzzle_string = test_puzzles.pick_random()
 
 	puzzle = Puzzle.new(puzzle_string)
 	
+	input_handler.init(puzzle)
+
 	board_cell_rows = puzzle.board_size.x
 	board_cell_columns = puzzle.board_size.y
 	
@@ -113,11 +118,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if selected_cell != Vector2i(-1, -1):
 
 		if event.is_action_pressed("game_color"):
-			puzzle.toggle_input_colored(selected_cell.x, selected_cell.y)
-			EventBus.screen_shake_requested.emit(0.75)
+			input_handler.color_cell(selected_cell.x, selected_cell.y)
 			
 		if event.is_action_pressed("game_cross"):
-			puzzle.toggle_input_crossed(selected_cell.x, selected_cell.y)
+			input_handler.cross_cell(selected_cell.x, selected_cell.y)
 
 func _process(delta: float) -> void:
 

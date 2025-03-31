@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=27 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b4k1w2j2r7scw" path="res://scripts/camera/camera_shake.gd" id="2_inhaj"]
 [ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="3_b4stf"]
 [ext_resource type="Script" uid="uid://dcnqwn1puo4h" path="res://scripts/resources/grid_mesh_3d.gd" id="3_ygxcr"]
+[ext_resource type="Script" uid="uid://c0qfearwpscmu" path="res://scripts/puzzle_input_handler.gd" id="4_uhc1k"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]
 [ext_resource type="Material" uid="uid://ciby5iqxnlkkt" path="res://materials/outer_body.tres" id="5_g68k2"]
 [ext_resource type="Material" uid="uid://cvrl3d5xlg44d" path="res://materials/inner_body.tres" id="6_v280i"]
@@ -106,6 +107,9 @@ transform = Transform3D(1, 0, 0, 0, 0.360127, 0.932903, 0, -0.932903, 0.360127, 
 [node name="PuzzleController" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
 script = ExtResource("1_yob6b")
 camera = NodePath("../CameraSystem/CameraShake/Camera3D")
+
+[node name="PuzzleInputHandler" type="Node" parent="PuzzleController"]
+script = ExtResource("4_uhc1k")
 
 [node name="BodyMesh3D" type="MeshInstance3D" parent="PuzzleController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0162085, 0)
