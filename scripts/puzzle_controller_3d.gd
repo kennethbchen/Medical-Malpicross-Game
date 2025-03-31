@@ -64,7 +64,7 @@ func _ready() -> void:
 
 	puzzle = Puzzle.new(puzzle_string)
 	
-	input_handler.init(puzzle)
+	
 
 	board_cell_rows = puzzle.board_size.x
 	board_cell_columns = puzzle.board_size.y
@@ -89,6 +89,7 @@ func _ready() -> void:
 
 	body_mesh.init(puzzle.input_size.x, puzzle.input_size.y, cell_size)
 	
+	input_handler.init(puzzle, grid_mesh, cell_scale_factor)
 	# Create input_quads so that we can interpret mouse input
 	for row in puzzle.input_size.x:
 		
@@ -133,6 +134,7 @@ func _process(delta: float) -> void:
 	selected_cell = _get_selected_cell()
 	puzzle_viewport.highlight_cell(selected_cell)
 	flesh_sim.set_cursor_position(cursor_position)
+	input_handler.set_cursor_position(cursor_position)
 	
 
 func _physics_process(delta: float) -> void:

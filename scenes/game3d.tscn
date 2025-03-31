@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=28 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
@@ -36,6 +36,10 @@ seed = 1
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_uhc1k"]
 seed = 3
+
+[sub_resource type="PrismMesh" id="PrismMesh_uhc1k"]
+left_to_right = 1.0
+size = Vector3(0.22, 0.42, 0.065)
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_gl5h8"]
 
@@ -102,14 +106,30 @@ max_roll = 4.0
 decay = 0.85
 
 [node name="Camera3D" type="Camera3D" parent="CameraSystem/CameraShake"]
-transform = Transform3D(1, 0, 0, 0, 0.360127, 0.932903, 0, -0.932903, 0.360127, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.494458, 0.869202, 0, -0.869202, 0.494458, 0, 0.192626, 1.0183)
 
 [node name="PuzzleController" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
 script = ExtResource("1_yob6b")
 camera = NodePath("../CameraSystem/CameraShake/Camera3D")
 
-[node name="PuzzleInputHandler" type="Node" parent="PuzzleController"]
+[node name="KnifeCursor" type="Node3D" parent="PuzzleController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42609, 0)
+
+[node name="Mesh" type="Node3D" parent="PuzzleController/KnifeCursor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.494684, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="PuzzleController/KnifeCursor/Mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.93132, 0)
+size = Vector3(0.135254, 3.13184, 0.12207)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleController/KnifeCursor/Mesh"]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0.0600144, 0.165606, 0)
+mesh = SubResource("PrismMesh_uhc1k")
+skeleton = NodePath("../..")
+
+[node name="PuzzleInputHandler" type="Node" parent="PuzzleController" node_paths=PackedStringArray("cursor")]
 script = ExtResource("4_uhc1k")
+cursor = NodePath("../KnifeCursor")
 
 [node name="BodyMesh3D" type="MeshInstance3D" parent="PuzzleController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0162085, 0)
