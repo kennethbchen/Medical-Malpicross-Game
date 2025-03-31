@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
 [ext_resource type="Script" uid="uid://dra4lijujrmwu" path="res://scripts/puzzle_viewport.gd" id="2_f1g4q"]
-[ext_resource type="Script" path="res://scripts/camera/camera_shake.gd" id="2_inhaj"]
+[ext_resource type="Script" uid="uid://b4k1w2j2r7scw" path="res://scripts/camera/camera_shake.gd" id="2_inhaj"]
 [ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="3_b4stf"]
 [ext_resource type="Script" uid="uid://dcnqwn1puo4h" path="res://scripts/resources/grid_mesh_3d.gd" id="3_ygxcr"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]

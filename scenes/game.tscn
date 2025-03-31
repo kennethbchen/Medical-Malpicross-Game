@@ -28,10 +28,7 @@ metadata/_custom_type_script = ExtResource("4_lbhrr")
 
 [node name="FleshSim" type="Node2D" parent="PuzzleController"]
 script = ExtResource("2_u5sy4")
-disable_sim = true
-draw_sim = true
 hide_fixed = true
-draw_offsets = true
 metadata/_edit_group_ = true
 
 [node name="PuzzleViewport" type="SubViewport" parent="PuzzleController"]
@@ -62,4 +59,5 @@ offset_right = 128.0
 offset_bottom = 96.0
 
 [node name="Sprite2D" type="Sprite2D" parent="PuzzleController"]
+visible = false
 texture = ExtResource("8_gee14")
