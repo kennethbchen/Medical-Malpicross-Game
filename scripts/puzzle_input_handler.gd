@@ -5,7 +5,7 @@ enum STATE {IDLE, COOLDOWN}
 @export var cursor: Node3D
 @export var cursor_particles: CPUParticles3D
 
-var cursor_hover_height: float = 0.5
+var cursor_hover_height: float = 1.5
 
 var puzzle: Puzzle
 
