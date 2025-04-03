@@ -112,9 +112,9 @@ script = ExtResource("2_inhaj")
 pitch_noise = SubResource("FastNoiseLite_g68k2")
 yaw_noise = SubResource("FastNoiseLite_v280i")
 roll_noise = SubResource("FastNoiseLite_uhc1k")
-max_pitch = 4.0
-max_yaw = 4.0
-max_roll = 4.0
+max_pitch = 6.0
+max_yaw = 6.0
+max_roll = 6.0
 decay = 0.85
 
 [node name="Camera3D" type="Camera3D" parent="CameraSystem/CameraShake"]

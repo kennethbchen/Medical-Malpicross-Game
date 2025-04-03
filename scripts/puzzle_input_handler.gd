@@ -32,13 +32,22 @@ func color_cell(row, col) -> void:
 	current_state = STATE.COOLDOWN
 	var tween = get_tree().create_tween()
 	tween.set_trans(Tween.TRANS_BACK)
-
+	
+	# Attack
 	tween.tween_property(cursor, "position:y", -1.5, cursor_travel_time)
 	tween.tween_callback(func():
 		puzzle.toggle_input_colored(row, col)
 		EventBus.screen_shake_requested.emit(0.75)
-		current_state = STATE.IDLE
 		cursor_particles.emitting = true
+		)
+
+	# Hold
+	tween.set_trans(Tween.TRANS_QUAD)
+	tween.tween_property(cursor, "position:y", cursor_hover_height, 0.5).set_delay(0.2)
+	
+	# Recovery
+	tween.tween_callback(func():
+		current_state = STATE.IDLE
 		)
 
 func cross_cell(row, col) -> void:
