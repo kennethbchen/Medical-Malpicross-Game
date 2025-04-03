@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=32 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://b4k1w2j2r7scw" path="res://scripts/camera/camera_shake.gd" id="2_inhaj"]
 [ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="3_b4stf"]
 [ext_resource type="Script" uid="uid://dcnqwn1puo4h" path="res://scripts/resources/grid_mesh_3d.gd" id="3_ygxcr"]
+[ext_resource type="Material" uid="uid://ljxvvcm1awo" path="res://materials/knife.tres" id="4_swwbn"]
 [ext_resource type="Script" uid="uid://c0qfearwpscmu" path="res://scripts/puzzle_input_handler.gd" id="4_uhc1k"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]
 [ext_resource type="Material" uid="uid://ciby5iqxnlkkt" path="res://materials/outer_body.tres" id="5_g68k2"]
@@ -50,8 +51,9 @@ _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.78378, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="PrismMesh" id="PrismMesh_uhc1k"]
+material = ExtResource("4_swwbn")
 left_to_right = 1.0
-size = Vector3(0.22, 0.42, 0.065)
+size = Vector3(0.295, 0.88, 0.2)
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_gl5h8"]
 
@@ -95,11 +97,12 @@ roughness = 0.59
 environment = SubResource("Environment_ygxcr")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.474518, 0.880246, 0, -0.880246, -0.474518, 0, 4.52919, 0)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 7.89235, 0)
 light_energy = 5.144
-spot_range = 14.594
-spot_angle = 101.3
-spot_angle_attenuation = 3.24901
+shadow_enabled = true
+spot_range = 28.581
+spot_angle = 74.54
+spot_angle_attenuation = 1.31951
 
 [node name="DebugCommands" type="Node" parent="."]
 script = ExtResource("1_b4stf")
@@ -151,14 +154,16 @@ scale_amount_curve = SubResource("Curve_uhc1k")
 [node name="Mesh" type="Node3D" parent="PuzzleController/KnifeCursor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.494684, 0)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="PuzzleController/KnifeCursor/Mesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42748, 0)
-size = Vector3(0.135254, 3.13184, 0.12207)
-
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleController/KnifeCursor/Mesh"]
-transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0.0600144, -0.338235, 0)
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0.0531429, -0.338, 0)
 mesh = SubResource("PrismMesh_uhc1k")
 skeleton = NodePath("../..")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="PuzzleController/KnifeCursor/Mesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.71137, 0)
+radius = 0.1
+height = 3.69531
+material = ExtResource("4_swwbn")
 
 [node name="PuzzleInputHandler" type="Node" parent="PuzzleController" node_paths=PackedStringArray("cursor", "cursor_particles")]
 script = ExtResource("4_uhc1k")
