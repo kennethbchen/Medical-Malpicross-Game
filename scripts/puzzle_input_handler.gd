@@ -30,7 +30,6 @@ func color_cell(row, col) -> void:
 	current_state = STATE.COOLDOWN
 	var tween = get_tree().create_tween()
 	
-	
 	# Wind up
 	tween.set_trans(Tween.TRANS_QUAD)
 	tween.set_ease(Tween.EASE_OUT)
@@ -45,7 +44,7 @@ func color_cell(row, col) -> void:
 	tween.tween_callback(func():
 		puzzle.toggle_input_colored(row, col)
 		EventBus.screen_shake_requested.emit(0.75)
-		).set_delay(0.1)
+		).set_delay(0.08)
 	tween.parallel().tween_callback(func():
 		cursor_particles.emitting = true
 		).set_delay(0.15)
