@@ -128,13 +128,13 @@ camera = NodePath("../CameraSystem/CameraShake/Camera3D")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42609, 0)
 
 [node name="BloodParticles" type="CPUParticles3D" parent="PuzzleController/KnifeCursor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.46833, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40303, 0)
 emitting = false
 amount = 32
 lifetime = 0.5
 one_shot = true
 explosiveness = 0.93
-seed = 660250254
+seed = 609854844
 lifetime_randomness = 0.5
 mesh = SubResource("SphereMesh_uhc1k")
 direction = Vector3(0, 1, 0)
