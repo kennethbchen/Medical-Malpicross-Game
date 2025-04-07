@@ -34,12 +34,13 @@ func color_cell(row, col) -> void:
 		
 	current_state = STATE.COOLDOWN
 	var tween = get_tree().create_tween()
-	
+
 	# Wind up
+	
 	tween.set_trans(Tween.TRANS_QUAD)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(cursor, "position:y", cursor_hover_height + 0.75, 0.08)
-	tween.tween_callback(func():
+	tween.parallel().tween_callback(func():
 		cursor_sfx_player.stream = knife_swoosh_sounds
 		cursor_sfx_player.play()
 		)
@@ -57,10 +58,10 @@ func color_cell(row, col) -> void:
 		
 		
 		EventBus.screen_shake_requested.emit(0.8)
-		).set_delay(0.08)
+		).set_delay(0.03)
 	tween.parallel().tween_callback(func():
 		cursor_particles.emitting = true
-		).set_delay(0.1)
+		).set_delay(0.06)
 	tween.parallel().tween_property(cursor, "position:y", -1.5, 0.2)
 	
 	# Hold
