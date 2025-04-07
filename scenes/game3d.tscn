@@ -47,7 +47,7 @@ radius = 0.125
 height = 0.25
 
 [sub_resource type="Curve" id="Curve_uhc1k"]
-_data = [Vector2(0, 0), 0.0, 34.8314, 0, 0, Vector2(0.0668449, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.78378, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 34.8314, 0, 0, Vector2(0.0668449, 1), 0.0, 0.0, 0, 0, Vector2(0.961131, 0), -2.78378, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="PrismMesh" id="PrismMesh_uhc1k"]
@@ -137,8 +137,7 @@ amount = 32
 lifetime = 0.5
 one_shot = true
 explosiveness = 0.71
-randomness = 0.92
-seed = 3684865696
+randomness = 0.89
 lifetime_randomness = 0.5
 mesh = SubResource("SphereMesh_uhc1k")
 emission_shape = 3
@@ -176,13 +175,13 @@ skeleton = NodePath("../..")
 script = ExtResource("8_gl5h8")
 temp_outer_mat = ExtResource("5_g68k2")
 temp_inner_mat = ExtResource("6_v280i")
-metadata/_custom_type_script = ExtResource("8_gl5h8")
+metadata/_custom_type_script = "uid://bk1vxm6ujfddn"
 
 [node name="GridMesh3D" type="MeshInstance3D" parent="PuzzleController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0686853, 0)
 gi_mode = 0
 script = ExtResource("3_ygxcr")
-metadata/_custom_type_script = ExtResource("3_ygxcr")
+metadata/_custom_type_script = "uid://dcnqwn1puo4h"
 
 [node name="FleshSim3D" type="Node3D" parent="PuzzleController"]
 script = ExtResource("7_xrhyx")
