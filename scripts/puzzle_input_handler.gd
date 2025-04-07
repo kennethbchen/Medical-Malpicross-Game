@@ -4,6 +4,11 @@ enum STATE {IDLE, COOLDOWN}
 
 @export var cursor: Node3D
 @export var cursor_particles: CPUParticles3D
+@export var cursor_sfx_player: AudioStreamPlayer3D
+
+@export_group("SFX")
+@export var knife_swoosh_sounds: AudioStream
+@export var knife_impact_sounds: AudioStream
 
 var cursor_hover_height: float = 1.5
 
@@ -34,7 +39,10 @@ func color_cell(row, col) -> void:
 	tween.set_trans(Tween.TRANS_QUAD)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.tween_property(cursor, "position:y", cursor_hover_height + 0.75, 0.08)
-
+	tween.tween_callback(func():
+		cursor_sfx_player.stream = knife_swoosh_sounds
+		cursor_sfx_player.play()
+		)
 	# Attack
 	
 	# The timing of when the knife contacts the body is slightly before
@@ -43,6 +51,11 @@ func color_cell(row, col) -> void:
 	tween.set_trans(Tween.TRANS_BACK)
 	tween.tween_callback(func():
 		puzzle.toggle_input_colored(row, col)
+		
+		cursor_sfx_player.stream = knife_impact_sounds
+		cursor_sfx_player.play()
+		
+		
 		EventBus.screen_shake_requested.emit(0.8)
 		).set_delay(0.08)
 	tween.parallel().tween_callback(func():

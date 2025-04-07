@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=46 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
@@ -10,9 +10,21 @@
 [ext_resource type="Script" uid="uid://c0qfearwpscmu" path="res://scripts/puzzle_input_handler.gd" id="4_uhc1k"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]
 [ext_resource type="Material" uid="uid://ciby5iqxnlkkt" path="res://materials/outer_body.tres" id="5_g68k2"]
+[ext_resource type="AudioStream" uid="uid://dbi443gwhx06d" path="res://audio/sfx/knife_swoosh/swoosh 01.wav" id="6_lshh4"]
 [ext_resource type="Material" uid="uid://cvrl3d5xlg44d" path="res://materials/inner_body.tres" id="6_v280i"]
+[ext_resource type="AudioStream" uid="uid://jlpfc08lort5" path="res://audio/sfx/knife_swoosh/swoosh 02.wav" id="7_485ri"]
 [ext_resource type="Script" uid="uid://brmgweuwi3o8i" path="res://scripts/simulation/flesh_sim_3d.gd" id="7_xrhyx"]
+[ext_resource type="AudioStream" uid="uid://dbefml854bgp7" path="res://audio/sfx/knife_swoosh/swoosh 03.wav" id="8_756ie"]
 [ext_resource type="Script" uid="uid://bk1vxm6ujfddn" path="res://scripts/resources/body_mesh_3d.gd" id="8_gl5h8"]
+[ext_resource type="AudioStream" uid="uid://b33wyto8ta40p" path="res://audio/sfx/knife_swoosh/swoosh 04.wav" id="9_ychbj"]
+[ext_resource type="AudioStream" uid="uid://duvmbybc05c3p" path="res://audio/sfx/knife_swoosh/swoosh 05.wav" id="10_s712l"]
+[ext_resource type="AudioStream" uid="uid://djlyuiulbt0ab" path="res://audio/sfx/knife_swoosh/swoosh 06.wav" id="11_iwkrh"]
+[ext_resource type="AudioStream" uid="uid://btdhobhokmep3" path="res://audio/sfx/knife_impact/impact 01.wav" id="12_lliyq"]
+[ext_resource type="AudioStream" uid="uid://ctytmj5t0d3ed" path="res://audio/sfx/knife_impact/impact 02.wav" id="13_dogtj"]
+[ext_resource type="AudioStream" uid="uid://cnuqfvndwgfd0" path="res://audio/sfx/knife_impact/impact 03.wav" id="14_lip14"]
+[ext_resource type="AudioStream" uid="uid://dp6k3gk32yjqg" path="res://audio/sfx/knife_impact/impact 04.wav" id="15_fdta4"]
+[ext_resource type="AudioStream" uid="uid://buvt3h567ypjp" path="res://audio/sfx/knife_impact/impact 05.wav" id="16_38a0a"]
+[ext_resource type="AudioStream" uid="uid://cvani8d6cmwfh" path="res://audio/sfx/knife_impact/impact 06.wav" id="17_uep1p"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f1g4q"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -54,6 +66,24 @@ point_count = 3
 material = ExtResource("4_swwbn")
 left_to_right = 1.0
 size = Vector3(0.295, 0.88, 0.2)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_swwbn"]
+streams_count = 6
+stream_0/stream = ExtResource("6_lshh4")
+stream_1/stream = ExtResource("7_485ri")
+stream_2/stream = ExtResource("8_756ie")
+stream_3/stream = ExtResource("9_ychbj")
+stream_4/stream = ExtResource("10_s712l")
+stream_5/stream = ExtResource("11_iwkrh")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jcay4"]
+streams_count = 6
+stream_0/stream = ExtResource("12_lliyq")
+stream_1/stream = ExtResource("13_dogtj")
+stream_2/stream = ExtResource("14_lip14")
+stream_3/stream = ExtResource("15_fdta4")
+stream_4/stream = ExtResource("16_38a0a")
+stream_5/stream = ExtResource("17_uep1p")
 
 [sub_resource type="ImmediateMesh" id="ImmediateMesh_gl5h8"]
 
@@ -130,6 +160,10 @@ camera = NodePath("../CameraSystem/CameraShake/Camera3D")
 [node name="KnifeCursor" type="Node3D" parent="PuzzleController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42609, 0)
 
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="PuzzleController/KnifeCursor"]
+autoplay = true
+bus = &"SFX"
+
 [node name="BloodParticles" type="CPUParticles3D" parent="PuzzleController/KnifeCursor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40303, 0)
 emitting = false
@@ -164,10 +198,13 @@ radius = 0.1
 height = 3.69531
 material = ExtResource("4_swwbn")
 
-[node name="PuzzleInputHandler" type="Node" parent="PuzzleController" node_paths=PackedStringArray("cursor", "cursor_particles")]
+[node name="PuzzleInputHandler" type="Node" parent="PuzzleController" node_paths=PackedStringArray("cursor", "cursor_particles", "cursor_sfx_player")]
 script = ExtResource("4_uhc1k")
 cursor = NodePath("../KnifeCursor")
 cursor_particles = NodePath("../KnifeCursor/BloodParticles")
+cursor_sfx_player = NodePath("../KnifeCursor/AudioStreamPlayer3D")
+knife_swoosh_sounds = SubResource("AudioStreamRandomizer_swwbn")
+knife_impact_sounds = SubResource("AudioStreamRandomizer_jcay4")
 
 [node name="BodyMesh3D" type="MeshInstance3D" parent="PuzzleController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0162085, 0)
