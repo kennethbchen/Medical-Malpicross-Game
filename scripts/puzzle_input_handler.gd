@@ -43,11 +43,11 @@ func color_cell(row, col) -> void:
 	tween.set_trans(Tween.TRANS_BACK)
 	tween.tween_callback(func():
 		puzzle.toggle_input_colored(row, col)
-		EventBus.screen_shake_requested.emit(0.75)
+		EventBus.screen_shake_requested.emit(0.8)
 		).set_delay(0.08)
 	tween.parallel().tween_callback(func():
 		cursor_particles.emitting = true
-		).set_delay(0.15)
+		).set_delay(0.1)
 	tween.parallel().tween_property(cursor, "position:y", -1.5, 0.2)
 	
 	# Hold
