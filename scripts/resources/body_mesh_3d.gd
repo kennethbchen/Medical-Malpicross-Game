@@ -2,8 +2,8 @@ extends MeshInstance3D
 
 class_name BodyMesh3D
 
-@export var temp_outer_mat: StandardMaterial3D
-@export var temp_inner_mat: StandardMaterial3D
+@export var temp_outer_mat: Material
+@export var temp_inner_mat: Material
 
 var flexible_cells_margin_rows: int = 2
 var flexible_cells_margin_columns: int = 2

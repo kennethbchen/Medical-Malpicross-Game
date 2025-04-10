@@ -24,7 +24,7 @@ script = ExtResource("1_yqjtg")
 [node name="GridMesh2D" type="MeshInstance2D" parent="PuzzleController"]
 texture = SubResource("ViewportTexture_iywne")
 script = ExtResource("4_lbhrr")
-metadata/_custom_type_script = ExtResource("4_lbhrr")
+metadata/_custom_type_script = "uid://s5lgnr5qn5q2"
 
 [node name="FleshSim" type="Node2D" parent="PuzzleController"]
 script = ExtResource("2_u5sy4")
