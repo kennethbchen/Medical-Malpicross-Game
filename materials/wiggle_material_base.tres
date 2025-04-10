@@ -13,23 +13,24 @@ color_ramp = SubResource("Gradient_ve2al")
 noise = SubResource("FastNoiseLite_qbelf")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ve2al"]
+noise_type = 0
+frequency = 0.1
 
 [sub_resource type="NoiseTexture3D" id="NoiseTexture3D_qbelf"]
-seamless = true
 noise = SubResource("FastNoiseLite_ve2al")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_15158"]
 seed = 250
+frequency = 0.1
 
 [sub_resource type="NoiseTexture3D" id="NoiseTexture3D_hgc7f"]
-seamless = true
 noise = SubResource("FastNoiseLite_15158")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_8kgkw"]
 seed = 95
+frequency = 0.1
 
 [sub_resource type="NoiseTexture3D" id="NoiseTexture3D_28tfp"]
-seamless = true
 noise = SubResource("FastNoiseLite_8kgkw")
 
 [resource]
@@ -38,10 +39,8 @@ shader = ExtResource("1_ve2al")
 shader_parameter/color = Color(0.7, 0.5334, 0.406, 1)
 shader_parameter/tex = SubResource("NoiseTexture2D_15158")
 shader_parameter/influence = 1.0
-shader_parameter/max_displacement = Vector3(0.2, 0.25, 0.2)
-shader_parameter/displacement_scale = 1.0
-shader_parameter/displacement_period = 0.0
-shader_parameter/displacement_speed = 1.0
+shader_parameter/max_displacement = Vector3(0.5, 0.7, 0.5)
+shader_parameter/displacement_speed = 0.25
 shader_parameter/x_noise = SubResource("NoiseTexture3D_qbelf")
 shader_parameter/y_noise = SubResource("NoiseTexture3D_hgc7f")
 shader_parameter/z_noise = SubResource("NoiseTexture3D_28tfp")

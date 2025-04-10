@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=47 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
@@ -26,12 +26,6 @@
 [ext_resource type="AudioStream" uid="uid://buvt3h567ypjp" path="res://audio/sfx/knife_impact/impact 05.wav" id="16_38a0a"]
 [ext_resource type="AudioStream" uid="uid://cvani8d6cmwfh" path="res://audio/sfx/knife_impact/impact 06.wav" id="17_uep1p"]
 [ext_resource type="Material" uid="uid://1jbeha805keo" path="res://materials/wiggle_material_base.tres" id="19_dogtj"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_dogtj"]
-material = ExtResource("19_dogtj")
-subdivide_width = 3
-subdivide_height = 3
-subdivide_depth = 3
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f1g4q"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -129,10 +123,6 @@ metallic_texture = SubResource("NoiseTexture2D_v280i")
 roughness = 0.59
 
 [node name="Game3d" type="Node3D"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7039, 0.381048, -1.10578)
-mesh = SubResource("BoxMesh_dogtj")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ygxcr")
