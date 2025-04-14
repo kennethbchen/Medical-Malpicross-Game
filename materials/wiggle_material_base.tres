@@ -3,8 +3,8 @@
 [ext_resource type="Shader" uid="uid://fpglbh5bcw73" path="res://shaders/vertex_wiggle.gdshader" id="1_ve2al"]
 
 [sub_resource type="Gradient" id="Gradient_ve2al"]
-offsets = PackedFloat32Array(0, 0.100402, 0.739394)
-colors = PackedColorArray(0.555109, 0.45521, 0.440714, 1, 0.641933, 0.641935, 0.641933, 1, 1, 1, 1, 1)
+offsets = PackedFloat32Array(0, 0.0522088, 0.739394)
+colors = PackedColorArray(0.732042, 0.638211, 0.624377, 1, 0.641933, 0.641935, 0.641933, 1, 1, 1, 1, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_qbelf"]
 
@@ -36,11 +36,11 @@ noise = SubResource("FastNoiseLite_8kgkw")
 [resource]
 render_priority = 0
 shader = ExtResource("1_ve2al")
-shader_parameter/color = Color(0.7, 0.5334, 0.406, 1)
+shader_parameter/color = Color(0.830779, 0.678424, 0.564061, 1)
 shader_parameter/tex = SubResource("NoiseTexture2D_15158")
-shader_parameter/influence = 1.0
-shader_parameter/max_displacement = Vector3(0.5, 0.7, 0.5)
-shader_parameter/displacement_speed = 0.25
+shader_parameter/influence = 0.27
+shader_parameter/max_displacement = Vector3(0.5, 1, 0.5)
+shader_parameter/displacement_speed = 0.1
 shader_parameter/x_noise = SubResource("NoiseTexture3D_qbelf")
 shader_parameter/y_noise = SubResource("NoiseTexture3D_hgc7f")
 shader_parameter/z_noise = SubResource("NoiseTexture3D_28tfp")

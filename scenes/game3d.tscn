@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=45 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
@@ -9,7 +9,6 @@
 [ext_resource type="Material" uid="uid://ljxvvcm1awo" path="res://materials/knife.tres" id="4_swwbn"]
 [ext_resource type="Script" uid="uid://c0qfearwpscmu" path="res://scripts/puzzle_input_handler.gd" id="4_uhc1k"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]
-[ext_resource type="Material" uid="uid://ciby5iqxnlkkt" path="res://materials/outer_body.tres" id="5_g68k2"]
 [ext_resource type="AudioStream" uid="uid://dbi443gwhx06d" path="res://audio/sfx/knife_swoosh/swoosh 01.wav" id="6_lshh4"]
 [ext_resource type="Material" uid="uid://cvrl3d5xlg44d" path="res://materials/inner_body.tres" id="6_v280i"]
 [ext_resource type="AudioStream" uid="uid://jlpfc08lort5" path="res://audio/sfx/knife_swoosh/swoosh 02.wav" id="7_485ri"]
@@ -85,8 +84,6 @@ stream_2/stream = ExtResource("14_lip14")
 stream_3/stream = ExtResource("15_fdta4")
 stream_4/stream = ExtResource("16_38a0a")
 stream_5/stream = ExtResource("17_uep1p")
-
-[sub_resource type="ImmediateMesh" id="ImmediateMesh_gl5h8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v280i"]
 albedo_color = Color(0.847059, 0.215686, 0.368627, 1)
@@ -222,11 +219,9 @@ script = ExtResource("3_ygxcr")
 metadata/_custom_type_script = "uid://dcnqwn1puo4h"
 
 [node name="FleshSim3D" type="Node3D" parent="PuzzleController"]
+visible = false
 script = ExtResource("7_xrhyx")
 hide_fixed = false
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleController"]
-mesh = SubResource("ImmediateMesh_gl5h8")
 
 [node name="PuzzleViewport" type="SubViewport" parent="PuzzleController"]
 disable_3d = true
@@ -263,10 +258,10 @@ material = SubResource("StandardMaterial3D_v280i")
 
 [node name="StaticBody" type="CSGCylinder3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -7.0395, -11.5171)
-material_override = ExtResource("5_g68k2")
 radius = 6.76855
 height = 14.5913
 sides = 16
+material = ExtResource("19_dogtj")
 
 [node name="OperatingTable" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.39389, 0)
