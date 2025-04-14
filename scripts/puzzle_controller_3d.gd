@@ -12,6 +12,8 @@ extends Node3D
 
 @onready var body_mesh: BodyMesh3D = $BodyMesh3D
 
+@onready var wiggle_shader_controller: Node = $WiggleShaderController
+
 var test_puzzles: Array[String] = [
 	"""0 1 1 1 0
 0 0 0 0 0
@@ -118,7 +120,7 @@ func _ready() -> void:
 
 		input_quads.append(row_data)
 		
-	
+	wiggle_shader_controller.init(puzzle)
 
 func _unhandled_input(event: InputEvent) -> void:
 	

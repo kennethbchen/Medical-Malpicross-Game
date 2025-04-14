@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=46 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
@@ -6,11 +6,11 @@
 [ext_resource type="Script" uid="uid://b4k1w2j2r7scw" path="res://scripts/camera/camera_shake.gd" id="2_inhaj"]
 [ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="3_b4stf"]
 [ext_resource type="Script" uid="uid://dcnqwn1puo4h" path="res://scripts/resources/grid_mesh_3d.gd" id="3_ygxcr"]
+[ext_resource type="Script" uid="uid://dknyji6pxyqm3" path="res://scripts/wiggle_shader_controller.gd" id="4_dogtj"]
 [ext_resource type="Material" uid="uid://ljxvvcm1awo" path="res://materials/knife.tres" id="4_swwbn"]
 [ext_resource type="Script" uid="uid://c0qfearwpscmu" path="res://scripts/puzzle_input_handler.gd" id="4_uhc1k"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]
 [ext_resource type="AudioStream" uid="uid://dbi443gwhx06d" path="res://audio/sfx/knife_swoosh/swoosh 01.wav" id="6_lshh4"]
-[ext_resource type="Material" uid="uid://cvrl3d5xlg44d" path="res://materials/inner_body.tres" id="6_v280i"]
 [ext_resource type="AudioStream" uid="uid://jlpfc08lort5" path="res://audio/sfx/knife_swoosh/swoosh 02.wav" id="7_485ri"]
 [ext_resource type="Script" uid="uid://brmgweuwi3o8i" path="res://scripts/simulation/flesh_sim_3d.gd" id="7_xrhyx"]
 [ext_resource type="AudioStream" uid="uid://dbefml854bgp7" path="res://audio/sfx/knife_swoosh/swoosh 03.wav" id="8_756ie"]
@@ -24,7 +24,8 @@
 [ext_resource type="AudioStream" uid="uid://dp6k3gk32yjqg" path="res://audio/sfx/knife_impact/impact 04.wav" id="15_fdta4"]
 [ext_resource type="AudioStream" uid="uid://buvt3h567ypjp" path="res://audio/sfx/knife_impact/impact 05.wav" id="16_38a0a"]
 [ext_resource type="AudioStream" uid="uid://cvani8d6cmwfh" path="res://audio/sfx/knife_impact/impact 06.wav" id="17_uep1p"]
-[ext_resource type="Material" uid="uid://1jbeha805keo" path="res://materials/wiggle_material_base.tres" id="19_dogtj"]
+[ext_resource type="Material" uid="uid://1jbeha805keo" path="res://materials/wiggle_material_outer.tres" id="19_dogtj"]
+[ext_resource type="Material" uid="uid://6maqubq4rapg" path="res://materials/wiggle_material_inner.tres" id="21_dogtj"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f1g4q"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -155,6 +156,10 @@ transform = Transform3D(1, 0, 0, 0, 0.494458, 0.869202, 0, -0.869202, 0.494458, 
 script = ExtResource("1_yob6b")
 camera = NodePath("../CameraSystem/CameraShake/Camera3D")
 
+[node name="WiggleShaderController" type="Node" parent="PuzzleController"]
+script = ExtResource("4_dogtj")
+wiggle_materials = Array[ShaderMaterial]([ExtResource("19_dogtj"), ExtResource("21_dogtj")])
+
 [node name="KnifeCursor" type="Node3D" parent="PuzzleController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42609, 0)
 
@@ -209,7 +214,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0162085, 0)
 skeleton = NodePath("../..")
 script = ExtResource("8_gl5h8")
 temp_outer_mat = ExtResource("19_dogtj")
-temp_inner_mat = ExtResource("6_v280i")
+temp_inner_mat = ExtResource("21_dogtj")
 metadata/_custom_type_script = "uid://bk1vxm6ujfddn"
 
 [node name="PuzzleMesh" type="MeshInstance3D" parent="PuzzleController"]
@@ -217,11 +222,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0686853, 0)
 gi_mode = 0
 script = ExtResource("3_ygxcr")
 metadata/_custom_type_script = "uid://dcnqwn1puo4h"
-
-[node name="FleshSim3D" type="Node3D" parent="PuzzleController"]
-visible = false
-script = ExtResource("7_xrhyx")
-hide_fixed = false
 
 [node name="PuzzleViewport" type="SubViewport" parent="PuzzleController"]
 disable_3d = true
@@ -250,6 +250,11 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 128.0
 offset_bottom = 96.0
+
+[node name="FleshSim3D" type="Node3D" parent="PuzzleController"]
+visible = false
+script = ExtResource("7_xrhyx")
+hide_fixed = false
 
 [node name="TempOrgans" type="CSGBox3D" parent="PuzzleController"]
 transform = Transform3D(0.882382, 0, -0.470535, 0, 1, 0, 0.470535, 0, 0.882382, 0.243781, -1.1113, 0.0280095)

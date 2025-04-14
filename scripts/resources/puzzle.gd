@@ -280,7 +280,9 @@ class InputCell:
 		if player_input != prev:
 			in_value_changed.emit(self)
 		
-		
+	func is_colored() -> bool:
+		return player_input == INPUT_TYPE.COLORED
+
 	func is_correct() -> bool:
 		match player_input:
 			INPUT_TYPE.EMPTY or INPUT_TYPE.CROSSED:

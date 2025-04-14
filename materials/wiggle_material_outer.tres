@@ -1,0 +1,46 @@
+[gd_resource type="ShaderMaterial" load_steps=11 format=3 uid="uid://1jbeha805keo"]
+
+[ext_resource type="Shader" uid="uid://fpglbh5bcw73" path="res://shaders/vertex_wiggle.gdshader" id="1_ve2al"]
+
+[sub_resource type="Gradient" id="Gradient_ve2al"]
+offsets = PackedFloat32Array(0, 0.0522088, 0.739394)
+colors = PackedColorArray(0.732042, 0.638211, 0.624377, 1, 0.641933, 0.641935, 0.641933, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_qbelf"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_15158"]
+color_ramp = SubResource("Gradient_ve2al")
+noise = SubResource("FastNoiseLite_qbelf")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ve2al"]
+noise_type = 0
+frequency = 0.1
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_qbelf"]
+noise = SubResource("FastNoiseLite_ve2al")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_15158"]
+seed = 250
+frequency = 0.1
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_hgc7f"]
+noise = SubResource("FastNoiseLite_15158")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_8kgkw"]
+seed = 95
+frequency = 0.1
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_28tfp"]
+noise = SubResource("FastNoiseLite_8kgkw")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_ve2al")
+shader_parameter/color = Color(0.830779, 0.678424, 0.564061, 1)
+shader_parameter/tex = SubResource("NoiseTexture2D_15158")
+shader_parameter/influence = 0.21
+shader_parameter/max_displacement = Vector3(0.5, 1.5, 0.5)
+shader_parameter/displacement_speed = 0.15
+shader_parameter/x_noise = SubResource("NoiseTexture3D_qbelf")
+shader_parameter/y_noise = SubResource("NoiseTexture3D_hgc7f")
+shader_parameter/z_noise = SubResource("NoiseTexture3D_28tfp")
