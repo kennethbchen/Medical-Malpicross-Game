@@ -212,7 +212,7 @@ temp_outer_mat = ExtResource("19_dogtj")
 temp_inner_mat = ExtResource("6_v280i")
 metadata/_custom_type_script = "uid://bk1vxm6ujfddn"
 
-[node name="GridMesh3D" type="MeshInstance3D" parent="PuzzleController"]
+[node name="PuzzleMesh" type="MeshInstance3D" parent="PuzzleController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0686853, 0)
 gi_mode = 0
 script = ExtResource("3_ygxcr")

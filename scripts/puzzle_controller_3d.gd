@@ -6,7 +6,7 @@ extends Node3D
 
 @onready var flesh_sim: Node3D = $FleshSim3D
 
-@onready var grid_mesh: GridMesh3D = $GridMesh3D
+@onready var puzzle_mesh: GridMesh3D = $PuzzleMesh
 
 @onready var puzzle_viewport: SubViewport = $PuzzleViewport
 
@@ -86,16 +86,16 @@ func _ready() -> void:
 	
 	puzzle_viewport.init(puzzle)
 	
-	var grid_mesh_material: StandardMaterial3D = StandardMaterial3D.new()
-	grid_mesh_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	grid_mesh_material.albedo_texture = puzzle_viewport.get_texture()
-	grid_mesh_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	var puzzle_mesh_material: StandardMaterial3D = StandardMaterial3D.new()
+	puzzle_mesh_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	puzzle_mesh_material.albedo_texture = puzzle_viewport.get_texture()
+	puzzle_mesh_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	
-	grid_mesh.init(grid_mesh_material)
-
+	puzzle_mesh.init(puzzle_mesh_material)
+	
 	body_mesh.init(puzzle.input_size.x, puzzle.input_size.y, cell_size)
 	
-	input_handler.init(puzzle, grid_mesh, cell_scale_factor)
+	input_handler.init(puzzle, puzzle_mesh, cell_scale_factor)
 	# Create input_quads so that we can interpret mouse input
 	for row in puzzle.input_size.x:
 		
@@ -133,7 +133,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _process(delta: float) -> void:
 
 	# Update meshes
-	grid_mesh.construct_from_points(get_board_points(), sim_point_rows - 2, sim_point_columns - 2)
+	puzzle_mesh.construct_from_points(get_board_points(), sim_point_rows - 2, sim_point_columns - 2)
 	body_mesh.set_flexible_vertices(get_input_points(), get_input_cell_visibility_mask())
 	
 	# Propagate Mouse input
@@ -154,9 +154,9 @@ func _physics_process(delta: float) -> void:
 	var ray_origin: Vector3 = camera.project_ray_origin(get_viewport().get_mouse_position())
 	var ray_normal: Vector3 = camera.project_ray_normal(get_viewport().get_mouse_position())
 	
-	# Grid mesh's transform defines the puzzle plane
-	var plane_normal: Vector3 = grid_mesh.global_basis.y
-	var plane_origin: Vector3 = grid_mesh.global_position
+	# puzzle mesh's transform defines the puzzle plane
+	var plane_normal: Vector3 = puzzle_mesh.global_basis.y
+	var plane_origin: Vector3 = puzzle_mesh.global_position
 	
 	var denominator = plane_normal.dot(ray_normal)
 	
@@ -171,7 +171,7 @@ func _physics_process(delta: float) -> void:
 			var intersect_position: Vector3 = ray_origin + (ray_normal * intersect_distance)
 			
 			# Convert from global space to puzzle plane's local space
-			var local_intersect_position: Vector3 = grid_mesh.global_transform.inverse() * intersect_position
+			var local_intersect_position: Vector3 = puzzle_mesh.global_transform.inverse() * intersect_position
 			
 			# Then, convert from puzzle plane local space to sim space
 			# Essentially converting from 3D space to pixel space
