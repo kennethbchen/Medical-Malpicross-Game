@@ -68,7 +68,7 @@ func _get_height_bias(row, col) -> Vector3:
 	# Modify height to give body mesh curvature
 	# Based on coordinate
 	var x_coord_center = (flexible_columns + flexible_cells_margin_columns * 2) / 2.0
-	var x_diff = abs(pow(x_coord_center - col, 2) * 0.05)
+	var x_diff = abs(pow(x_coord_center - col, 2) * 0.08)
 	
 	return Vector3(0, -x_diff, 0)
 	
@@ -196,7 +196,7 @@ func _process(delta: float) -> void:
 			elif is_flexible_cell and not generate_outer:
 				# Generate inner body instead
 				
-				var body_depth_offset: Vector3 = Vector3(0, -1, 0)
+				var body_depth_offset: Vector3 = Vector3(0, -1.25, 0)
 				
 				# Vertices on the cube (so, 8 vertices) that this cell represents
 				
