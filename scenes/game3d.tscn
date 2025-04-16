@@ -75,9 +75,6 @@ stream_3/stream = ExtResource("15_fdta4")
 stream_4/stream = ExtResource("16_38a0a")
 stream_5/stream = ExtResource("17_uep1p")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v280i"]
-albedo_color = Color(0.847059, 0.215686, 0.368627, 1)
-
 [sub_resource type="Gradient" id="Gradient_inhaj"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0.172727, 0.333333)
@@ -108,6 +105,9 @@ metallic = 0.63
 metallic_specular = 1.0
 metallic_texture = SubResource("NoiseTexture2D_v280i")
 roughness = 0.59
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v280i"]
+albedo_color = Color(0.920884, 0.707924, 0.675801, 1)
 
 [node name="Game3d" type="Node3D"]
 
@@ -225,11 +225,6 @@ visible = false
 script = ExtResource("7_xrhyx")
 hide_fixed = false
 
-[node name="TempOrgans" type="CSGBox3D" parent="PuzzleController"]
-transform = Transform3D(0.882382, 0, -0.470535, 0, 1, 0, 0.470535, 0, 0.882382, 0.243781, -1.1113, 0.0280095)
-size = Vector3(1.49426, 1, 1.53906)
-material = SubResource("StandardMaterial3D_v280i")
-
 [node name="StaticBody" type="CSGCylinder3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -7.0395, -11.5171)
 radius = 6.76855
@@ -241,3 +236,40 @@ material = ExtResource("19_dogtj")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.39389, 0)
 size = Vector3(17.208, 1, 34.3005)
 material = SubResource("StandardMaterial3D_1koi6")
+
+[node name="Organs" type="Node" parent="."]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Organs"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -1.15223, 1.37151)
+size = Vector3(1.33984, 1.14868, 1)
+material = SubResource("StandardMaterial3D_v280i")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Organs"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.66201, -1.15273, -0.927985)
+size = Vector3(0.798828, 2.00452, 0.722168)
+material = SubResource("StandardMaterial3D_v280i")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Organs"]
+transform = Transform3D(-0.139363, -0.990241, -4.32848e-08, 0, -4.37114e-08, 1, -0.990241, 0.139363, 6.09176e-09, -0.217219, -1.15273, -1.64828)
+size = Vector3(0.798828, 2.56378, 0.722168)
+material = SubResource("StandardMaterial3D_v280i")
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Organs"]
+transform = Transform3D(0.204598, -0.978846, -4.27867e-08, 0, -4.37114e-08, 1, -0.978846, -0.204598, -8.94329e-09, 0.430104, -0.986681, -2.393)
+size = Vector3(0.798828, 2.56378, 0.722168)
+material = SubResource("StandardMaterial3D_v280i")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Organs"]
+transform = Transform3D(-0.0303467, -0.999539, -4.36913e-08, 0, -4.37114e-08, 1, -0.999539, 0.0303467, 1.3265e-09, -1.25855, -1.15273, -2.37771)
+size = Vector3(0.798828, 0.795181, 0.722168)
+material = SubResource("StandardMaterial3D_v280i")
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Organs"]
+transform = Transform3D(-0.0303467, -0.999539, -4.36913e-08, 0, -4.37114e-08, 1, -0.999539, 0.0303467, 1.3265e-09, 1.59959, -1.15273, -2.35511)
+size = Vector3(1.06104, 0.795181, 0.722168)
+material = SubResource("StandardMaterial3D_v280i")
+
+[node name="TempOrgans" type="CSGBox3D" parent="Organs"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.0905103, -1.13947, -0.305045)
+size = Vector3(2.32575, 2.27, 0.464)
+material = SubResource("StandardMaterial3D_v280i")
