@@ -3,7 +3,7 @@ extends Node
 enum STATE {IDLE, COOLDOWN}
 
 @export var cursor: Node3D
-@export var cursor_particles: CPUParticles3D
+@export var cursor_particles_scene: PackedScene
 @export var cursor_sfx_player: AudioStreamPlayer3D
 
 @export_group("SFX")
@@ -60,7 +60,13 @@ func color_cell(row, col) -> void:
 		EventBus.screen_shake_requested.emit(0.8)
 		).set_delay(0.03)
 	tween.parallel().tween_callback(func():
-		cursor_particles.emitting = true
+		var new_particles = cursor_particles_scene.instantiate()
+		get_tree().root.add_child(new_particles)
+		new_particles.global_position = cursor.global_position + Vector3(0, 0.5, 0)
+		new_particles.finished.connect(func():
+			new_particles.queue_free()
+		)
+		new_particles.emitting = true
 		).set_delay(0.06)
 	tween.parallel().tween_property(cursor, "position:y", -1.5, 0.2)
 	

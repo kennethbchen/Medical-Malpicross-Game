@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=44 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]
 [ext_resource type="AudioStream" uid="uid://dbi443gwhx06d" path="res://audio/sfx/knife_swoosh/swoosh 01.wav" id="6_lshh4"]
 [ext_resource type="AudioStream" uid="uid://jlpfc08lort5" path="res://audio/sfx/knife_swoosh/swoosh 02.wav" id="7_485ri"]
+[ext_resource type="PackedScene" uid="uid://bn5c6wv3oppsw" path="res://scenes/blood_particles.tscn" id="7_lip14"]
 [ext_resource type="Script" uid="uid://brmgweuwi3o8i" path="res://scripts/simulation/flesh_sim_3d.gd" id="7_xrhyx"]
 [ext_resource type="AudioStream" uid="uid://dbefml854bgp7" path="res://audio/sfx/knife_swoosh/swoosh 03.wav" id="8_756ie"]
 [ext_resource type="Script" uid="uid://bk1vxm6ujfddn" path="res://scripts/resources/body_mesh_3d.gd" id="8_gl5h8"]
@@ -50,18 +51,6 @@ seed = 1
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_uhc1k"]
 seed = 3
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uhc1k"]
-albedo_color = Color(1, 0, 0, 1)
-
-[sub_resource type="SphereMesh" id="SphereMesh_uhc1k"]
-material = SubResource("StandardMaterial3D_uhc1k")
-radius = 0.125
-height = 0.25
-
-[sub_resource type="Curve" id="Curve_uhc1k"]
-_data = [Vector2(0, 0), 0.0, 34.8314, 0, 0, Vector2(0.0668449, 1), 0.0, 0.0, 0, 0, Vector2(0.961131, 0), -2.78378, 0.0, 0, 0]
-point_count = 3
 
 [sub_resource type="PrismMesh" id="PrismMesh_uhc1k"]
 material = ExtResource("4_swwbn")
@@ -167,26 +156,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42609, 0)
 autoplay = true
 bus = &"SFX"
 
-[node name="BloodParticles" type="CPUParticles3D" parent="PuzzleController/KnifeCursor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40303, 0)
-emitting = false
-amount = 32
-lifetime = 0.5
-one_shot = true
-explosiveness = 0.71
-randomness = 0.89
-lifetime_randomness = 0.5
-mesh = SubResource("SphereMesh_uhc1k")
-emission_shape = 3
-emission_box_extents = Vector3(0.2, 0.1, 0.2)
-direction = Vector3(0, 1, 0)
-spread = 48.05
-initial_velocity_min = 5.0
-initial_velocity_max = 10.0
-scale_amount_min = 0.25
-scale_amount_max = 1.5
-scale_amount_curve = SubResource("Curve_uhc1k")
-
 [node name="Mesh" type="Node3D" parent="PuzzleController/KnifeCursor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.494684, 0)
 
@@ -201,10 +170,10 @@ radius = 0.1
 height = 3.69531
 material = ExtResource("4_swwbn")
 
-[node name="PuzzleInputHandler" type="Node" parent="PuzzleController" node_paths=PackedStringArray("cursor", "cursor_particles", "cursor_sfx_player")]
+[node name="PuzzleInputHandler" type="Node" parent="PuzzleController" node_paths=PackedStringArray("cursor", "cursor_sfx_player")]
 script = ExtResource("4_uhc1k")
 cursor = NodePath("../KnifeCursor")
-cursor_particles = NodePath("../KnifeCursor/BloodParticles")
+cursor_particles_scene = ExtResource("7_lip14")
 cursor_sfx_player = NodePath("../KnifeCursor/AudioStreamPlayer3D")
 knife_swoosh_sounds = SubResource("AudioStreamRandomizer_swwbn")
 knife_impact_sounds = SubResource("AudioStreamRandomizer_jcay4")
