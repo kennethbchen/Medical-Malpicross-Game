@@ -13,7 +13,7 @@ var pain_level: float = 0:
 		pain_level = clamp(value, 0.0, 1.0)
 		
 func init(puzzle: Puzzle) -> void:
-	puzzle.input_value_changed.connect(on_input_cell_changed)
+	puzzle.input_attempt_made.connect(on_input_cell_changed)
 
 func _process(delta: float) -> void:
 	# pain_level goes down over time

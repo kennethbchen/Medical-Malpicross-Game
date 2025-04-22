@@ -15,11 +15,11 @@ uniform sampler3D y_noise;
 uniform sampler3D z_noise;
 
 void vertex() {
-	
+
 	float adjusted_time = TIME * displacement_speed;
-	
+
 	vec3 displacement = vec3(0);
-	
+
 	displacement.x = texture(x_noise, VERTEX.xyz + adjusted_time).x;
 	displacement.y = texture(y_noise, VERTEX.xyz + adjusted_time).y;
 	displacement.z = texture(z_noise, VERTEX.xyz + adjusted_time).z;

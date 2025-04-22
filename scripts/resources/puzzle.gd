@@ -43,7 +43,12 @@ var column_hint_height: int
 ## if each hint number was its own cell
 var board_size: Vector2i
 
+# Emitted when an input cell's value changed
 signal input_value_changed(cell: InputCell, row: int, col: int)
+
+# Emitted when an input cell's value was attempted to be changed
+# regardless of whether or not a value was changed
+signal input_attempt_made(cell: InputCell, row: int, col: int)
 
 func _init(puzzle_string: String):
 	# Separate rows (\n delimited)
@@ -83,7 +88,31 @@ func _init(puzzle_string: String):
 		for col in _solution[row].size():
 			var cell: InputCell = get_input_cell(row, col)
 			cell.in_value_changed.connect(input_value_changed.emit.bind(row, col))
+			cell.input_change_attempted.connect(input_attempt_made.emit.bind(row, col))
 
+func color_cell(row: int, col: int) -> void:
+	var cell: InputCell = get_input_cell(row, col)
+	
+	# If cell is colored, it cannot be un-colored
+	if cell.player_input == INPUT_TYPE.COLORED:
+		input_attempt_made.emit(cell, row, col)
+		return
+		
+	cell.set_input_value(INPUT_TYPE.COLORED)
+
+func cross_cell(row: int, col: int) -> void:
+	var cell: InputCell = get_input_cell(row, col)
+	
+	# If cell is colored, it cannot be un-colored
+	if cell.player_input == INPUT_TYPE.COLORED:
+		return
+	
+	# Toggle between empty and crossed
+	if cell.player_input == INPUT_TYPE.EMPTY:
+		cell.set_input_value(INPUT_TYPE.CROSSED)
+	else:
+		cell.set_input_value(INPUT_TYPE.EMPTY)
+	
 ## Set input cell with input coords (row, col) to colored [br]
 ## Cell becomes empty if it was already colored
 func toggle_input_colored(row: int, col: int) -> void:
@@ -267,7 +296,12 @@ class InputCell:
 	var true_value_is_colored: bool
 	var player_input: INPUT_TYPE
 	
+	# Emitted when player_input changes value
 	signal in_value_changed(cell: InputCell)
+	
+	# Emitted when set_input_value is called regardless
+	# on whether or not it changed a value
+	signal input_change_attempted(cell: InputCell)
 	
 	func _init(correct_input_value: bool) -> void:
 		true_value_is_colored = correct_input_value
@@ -279,6 +313,8 @@ class InputCell:
 		
 		if player_input != prev:
 			in_value_changed.emit(self)
+		
+		input_change_attempted.emit(self)
 		
 	func is_colored() -> bool:
 		return player_input == INPUT_TYPE.COLORED

@@ -17,7 +17,7 @@ func init(puzzle: Puzzle, sim_columns: int, sim_rows: int, cell_size: float) -> 
 	sim = FleshSim.new()
 	sim.init(puzzle, sim_columns, sim_rows, cell_size)
 	
-	puzzle.input_value_changed.connect(sim._on_puzzle_input_changed)
+	puzzle.input_attempt_made.connect(sim._on_puzzle_input_attempted)
 
 func get_point(row, col) -> PointMassSim.PointMass:
 	return sim.get_point(row, col)

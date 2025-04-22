@@ -84,8 +84,8 @@ func simulate(delta: float) -> void:
 
 	fixed_point_offset = lerp(fixed_point_offset, target_fixed_point_offset, 1 - exp(-0.5 * delta))
 
-func _on_puzzle_input_changed(cell: Puzzle.InputCell, row: int, col: int) -> void:
-	
+func _on_puzzle_input_attempted(cell: Puzzle.InputCell, row: int, col: int) -> void:
+
 	# Jerk in the opposite direciton
 	var jerk_direction = -fixed_point_offset.normalized()
 	

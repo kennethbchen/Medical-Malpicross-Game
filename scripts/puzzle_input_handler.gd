@@ -26,7 +26,8 @@ func init(puzzle, puzzle_plane, cell_scale_factor) -> void:
 	self.puzzle = puzzle
 	self.puzzle_plane = puzzle_plane
 	self.cell_scale_factor = cell_scale_factor
-	
+
+# Colored cells cannot be un-colored, but stab will still happen
 func color_cell(row, col) -> void:
 	
 	if current_state != STATE.IDLE:
@@ -51,7 +52,7 @@ func color_cell(row, col) -> void:
 	# in parallel like this to make it look seamless
 	tween.set_trans(Tween.TRANS_BACK)
 	tween.tween_callback(func():
-		puzzle.toggle_input_colored(row, col)
+		puzzle.color_cell(row, col)
 		
 		cursor_sfx_player.stream = knife_impact_sounds
 		cursor_sfx_player.play()
@@ -80,7 +81,7 @@ func color_cell(row, col) -> void:
 		)
 
 func cross_cell(row, col) -> void:
-	puzzle.toggle_input_crossed(row, col)
+	puzzle.cross_cell(row, col)
 	
 func set_cursor_position(new_position: Vector2i) -> void:
 	cursor_position = new_position
