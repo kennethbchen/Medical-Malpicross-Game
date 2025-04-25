@@ -190,8 +190,12 @@ func get_input_cell_visibility_mask() -> Array[bool]:
 		for col in puzzle.input_size.y:
 			var input_cell = puzzle.get_input_cell(row, col)
 			
-			# Colored cells are not visible
-			output.push_back(input_cell.player_input != Puzzle.INPUT_TYPE.COLORED)
+			if input_cell.player_made_error():
+				# Incorrectly colored cells are visible
+				output.push_back(true)
+			else:
+				# Colored cells are not visible
+				output.push_back(input_cell.player_input != Puzzle.INPUT_TYPE.COLORED)
 
 	return output
 

@@ -310,15 +310,18 @@ class InputCell:
 	func set_input_value(type: INPUT_TYPE):
 		var prev: INPUT_TYPE = player_input
 		player_input = type
-		
+			
 		if player_input != prev:
 			in_value_changed.emit(self)
 		
 		input_change_attempted.emit(self)
-		
+	
+	func player_made_error() -> bool:
+		return is_colored() and not is_correct()
+			
 	func is_colored() -> bool:
 		return player_input == INPUT_TYPE.COLORED
-
+	
 	func is_correct() -> bool:
 		match player_input:
 			INPUT_TYPE.EMPTY or INPUT_TYPE.CROSSED:
@@ -327,7 +330,7 @@ class InputCell:
 				return true_value_is_colored
 			_:
 				return false
-				
+
 	func _to_string() -> String:
 		return "InputCell(t={0})".format(["1" if true_value_is_colored else "0"])
 	
