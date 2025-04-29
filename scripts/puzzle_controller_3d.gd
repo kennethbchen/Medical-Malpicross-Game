@@ -72,7 +72,7 @@ func _ready() -> void:
 
 	puzzle = Puzzle.new(puzzle_string)
 	
-	
+	puzzle.input_attempt_made.connect(_on_input_attempt_made)
 
 	board_cell_rows = puzzle.board_size.x
 	board_cell_columns = puzzle.board_size.y
@@ -236,7 +236,9 @@ func get_board_points() -> Array[Vector3]:
 
 	return output
 
-	
+func _on_input_attempt_made(cell: Puzzle.InputCell, row: int, col: int):
+	print(puzzle.is_solved())
+
 func _get_selected_cell():
 	
 	# Check every input quad to see if the mouse is inside of it

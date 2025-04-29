@@ -154,7 +154,14 @@ func input_to_board_coordinate(input_coord: Vector2) -> Vector2i:
 func input_to_board_coordinate_fractional(input_coord: Vector2) -> Vector2:
 		return Vector2(input_coord.x + (board_size.x - input_size.x), input_coord.y + (board_size.y - input_size.y))
 
-
+func is_solved() -> bool:
+	for row in input_size.x:
+		for col in input_size.y:
+			if not (get_input_cell(row, col).is_correct() or \
+				get_input_cell(row, col).player_made_error()):
+				return false
+	return true
+	
 func _calculate_hints() -> Array:
 	var rows: int = input_size.x
 	var columns: int = input_size.y
@@ -323,11 +330,12 @@ class InputCell:
 		return player_input == INPUT_TYPE.COLORED
 	
 	func is_correct() -> bool:
+		
 		match player_input:
-			INPUT_TYPE.EMPTY or INPUT_TYPE.CROSSED:
-				return not true_value_is_colored
+			INPUT_TYPE.EMPTY, INPUT_TYPE.CROSSED:
+				return player_input != INPUT_TYPE.COLORED and not true_value_is_colored
 			INPUT_TYPE.COLORED:
-				return true_value_is_colored
+				return player_input == INPUT_TYPE.COLORED and true_value_is_colored
 			_:
 				return false
 
