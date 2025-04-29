@@ -237,7 +237,8 @@ func get_board_points() -> Array[Vector3]:
 	return output
 
 func _on_input_attempt_made(cell: Puzzle.InputCell, row: int, col: int):
-	print(puzzle.is_solved())
+	if puzzle.is_solved():
+		print("solved")
 
 func _get_selected_cell():
 	
