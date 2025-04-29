@@ -239,6 +239,7 @@ func get_board_points() -> Array[Vector3]:
 func _on_input_attempt_made(cell: Puzzle.InputCell, row: int, col: int):
 	if puzzle.is_solved():
 		print("solved")
+		puzzle_mesh.hide()
 
 func _get_selected_cell():
 	
