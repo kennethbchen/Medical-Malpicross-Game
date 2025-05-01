@@ -7,8 +7,11 @@ offsets = PackedFloat32Array(0, 0.0522088, 0.739394)
 colors = PackedColorArray(0.732042, 0.638211, 0.624377, 1, 0.641933, 0.641935, 0.641933, 1, 1, 1, 1, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_qbelf"]
+frequency = 0.0428
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_15158"]
+width = 64
+height = 64
 color_ramp = SubResource("Gradient_ve2al")
 noise = SubResource("FastNoiseLite_qbelf")
 

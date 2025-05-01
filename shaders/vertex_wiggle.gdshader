@@ -2,7 +2,7 @@ shader_type spatial;
 render_mode world_vertex_coords;
 
 uniform vec3 color: source_color;
-uniform sampler2D tex;
+uniform sampler2D tex: filter_nearest;
 
 uniform float influence: hint_range(0.0, 1.0) = 1.0;
 group_uniforms displacement_parameters;
