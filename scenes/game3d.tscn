@@ -133,6 +133,15 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_top = 209.0
+offset_right = 312.0
+offset_bottom = 365.0
+theme_override_font_sizes/font_size = 64
+text = "Test Label"
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ygxcr")
 
@@ -148,7 +157,7 @@ spot_angle_attenuation = 1.31951
 script = ExtResource("1_b4stf")
 
 [node name="CameraSystem" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45724, 1.15614)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45724, 1.52302)
 
 [node name="CameraShake" type="Node3D" parent="CameraSystem"]
 script = ExtResource("2_inhaj")
@@ -161,7 +170,7 @@ max_roll = 6.0
 decay = 0.85
 
 [node name="Camera3D" type="Camera3D" parent="CameraSystem/CameraShake"]
-transform = Transform3D(1, 0, 0, 0, 0.494458, 0.869202, 0, -0.869202, 0.494458, 0, 0.192626, 1.0183)
+transform = Transform3D(1, 0, 0, 0, 0.494458, 0.869202, 0, -0.869202, 0.494458, 0, 0, 0)
 
 [node name="PuzzleController" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
 script = ExtResource("1_yob6b")
