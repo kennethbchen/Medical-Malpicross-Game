@@ -1,5 +1,6 @@
 shader_type spatial;
 render_mode world_vertex_coords;
+render_mode vertex_lighting;
 
 uniform vec3 color: source_color;
 uniform sampler2D tex: filter_nearest;
