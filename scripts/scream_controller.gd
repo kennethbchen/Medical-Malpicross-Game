@@ -7,3 +7,4 @@ func _on_puzzle_input_attempt_made(cell: Puzzle.InputCell, row: int, col: int) -
 	if cell.is_colored():
 		if not playing:
 			play()
+ 

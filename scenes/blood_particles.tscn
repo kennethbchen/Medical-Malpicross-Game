@@ -3,10 +3,10 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uhc1k"]
 albedo_color = Color(0.81, 0.1863, 0.1863, 1)
 
-[sub_resource type="SphereMesh" id="SphereMesh_uhc1k"]
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_3r22h"]
 material = SubResource("StandardMaterial3D_uhc1k")
-radius = 0.125
-height = 0.25
+radius = 0.07
+height = 0.22
 
 [sub_resource type="Curve" id="Curve_uhc1k"]
 _data = [Vector2(0, 0), 0.0, 34.8314, 0, 0, Vector2(0.0668449, 1), 0.0, 0.0, 0, 0, Vector2(0.961131, 0), -2.78378, 0.0, 0, 0]
@@ -14,15 +14,16 @@ point_count = 3
 
 [node name="BloodParticles" type="CPUParticles3D"]
 emitting = false
-amount = 32
+amount = 50
 lifetime = 1.5
 one_shot = true
 explosiveness = 0.8
 randomness = 0.89
 lifetime_randomness = 0.5
-mesh = SubResource("SphereMesh_uhc1k")
+mesh = SubResource("CapsuleMesh_3r22h")
 emission_shape = 3
 emission_box_extents = Vector3(0.2, 0.1, 0.2)
+particle_flag_align_y = true
 direction = Vector3(0, 1, 0)
 spread = 11.38
 initial_velocity_min = 5.0
