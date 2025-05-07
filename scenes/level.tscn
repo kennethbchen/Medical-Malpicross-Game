@@ -69,18 +69,6 @@ seed = 1
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_uhc1k"]
 seed = 3
 
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_uclkp"]
-streams_count = 9
-stream_0/stream = ExtResource("5_4vhcd")
-stream_1/stream = ExtResource("6_vljie")
-stream_2/stream = ExtResource("7_k5ltf")
-stream_3/stream = ExtResource("8_marrl")
-stream_4/stream = ExtResource("9_nps1a")
-stream_5/stream = ExtResource("10_76jtm")
-stream_6/stream = ExtResource("11_82w65")
-stream_7/stream = ExtResource("12_pr4tx")
-stream_8/stream = ExtResource("13_bf564")
-
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_swwbn"]
 streams_count = 6
 stream_0/stream = ExtResource("6_lshh4")
@@ -103,6 +91,18 @@ stream_5/stream = ExtResource("17_uep1p")
 material = ExtResource("4_swwbn")
 left_to_right = 1.0
 size = Vector3(0.295, 0.88, 0.2)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_uclkp"]
+streams_count = 9
+stream_0/stream = ExtResource("5_4vhcd")
+stream_1/stream = ExtResource("6_vljie")
+stream_2/stream = ExtResource("7_k5ltf")
+stream_3/stream = ExtResource("8_marrl")
+stream_4/stream = ExtResource("9_nps1a")
+stream_5/stream = ExtResource("10_76jtm")
+stream_6/stream = ExtResource("11_82w65")
+stream_7/stream = ExtResource("12_pr4tx")
+stream_8/stream = ExtResource("13_bf564")
 
 [sub_resource type="Gradient" id="Gradient_inhaj"]
 interpolation_mode = 2
@@ -147,6 +147,9 @@ albedo_color = Color(0.920884, 0.707924, 0.675801, 1)
 [node name="Level" type="Node3D"]
 script = ExtResource("1_c1pbi")
 
+[node name="DebugCommands" type="Node" parent="."]
+script = ExtResource("1_b4stf")
+
 [node name="PostProcessing" type="CanvasLayer" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="PostProcessing"]
@@ -169,9 +172,6 @@ spot_range = 28.581
 spot_angle = 74.54
 spot_angle_attenuation = 1.31951
 
-[node name="DebugCommands" type="Node" parent="."]
-script = ExtResource("1_b4stf")
-
 [node name="CameraSystem" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45724, 1.52302)
 
@@ -187,17 +187,6 @@ decay = 0.85
 
 [node name="Camera3D" type="Camera3D" parent="CameraSystem/CameraShake"]
 transform = Transform3D(1, 0, 0, 0, 0.494458, 0.869202, 0, -0.869202, 0.494458, 0, 0, 0)
-
-[node name="ScreamController" type="AudioStreamPlayer3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45724, -22.0389)
-stream = SubResource("AudioStreamRandomizer_uclkp")
-unit_size = 30.0
-bus = &"SFX"
-script = ExtResource("3_38a0a")
-
-[node name="WiggleShaderController" type="Node" parent="."]
-script = ExtResource("4_dogtj")
-wiggle_materials = Array[ShaderMaterial]([ExtResource("19_dogtj"), ExtResource("21_dogtj")])
 
 [node name="PuzzleController" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
 script = ExtResource("1_yob6b")
@@ -279,96 +268,109 @@ visible = false
 script = ExtResource("7_xrhyx")
 hide_fixed = false
 
-[node name="OperatingTable" type="CSGBox3D" parent="."]
+[node name="ScreamController" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45724, -22.0389)
+stream = SubResource("AudioStreamRandomizer_uclkp")
+unit_size = 30.0
+bus = &"SFX"
+script = ExtResource("3_38a0a")
+
+[node name="WiggleShaderController" type="Node" parent="."]
+script = ExtResource("4_dogtj")
+wiggle_materials = Array[ShaderMaterial]([ExtResource("19_dogtj"), ExtResource("21_dogtj")])
+
+[node name="StaticMeshes" type="Node" parent="."]
+
+[node name="OperatingTable" type="CSGBox3D" parent="StaticMeshes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.39389, 0)
 size = Vector3(23.7158, 1, 34.3005)
 material = SubResource("StandardMaterial3D_1koi6")
 
-[node name="StaticBody" type="CSGCylinder3D" parent="."]
+[node name="StaticBody" type="CSGCylinder3D" parent="StaticMeshes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -6.85629, -10.5928)
 radius = 6.76855
 height = 14.5913
 sides = 16
 material = ExtResource("19_dogtj")
 
-[node name="StaticBody3" type="CSGCylinder3D" parent="."]
+[node name="StaticBody3" type="CSGCylinder3D" parent="StaticMeshes"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -7.01164, -3.52846)
 radius = 7.2
 height = 1.0
 sides = 32
 material = SubResource("StandardMaterial3D_lip14")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="StaticBody3"]
+[node name="CSGBox3D" type="CSGBox3D" parent="StaticMeshes/StaticBody3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.38419e-07, 6.92098)
 size = Vector3(2.2832, 0.828125, 0.605713)
 
-[node name="StaticBody4" type="CSGCylinder3D" parent="."]
+[node name="StaticBody4" type="CSGCylinder3D" parent="StaticMeshes"]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 7.11156, -2.48915, -11.6074)
 radius = 2.7
 height = 1.0
 sides = 32
 material = SubResource("StandardMaterial3D_lip14")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="StaticBody4"]
+[node name="CSGBox3D" type="CSGBox3D" parent="StaticMeshes/StaticBody4"]
 transform = Transform3D(1, 0, 0, 0, 1, 8.35187e-23, 0, 8.35187e-23, 1, 0, 0, 2.52121)
 size = Vector3(2.2832, 0.828125, 0.605713)
 
-[node name="StaticBody5" type="CSGCylinder3D" parent="."]
+[node name="StaticBody5" type="CSGCylinder3D" parent="StaticMeshes"]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, -7.112, -2.489, -11.607)
 radius = 2.7
 height = 1.0
 sides = 32
 material = SubResource("StandardMaterial3D_lip14")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="StaticBody5"]
+[node name="CSGBox3D" type="CSGBox3D" parent="StaticMeshes/StaticBody5"]
 transform = Transform3D(1, 0, 0, 0, 1, 8.35187e-23, 0, 8.35187e-23, 1, 0, 0, 2.52121)
 size = Vector3(2.2832, 0.828125, 0.605713)
 
-[node name="StaticBody2" type="CSGCylinder3D" parent="."]
+[node name="StaticBody2" type="CSGCylinder3D" parent="StaticMeshes"]
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, 0, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, -2.31275, -11.5261)
 radius = 2.0
 height = 38.255
 sides = 16
 material = ExtResource("19_dogtj")
 
-[node name="Organs" type="Node" parent="."]
+[node name="Organs" type="Node" parent="StaticMeshes"]
 
-[node name="CSGBox3D" type="CSGBox3D" parent="Organs"]
+[node name="CSGBox3D" type="CSGBox3D" parent="StaticMeshes/Organs"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -1.45688, 1.37151)
 size = Vector3(1.33984, 1.14868, 1)
 material = SubResource("StandardMaterial3D_v280i")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="Organs"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="StaticMeshes/Organs"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.66201, -1.45738, -0.927985)
 size = Vector3(0.798828, 2.00452, 0.722168)
 material = SubResource("StandardMaterial3D_v280i")
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="Organs"]
+[node name="CSGBox3D3" type="CSGBox3D" parent="StaticMeshes/Organs"]
 transform = Transform3D(-0.139363, -0.990241, -4.32848e-08, 0, -4.37114e-08, 1, -0.990241, 0.139363, 6.09176e-09, -0.217219, -1.45738, -1.64828)
 size = Vector3(0.798828, 2.56378, 0.722168)
 material = SubResource("StandardMaterial3D_v280i")
 
-[node name="CSGBox3D6" type="CSGBox3D" parent="Organs"]
+[node name="CSGBox3D6" type="CSGBox3D" parent="StaticMeshes/Organs"]
 transform = Transform3D(0.204598, -0.978846, -4.27867e-08, 0, -4.37114e-08, 1, -0.978846, -0.204598, -8.94329e-09, 0.430104, -1.29133, -2.393)
 size = Vector3(0.798828, 2.56378, 0.722168)
 material = SubResource("StandardMaterial3D_v280i")
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="Organs"]
+[node name="CSGBox3D4" type="CSGBox3D" parent="StaticMeshes/Organs"]
 transform = Transform3D(-0.0303467, -0.999539, -4.36913e-08, 0, -4.37114e-08, 1, -0.999539, 0.0303467, 1.3265e-09, -1.25855, -1.45738, -2.37771)
 size = Vector3(0.798828, 0.795181, 0.722168)
 material = SubResource("StandardMaterial3D_v280i")
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="Organs"]
+[node name="CSGBox3D5" type="CSGBox3D" parent="StaticMeshes/Organs"]
 transform = Transform3D(-0.0303467, -0.999539, -4.36913e-08, 0, -4.37114e-08, 1, -0.999539, 0.0303467, 1.3265e-09, 1.59959, -1.45738, -2.35511)
 size = Vector3(1.06104, 0.795181, 0.722168)
 material = SubResource("StandardMaterial3D_v280i")
 
-[node name="TempOrgans" type="CSGBox3D" parent="Organs"]
+[node name="TempOrgans" type="CSGBox3D" parent="StaticMeshes/Organs"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.0905103, -1.44412, -0.305045)
 size = Vector3(2.32575, 2.27, 0.464)
 material = SubResource("StandardMaterial3D_v280i")
 
-[node name="TempOrgans2" type="CSGBox3D" parent="Organs"]
+[node name="TempOrgans2" type="CSGBox3D" parent="StaticMeshes/Organs"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.0905103, -1.44412, -0.305045)
 size = Vector3(2.32575, 2.27, 0.464)
 material = SubResource("StandardMaterial3D_v280i")
