@@ -4,9 +4,11 @@ extends Node3D
 
 @onready var puzzle_controller: Node3D = $PuzzleController
 
-@onready var wiggle_shader_controller: Node = $WiggleShaderController
+# Puzzle Input Effects
 
+@onready var wiggle_shader_controller: Node = $WiggleShaderController
 @onready var scream_controller: AudioStreamPlayer3D = $ScreamController
+@onready var world_environment: WorldEnvironment = $WorldEnvironment
 
 var test_puzzles: Array[String] = [
 	"""0 1 1 1 0
@@ -47,4 +49,5 @@ func _ready() -> void:
 	
 	wiggle_shader_controller.init(puzzle)
 	scream_controller.init(puzzle)
+	world_environment.init(puzzle)
 	
