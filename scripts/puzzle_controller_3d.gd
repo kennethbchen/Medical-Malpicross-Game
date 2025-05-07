@@ -16,35 +16,6 @@ extends Node3D
 
 @onready var scream_controller: AudioStreamPlayer3D = $ScreamController
 
-var test_puzzles: Array[String] = [
-	"""0 1 1 1 0
-0 0 0 0 0
-0 1 0 1 1
-0 1 0 0 0
-0 1 1 1 0""",
-
-"""0 1 1 1 0
-0 0 1 0 0
-0 1 0 1 1""",
-
-"""0 1 1 1
-1 1 1 0
-0 1 0 1
-0 1 0 0
-0 1 1 1""",
-
-"""0 1 0 1 0 0
-0 1 1 1 1 0
-1 1 1 1 0 0
-1 1 1 1 1 0
-0 0 1 1 0 0""",
-
-"""0 1 1 1
-1 1 1 0"""
-]
-
-var puzzle_string: String = ""
-
 var sim_point_rows: int
 var sim_point_columns: int
 
@@ -68,11 +39,10 @@ var cell_scale_factor: float = cell_size / sim_segment_size
 # In sim space
 var cursor_position: Vector2i
 
-func init(puzzle: Puzzle) -> void:
+func init(camera: Camera3D, puzzle: Puzzle) -> void:
 	
-	#puzzle_string = test_puzzles.pick_random()
-
-	#puzzle = Puzzle.new(puzzle_string)
+	self.camera = camera
+	self.puzzle = puzzle
 	
 	puzzle.input_attempt_made.connect(_on_input_attempt_made)
 
