@@ -68,11 +68,11 @@ var cell_scale_factor: float = cell_size / sim_segment_size
 # In sim space
 var cursor_position: Vector2i
 
-func _ready() -> void:
+func init(puzzle: Puzzle) -> void:
 	
-	puzzle_string = test_puzzles.pick_random()
+	#puzzle_string = test_puzzles.pick_random()
 
-	puzzle = Puzzle.new(puzzle_string)
+	#puzzle = Puzzle.new(puzzle_string)
 	
 	puzzle.input_attempt_made.connect(_on_input_attempt_made)
 

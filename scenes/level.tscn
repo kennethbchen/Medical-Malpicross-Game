@@ -1,6 +1,7 @@
-[gd_scene load_steps=58 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=59 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
+[ext_resource type="Script" uid="uid://fljgdlvfv1gh" path="res://scripts/level.gd" id="1_c1pbi"]
 [ext_resource type="Shader" uid="uid://v4s45bekv3ew" path="res://shaders/post_processing.gdshader" id="1_fdta4"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
 [ext_resource type="Script" uid="uid://dra4lijujrmwu" path="res://scripts/puzzle_viewport.gd" id="2_f1g4q"]
@@ -143,7 +144,8 @@ metallic = 1.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v280i"]
 albedo_color = Color(0.920884, 0.707924, 0.675801, 1)
 
-[node name="Game3d" type="Node3D"]
+[node name="Level" type="Node3D"]
+script = ExtResource("1_c1pbi")
 
 [node name="PostProcessing" type="CanvasLayer" parent="."]
 
