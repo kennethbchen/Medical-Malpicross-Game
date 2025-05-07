@@ -183,10 +183,9 @@ script = ExtResource("2_inhaj")
 pitch_noise = SubResource("FastNoiseLite_g68k2")
 yaw_noise = SubResource("FastNoiseLite_v280i")
 roll_noise = SubResource("FastNoiseLite_uhc1k")
-max_pitch = 6.0
-max_yaw = 6.0
-max_roll = 6.0
-decay = 0.85
+max_pitch = 8.0
+max_yaw = 8.0
+max_roll = 8.0
 
 [node name="Camera3D" type="Camera3D" parent="CameraSystem/CameraShake"]
 transform = Transform3D(1, 0, 0, 0, 0.494458, 0.869202, 0, -0.869202, 0.494458, 0, 0, 0)
