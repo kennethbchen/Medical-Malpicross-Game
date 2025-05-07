@@ -1,6 +1,6 @@
 extends Node3D
 
-@export var camera: Camera3D
+
 
 @onready var input_handler = $PuzzleInputHandler
 
@@ -12,13 +12,15 @@ extends Node3D
 
 @onready var body_mesh: BodyMesh3D = $BodyMesh3D
 
+var camera: Camera3D
+
+var puzzle: Puzzle
+
 var sim_point_rows: int
 var sim_point_columns: int
 
 var board_cell_rows: int
 var board_cell_columns: int
-
-var puzzle: Puzzle
 
 # 2D array (row, col) of quads in the input space
 var input_quads: Array
