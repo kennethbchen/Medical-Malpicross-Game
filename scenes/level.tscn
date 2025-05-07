@@ -81,11 +81,6 @@ stream_6/stream = ExtResource("11_82w65")
 stream_7/stream = ExtResource("12_pr4tx")
 stream_8/stream = ExtResource("13_bf564")
 
-[sub_resource type="PrismMesh" id="PrismMesh_uhc1k"]
-material = ExtResource("4_swwbn")
-left_to_right = 1.0
-size = Vector3(0.295, 0.88, 0.2)
-
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_swwbn"]
 streams_count = 6
 stream_0/stream = ExtResource("6_lshh4")
@@ -103,6 +98,11 @@ stream_2/stream = ExtResource("14_lip14")
 stream_3/stream = ExtResource("15_fdta4")
 stream_4/stream = ExtResource("16_38a0a")
 stream_5/stream = ExtResource("17_uep1p")
+
+[sub_resource type="PrismMesh" id="PrismMesh_uhc1k"]
+material = ExtResource("4_swwbn")
+left_to_right = 1.0
+size = Vector3(0.295, 0.88, 0.2)
 
 [sub_resource type="Gradient" id="Gradient_inhaj"]
 interpolation_mode = 2
@@ -188,20 +188,28 @@ decay = 0.85
 [node name="Camera3D" type="Camera3D" parent="CameraSystem/CameraShake"]
 transform = Transform3D(1, 0, 0, 0, 0.494458, 0.869202, 0, -0.869202, 0.494458, 0, 0, 0)
 
-[node name="PuzzleController" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
-script = ExtResource("1_yob6b")
-camera = NodePath("../CameraSystem/CameraShake/Camera3D")
-
-[node name="ScreamController" type="AudioStreamPlayer3D" parent="PuzzleController"]
+[node name="ScreamController" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45724, -22.0389)
 stream = SubResource("AudioStreamRandomizer_uclkp")
 unit_size = 30.0
 bus = &"SFX"
 script = ExtResource("3_38a0a")
 
-[node name="WiggleShaderController" type="Node" parent="PuzzleController"]
+[node name="WiggleShaderController" type="Node" parent="."]
 script = ExtResource("4_dogtj")
 wiggle_materials = Array[ShaderMaterial]([ExtResource("19_dogtj"), ExtResource("21_dogtj")])
+
+[node name="PuzzleController" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
+script = ExtResource("1_yob6b")
+camera = NodePath("../CameraSystem/CameraShake/Camera3D")
+
+[node name="PuzzleInputHandler" type="Node" parent="PuzzleController" node_paths=PackedStringArray("cursor", "cursor_sfx_player")]
+script = ExtResource("4_uhc1k")
+cursor = NodePath("../KnifeCursor")
+cursor_particles_scene = ExtResource("7_lip14")
+cursor_sfx_player = NodePath("../KnifeCursor/AudioStreamPlayer3D")
+knife_swoosh_sounds = SubResource("AudioStreamRandomizer_swwbn")
+knife_impact_sounds = SubResource("AudioStreamRandomizer_jcay4")
 
 [node name="KnifeCursor" type="Node3D" parent="PuzzleController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42609, 0)
@@ -223,14 +231,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.71137, 0)
 radius = 0.1
 height = 3.69531
 material = ExtResource("4_swwbn")
-
-[node name="PuzzleInputHandler" type="Node" parent="PuzzleController" node_paths=PackedStringArray("cursor", "cursor_sfx_player")]
-script = ExtResource("4_uhc1k")
-cursor = NodePath("../KnifeCursor")
-cursor_particles_scene = ExtResource("7_lip14")
-cursor_sfx_player = NodePath("../KnifeCursor/AudioStreamPlayer3D")
-knife_swoosh_sounds = SubResource("AudioStreamRandomizer_swwbn")
-knife_impact_sounds = SubResource("AudioStreamRandomizer_jcay4")
 
 [node name="BodyMesh3D" type="MeshInstance3D" parent="PuzzleController"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0162085, 0)

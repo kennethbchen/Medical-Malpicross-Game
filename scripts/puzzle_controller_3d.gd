@@ -12,10 +12,6 @@ extends Node3D
 
 @onready var body_mesh: BodyMesh3D = $BodyMesh3D
 
-@onready var wiggle_shader_controller: Node = $WiggleShaderController
-
-@onready var scream_controller: AudioStreamPlayer3D = $ScreamController
-
 var sim_point_rows: int
 var sim_point_columns: int
 
@@ -91,10 +87,7 @@ func init(camera: Camera3D, puzzle: Puzzle) -> void:
 			row_data.append(new_quad)
 
 		input_quads.append(row_data)
-		
-	wiggle_shader_controller.init(puzzle)
-	
-	scream_controller.init(puzzle)
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	
