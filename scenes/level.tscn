@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=62 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://fljgdlvfv1gh" path="res://scripts/level.gd" id="1_c1pbi"]
@@ -9,7 +9,8 @@
 [ext_resource type="Script" uid="uid://cr08p4p1ek04c" path="res://scripts/scream_controller.gd" id="3_38a0a"]
 [ext_resource type="Script" uid="uid://dih8wwvotb5tk" path="res://scripts/puzzle_drawer.gd" id="3_b4stf"]
 [ext_resource type="Script" uid="uid://dcnqwn1puo4h" path="res://scripts/resources/grid_mesh_3d.gd" id="3_ygxcr"]
-[ext_resource type="Script" uid="uid://cmm72wtu3apfw" path="res://scenes/world_environment_effects.gd" id="4_535f6"]
+[ext_resource type="Shader" uid="uid://cjrehqreew7rn" path="res://shaders/blood_splatter_vignette.tres" id="4_50fbu"]
+[ext_resource type="Script" uid="uid://cmm72wtu3apfw" path="res://scripts/world_environment_effects.gd" id="4_535f6"]
 [ext_resource type="Script" uid="uid://dknyji6pxyqm3" path="res://scripts/wiggle_shader_controller.gd" id="4_dogtj"]
 [ext_resource type="Material" uid="uid://ljxvvcm1awo" path="res://materials/knife.tres" id="4_swwbn"]
 [ext_resource type="Script" uid="uid://c0qfearwpscmu" path="res://scripts/puzzle_input_handler.gd" id="4_uhc1k"]
@@ -45,6 +46,12 @@
 shader = ExtResource("1_fdta4")
 shader_parameter/vignetteRadius = 3.0
 shader_parameter/vignetteAlpha = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0fmhk"]
+shader = ExtResource("4_50fbu")
+shader_parameter/Color = Color(0.54902, 0.05098, 0.05098, 1)
+shader_parameter/Radius__________ = 0.606
+shader_parameter/Opacity = 1.0
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f1g4q"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -154,8 +161,19 @@ script = ExtResource("1_b4stf")
 
 [node name="PostProcessing" type="CanvasLayer" parent="."]
 
-[node name="ColorRect" type="ColorRect" parent="PostProcessing"]
+[node name="Vignette" type="ColorRect" parent="PostProcessing"]
 material = SubResource("ShaderMaterial_lip14")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PostProcessing2" type="CanvasLayer" parent="."]
+
+[node name="BloodSplatterVignette" type="ColorRect" parent="PostProcessing2"]
+material = SubResource("ShaderMaterial_0fmhk")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
