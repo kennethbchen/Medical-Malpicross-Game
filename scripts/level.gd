@@ -9,6 +9,7 @@ extends Node3D
 @onready var wiggle_shader_controller: Node = $WiggleShaderController
 @onready var scream_controller: AudioStreamPlayer3D = $ScreamController
 @onready var world_environment: WorldEnvironment = $WorldEnvironment
+@onready var blood_splatter_vignette = $PostProcessing2/BloodSplatterVignette
 
 var test_puzzles: Array[String] = [
 	"""0 1 1 1 0
@@ -50,4 +51,5 @@ func _ready() -> void:
 	wiggle_shader_controller.init(puzzle)
 	scream_controller.init(puzzle)
 	world_environment.init(puzzle)
+	blood_splatter_vignette.init(puzzle)
 	

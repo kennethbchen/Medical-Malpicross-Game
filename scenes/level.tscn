@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=63 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://fljgdlvfv1gh" path="res://scripts/level.gd" id="1_c1pbi"]
@@ -15,6 +15,7 @@
 [ext_resource type="Material" uid="uid://ljxvvcm1awo" path="res://materials/knife.tres" id="4_swwbn"]
 [ext_resource type="Script" uid="uid://c0qfearwpscmu" path="res://scripts/puzzle_input_handler.gd" id="4_uhc1k"]
 [ext_resource type="Script" uid="uid://cdsemgxjyhjng" path="res://scripts/cursor.gd" id="4_ygxcr"]
+[ext_resource type="Script" uid="uid://jvhhri6gp35b" path="res://scripts/blood_splatter_vignette.gd" id="5_0fmhk"]
 [ext_resource type="AudioStream" uid="uid://qqqdbf6uaebt" path="res://audio/sfx/screaming/male_0/yell1.wav" id="5_4vhcd"]
 [ext_resource type="AudioStream" uid="uid://dbi443gwhx06d" path="res://audio/sfx/knife_swoosh/swoosh 01.wav" id="6_lshh4"]
 [ext_resource type="AudioStream" uid="uid://cdapfeekeoc28" path="res://audio/sfx/screaming/male_0/yell2.wav" id="6_vljie"]
@@ -50,7 +51,7 @@ shader_parameter/vignetteAlpha = 1.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0fmhk"]
 shader = ExtResource("4_50fbu")
 shader_parameter/Color = Color(0.54902, 0.05098, 0.05098, 1)
-shader_parameter/Radius__________ = 0.606
+shader_parameter/Radius__________ = 0.334
 shader_parameter/Opacity = 1.0
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f1g4q"]
@@ -180,6 +181,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("5_0fmhk")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ygxcr")
