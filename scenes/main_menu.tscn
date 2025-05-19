@@ -1,0 +1,147 @@
+[gd_scene load_steps=8 format=3 uid="uid://c4k60x16kd0da"]
+
+[ext_resource type="Script" uid="uid://lfxrj4s481ed" path="res://addons/simplemenu/simple_menu/simple_menu.gd" id="1_ekxnf"]
+[ext_resource type="Script" uid="uid://brl1wodkpfsk4" path="res://addons/simplemenu/simple_menu_button_binding.gd" id="2_bqqt6"]
+
+[sub_resource type="Resource" id="Resource_ekxnf"]
+script = ExtResource("2_bqqt6")
+button_path = NodePath("../VBoxContainer/StartButton")
+action_type = 3
+scene_to_load = "res://scenes/level_select/level_select.tscn"
+metadata/_custom_type_script = "uid://brl1wodkpfsk4"
+
+[sub_resource type="Resource" id="Resource_bqqt6"]
+script = ExtResource("2_bqqt6")
+button_path = NodePath("../VBoxContainer/CreditsButton")
+action_type = 1
+target_nodes = Array[NodePath]([NodePath("../CreditsMenu")])
+metadata/_custom_type_script = "uid://brl1wodkpfsk4"
+
+[sub_resource type="Resource" id="Resource_wu84c"]
+script = ExtResource("2_bqqt6")
+button_path = NodePath("../CreditsMenu/Panel/VBoxContainer/CloseCreditsButton")
+action_type = 0
+target_nodes = Array[NodePath]([NodePath("../CreditsMenu")])
+metadata/_custom_type_script = "uid://brl1wodkpfsk4"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bqqt6"]
+bg_color = Color(0, 0, 0, 0.411765)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ekxnf"]
+bg_color = Color(0.244776, 0.244776, 0.244776, 1)
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SimpleMenu" type="Node" parent="."]
+script = ExtResource("1_ekxnf")
+actions = Array[ExtResource("2_bqqt6")]([SubResource("Resource_ekxnf"), SubResource("Resource_bqqt6"), SubResource("Resource_wu84c")])
+metadata/_custom_type_script = "uid://lfxrj4s481ed"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -165.5
+offset_top = 38.0
+offset_right = 165.5
+offset_bottom = 88.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 36
+text = "Medical Malpicross"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -71.0
+offset_top = -17.0
+offset_right = 71.0
+offset_bottom = 105.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StartButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Start"
+
+[node name="CreditsButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Credits"
+
+[node name="SettingsButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Settings
+"
+
+[node name="CreditsMenu" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="GreyoutPanel" type="Panel" parent="CreditsMenu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_bqqt6")
+
+[node name="Panel" type="Panel" parent="CreditsMenu"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -266.0
+offset_top = -150.0
+offset_right = 266.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ekxnf")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CreditsMenu/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 9.0
+offset_right = -8.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Credits" type="RichTextLabel" parent="CreditsMenu/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Blunt Force Trauma (Clean and Juicy) by TheFilmLook
+https://freesound.org/people/TheFilmLook/sounds/365574/
+
+Annihilated Fruit 01 by aglinder
+https://freesound.org/people/aglinder/sounds/264479/
+
+SWOOSH Sound Effect by Robhog
+https://freesound.org/people/Robhog/sounds/788990/
+
+Screaming sounds by HaelDB
+https://opengameart.org/content/male-gruntyelling-sounds
+
+Everything else made by me, Carmine
+:)"
+shortcut_keys_enabled = false
+
+[node name="CloseCreditsButton" type="Button" parent="CreditsMenu/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.0
+text = "Close"

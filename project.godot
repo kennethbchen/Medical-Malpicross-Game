@@ -28,6 +28,10 @@ window/size/window_height_override=648
 window/stretch/mode="viewport"
 window/stretch/aspect="keep_width"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/simplemenu/plugin.cfg")
+
 [file_customization]
 
 folder_colors={
