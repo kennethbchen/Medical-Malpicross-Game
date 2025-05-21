@@ -44,7 +44,7 @@ theme_override_constants/v_separation = 16
 columns = 5
 script = ExtResource("1_t5gxd")
 level_select_button = ExtResource("2_vdlig")
-levels = Array[PackedScene]([ExtResource("2_4ek2u"), ExtResource("2_4ek2u"), ExtResource("2_4ek2u"), ExtResource("2_4ek2u"), ExtResource("2_4ek2u"), ExtResource("2_4ek2u"), ExtResource("2_4ek2u"), ExtResource("2_4ek2u"), ExtResource("2_4ek2u"), ExtResource("2_4ek2u")])
+levels = Array[PackedScene]([ExtResource("2_4ek2u"), ExtResource("2_4ek2u"), ExtResource("2_4ek2u")])
 
 [node name="Main Menu Button" type="Button" parent="."]
 layout_mode = 0
