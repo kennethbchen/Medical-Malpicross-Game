@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+GameState="*res://scenes/game_state.tscn"
 EventBus="*res://scripts/util/event_bus.gd"
 
 [display]
