@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://c4k60x16kd0da"]
+[gd_scene load_steps=9 format=3 uid="uid://c4k60x16kd0da"]
 
+[ext_resource type="Script" uid="uid://p3e7eh43tr3n" path="res://scripts/main_menu.gd" id="1_bqqt6"]
 [ext_resource type="Script" uid="uid://lfxrj4s481ed" path="res://addons/simplemenu/simple_menu/simple_menu.gd" id="1_ekxnf"]
 [ext_resource type="Script" uid="uid://brl1wodkpfsk4" path="res://addons/simplemenu/simple_menu_button_binding.gd" id="2_bqqt6"]
 
@@ -37,6 +38,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_bqqt6")
 
 [node name="SimpleMenu" type="Node" parent="."]
 script = ExtResource("1_ekxnf")

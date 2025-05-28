@@ -21,6 +21,7 @@ extends Node3D
 
 @onready var exit_button: Button = $PauseMenu/ContentPanel/VBoxContainer/ExitButton
 @onready var restart_button: Button = $PauseMenu/ContentPanel/VBoxContainer/RestartButton
+@onready var settings_button: Button = $PauseMenu/ContentPanel/VBoxContainer/SettingsButon
 @onready var resume_button: Button = $PauseMenu/ContentPanel/VBoxContainer/ResumeButton
 
 
@@ -85,6 +86,8 @@ func _ready() -> void:
 	resume_button.pressed.connect(func():
 		pause_menu.hide()
 		)
+	
+	settings_button.pressed.connect(SettingsMenu.show_menu)
 		
 	
 	

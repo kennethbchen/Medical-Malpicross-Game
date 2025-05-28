@@ -1,14 +1,13 @@
 extends CanvasLayer
 
 @export var master_volume_slider: Slider
-
 @export var sfx_volume_slider: Slider
-
 @export var voice_volume_slider: Slider
 
 @export var screen_shake_slider: Slider
-
 @export var color_effect_slider: Slider
+
+@export var close_button: Button
 
 func _ready() -> void:
 	master_volume_slider.value_changed.connect(func(val):
@@ -30,6 +29,8 @@ func _ready() -> void:
 	color_effect_slider.value_changed.connect(func(val):
 		GameState.color_effect_intensity = val
 	)
+	
+	close_button.pressed.connect(hide_menu)
 
 func show_menu() -> void:
 	

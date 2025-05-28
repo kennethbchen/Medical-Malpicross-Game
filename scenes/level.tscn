@@ -238,17 +238,21 @@ offset_bottom = 51.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ExitButton" type="Button" parent="PauseMenu/ContentPanel/VBoxContainer"]
+[node name="ResumeButton" type="Button" parent="PauseMenu/ContentPanel/VBoxContainer"]
 layout_mode = 2
-text = "Exit Puzzle"
+text = "Resume"
 
 [node name="RestartButton" type="Button" parent="PauseMenu/ContentPanel/VBoxContainer"]
 layout_mode = 2
 text = "Restart"
 
-[node name="ResumeButton" type="Button" parent="PauseMenu/ContentPanel/VBoxContainer"]
+[node name="SettingsButon" type="Button" parent="PauseMenu/ContentPanel/VBoxContainer"]
 layout_mode = 2
-text = "Resume"
+text = "Settings"
+
+[node name="ExitButton" type="Button" parent="PauseMenu/ContentPanel/VBoxContainer"]
+layout_mode = 2
+text = "Exit Puzzle"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ygxcr")
@@ -360,7 +364,7 @@ hide_fixed = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45724, -22.0389)
 stream = SubResource("AudioStreamRandomizer_uclkp")
 unit_size = 30.0
-bus = &"SFX"
+bus = &"Voice"
 script = ExtResource("3_38a0a")
 
 [node name="WiggleShaderController" type="Node" parent="."]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dbukyfabupt14"]
+[gd_scene load_steps=7 format=3 uid="uid://dbukyfabupt14"]
 
 [ext_resource type="Script" uid="uid://lfxrj4s481ed" path="res://addons/simplemenu/simple_menu/simple_menu.gd" id="1_3c84o"]
+[ext_resource type="Script" uid="uid://4oobos0bv3t2" path="res://scripts/level_select/level_select.gd" id="1_7g617"]
 [ext_resource type="Script" uid="uid://bf47bjijydofy" path="res://scripts/level_select/level_select_grid.gd" id="1_t5gxd"]
 [ext_resource type="Script" uid="uid://brl1wodkpfsk4" path="res://addons/simplemenu/simple_menu_button_binding.gd" id="2_3c84o"]
 [ext_resource type="PackedScene" uid="uid://dw0ntdxnct408" path="res://scenes/level_select/level_select_button.tscn" id="2_vdlig"]
@@ -19,6 +20,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_7g617")
 
 [node name="SimpleMenu" type="Node" parent="."]
 script = ExtResource("1_3c84o")
