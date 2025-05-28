@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dverv6isojvkk"]
+[gd_scene load_steps=4 format=3 uid="uid://dverv6isojvkk"]
+
+[ext_resource type="Script" uid="uid://pai84jpgpqqn" path="res://scripts/settings_screen.gd" id="1_srqes"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qf52y"]
 bg_color = Color(0.12, 0.12, 0.12, 0.823529)
@@ -6,7 +8,14 @@ bg_color = Color(0.12, 0.12, 0.12, 0.823529)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_srqes"]
 bg_color = Color(0.197937, 0.197937, 0.197937, 1)
 
-[node name="SettingsScreen" type="CanvasLayer"]
+[node name="SettingsScreen" type="CanvasLayer" node_paths=PackedStringArray("master_volume_slider", "sfx_volume_slider", "voice_volume_slider", "screen_shake_slider", "color_effect_slider")]
+visible = false
+script = ExtResource("1_srqes")
+master_volume_slider = NodePath("SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/MasterVolumeSlider")
+sfx_volume_slider = NodePath("SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/SFXVolumeSlider")
+voice_volume_slider = NodePath("SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer3/VoiceVolumeSlider")
+screen_shake_slider = NodePath("SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer2/VBoxContainer/ScreenShakeSlider")
+color_effect_slider = NodePath("SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer2/VBoxContainer2/ColorEffectSlider")
 
 [node name="GreyoutPanel" type="Panel" parent="."]
 anchors_preset = 15
@@ -68,8 +77,10 @@ layout_mode = 2
 layout_mode = 2
 text = "Master"
 
-[node name="HSlider" type="HSlider" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+[node name="MasterVolumeSlider" type="HSlider" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
+max_value = 1.0
+step = 0.01
 
 [node name="HSeparator" type="HSeparator" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -81,8 +92,10 @@ layout_mode = 2
 layout_mode = 2
 text = "SFX"
 
-[node name="HSlider" type="HSlider" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2"]
+[node name="SFXVolumeSlider" type="HSlider" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2"]
 layout_mode = 2
+max_value = 1.0
+step = 0.01
 
 [node name="HSeparator2" type="HSeparator" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -92,10 +105,12 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer3"]
 layout_mode = 2
-text = "Ambient"
+text = "Voice"
 
-[node name="HSlider" type="HSlider" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer3"]
+[node name="VoiceVolumeSlider" type="HSlider" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer3"]
 layout_mode = 2
+max_value = 1.0
+step = 0.01
 
 [node name="VSeparator" type="VSeparator" parent="SettingsPanel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -119,8 +134,10 @@ layout_mode = 2
 layout_mode = 2
 text = "Screen Shake Intensity"
 
-[node name="HSlider" type="HSlider" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer2/VBoxContainer"]
+[node name="ScreenShakeSlider" type="HSlider" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer2/VBoxContainer"]
 layout_mode = 2
+max_value = 1.0
+step = 0.01
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
@@ -129,8 +146,10 @@ layout_mode = 2
 layout_mode = 2
 text = "Color Effect Intensity"
 
-[node name="HSlider" type="HSlider" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer2/VBoxContainer2"]
+[node name="ColorEffectSlider" type="HSlider" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer2/VBoxContainer2"]
 layout_mode = 2
+max_value = 1.0
+step = 0.01
 
 [node name="Button" type="Button" parent="SettingsPanel/VBoxContainer"]
 layout_mode = 2

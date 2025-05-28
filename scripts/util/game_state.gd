@@ -6,9 +6,10 @@ var level_complete: Array[bool]
 
 # Audio Settings
 
-var sfx_volume_level: float = 1
-var ambient_volume_level: float = 1
-var voice_volume_level: float = 1
+var master_volume_level: float = 0.75
+var sfx_volume_level: float = 0.75
+var voice_volume_level: float = 0.75
+
 
 # Visual Effect Settings
 
