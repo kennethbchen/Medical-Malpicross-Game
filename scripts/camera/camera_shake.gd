@@ -34,7 +34,7 @@ func _process(delta: float) -> void:
 		trauma = max(trauma - decay * delta, 0)
 	
 	# rotate
-	var shake_amount: float = pow(trauma, trauma_power)
+	var shake_amount: float = pow(trauma, trauma_power) * GameState.camera_shake_intensity
 	rotation_degrees.x = max_pitch * shake_amount * pitch_noise.get_noise_1d(Time.get_ticks_msec())
 	rotation_degrees.y = max_yaw * shake_amount * yaw_noise.get_noise_1d(Time.get_ticks_msec())
 	rotation_degrees.z = max_roll * shake_amount * roll_noise.get_noise_1d(Time.get_ticks_msec())

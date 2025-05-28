@@ -8,14 +8,14 @@ bg_color = Color(0.12, 0.12, 0.12, 0.823529)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_srqes"]
 bg_color = Color(0.197937, 0.197937, 0.197937, 1)
 
-[node name="SettingsScreen" type="CanvasLayer" node_paths=PackedStringArray("master_volume_slider", "sfx_volume_slider", "voice_volume_slider", "screen_shake_slider", "color_effect_slider", "close_button")]
+[node name="SettingsScreen" type="CanvasLayer" node_paths=PackedStringArray("master_volume_slider", "sfx_volume_slider", "voice_volume_slider", "camera_shake_slider", "color_effect_slider", "close_button")]
 layer = 2
 visible = false
 script = ExtResource("1_srqes")
 master_volume_slider = NodePath("SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer/MasterVolumeSlider")
 sfx_volume_slider = NodePath("SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer2/SFXVolumeSlider")
 voice_volume_slider = NodePath("SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer/VBoxContainer3/VoiceVolumeSlider")
-screen_shake_slider = NodePath("SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer2/VBoxContainer/ScreenShakeSlider")
+camera_shake_slider = NodePath("SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer2/VBoxContainer/CameraShakeSlider")
 color_effect_slider = NodePath("SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer2/VBoxContainer2/ColorEffectSlider")
 close_button = NodePath("SettingsPanel/VBoxContainer/Button")
 
@@ -136,7 +136,7 @@ layout_mode = 2
 layout_mode = 2
 text = "Screen Shake Intensity"
 
-[node name="ScreenShakeSlider" type="HSlider" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer2/VBoxContainer"]
+[node name="CameraShakeSlider" type="HSlider" parent="SettingsPanel/VBoxContainer/HBoxContainer/VBoxContainer2/VBoxContainer"]
 layout_mode = 2
 max_value = 1.0
 step = 0.01

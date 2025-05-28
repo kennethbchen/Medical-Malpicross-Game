@@ -4,7 +4,7 @@ extends CanvasLayer
 @export var sfx_volume_slider: Slider
 @export var voice_volume_slider: Slider
 
-@export var screen_shake_slider: Slider
+@export var camera_shake_slider: Slider
 @export var color_effect_slider: Slider
 
 @export var close_button: Button
@@ -22,8 +22,8 @@ func _ready() -> void:
 		GameState.voice_volume_level = val
 	)
 	
-	screen_shake_slider.value_changed.connect(func(val):
-		GameState.screen_shake_intensity = val
+	camera_shake_slider.value_changed.connect(func(val):
+		GameState.camera_shake_intensity = val
 	)
 	
 	color_effect_slider.value_changed.connect(func(val):
@@ -39,7 +39,7 @@ func show_menu() -> void:
 	sfx_volume_slider.value = GameState.sfx_volume_level
 	voice_volume_slider.value = GameState.voice_volume_level
 	
-	screen_shake_slider.value = GameState.screen_shake_intensity
+	camera_shake_slider.value = GameState.camera_shake_intensity
 	color_effect_slider.value = GameState.color_effect_intensity
 	
 	show()

@@ -16,8 +16,8 @@ func _process(delta: float) -> void:
 	if pain_level > 0:
 		pain_level = max(pain_level - pain_decay * delta, 0)
 	
-	environment.adjustment_saturation = remap(pain_level, 0, 1, 1, 1.5)
-	environment.adjustment_contrast = remap(pain_level, 0, 1, 1, 2.5)
+	environment.adjustment_saturation = remap(pain_level, 0, 1, 1, 1 + 0.5 * GameState.color_effect_intensity)
+	environment.adjustment_contrast = remap(pain_level, 0, 1, 1, 1 + 1.5 * GameState.color_effect_intensity)
 	
 func on_input_attempt_made(cell: Puzzle.InputCell, row: int, col: int) -> void:
 	if cell.is_colored():

@@ -39,7 +39,7 @@ var voice_volume_level: float = 0.75:
 
 # Visual Effect Settings
 
-var screen_shake_intensity: float = 1
+var camera_shake_intensity: float = 1
 var color_effect_intensity: float = 1
 
 func _ready() -> void:
