@@ -4,6 +4,8 @@ extends Node
 
 var level_complete: Array[bool]
 
+var current_level_idx: int = -1
+
 # Audio Settings
 
 var master_volume_level: float = 0.75:
@@ -51,3 +53,14 @@ func _ready() -> void:
 	
 	level_complete.resize(len(levels))
 	level_complete.fill(false)
+	
+	EventBus.level_selected.connect(_on_level_selected)
+
+func _on_level_selected(index: int) -> void:
+	current_level_idx = index
+
+func _on_level_complete() -> void:
+	if current_level_idx >= 0:
+		level_complete[current_level_idx] = true
+		
+	print(level_complete)

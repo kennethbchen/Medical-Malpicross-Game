@@ -4,7 +4,7 @@ extends GridContainer
 
 func _ready() -> void:
 	
-	for level in GameState.levels:
+	for i in len(GameState.levels):
 		var new_level_button = level_select_button.instantiate()
 		add_child(new_level_button)
-		new_level_button.init(level)
+		new_level_button.init(GameState.levels[i], i)
