@@ -88,6 +88,8 @@ func _ready() -> void:
 		)
 	
 	settings_button.pressed.connect(SettingsMenu.show_menu)
-		
+	
+	puzzle_controller.puzzle_solved.connect(func():
+		EventBus.level_completed.emit())
 	
 	

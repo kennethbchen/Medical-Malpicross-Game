@@ -55,6 +55,8 @@ func _ready() -> void:
 	level_complete.fill(false)
 	
 	EventBus.level_selected.connect(_on_level_selected)
+	
+	EventBus.level_completed.connect(_on_level_complete)
 
 func _on_level_selected(index: int) -> void:
 	current_level_idx = index

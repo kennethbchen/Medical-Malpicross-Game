@@ -37,6 +37,8 @@ var cell_scale_factor: float = cell_size / sim_segment_size
 # In sim space
 var cursor_position: Vector2i
 
+signal puzzle_solved()
+
 func init(camera: Camera3D, puzzle: Puzzle) -> void:
 	
 	self.camera = camera
@@ -209,6 +211,7 @@ func _on_input_attempt_made(cell: Puzzle.InputCell, row: int, col: int):
 	if puzzle.is_solved():
 		print("solved")
 		puzzle_mesh.hide()
+		puzzle_solved.emit()
 
 func _get_selected_cell():
 	
