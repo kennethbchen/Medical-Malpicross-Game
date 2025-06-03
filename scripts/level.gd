@@ -24,6 +24,8 @@ extends Node3D
 @onready var settings_button: Button = $PauseMenu/ContentPanel/VBoxContainer/SettingsButon
 @onready var resume_button: Button = $PauseMenu/ContentPanel/VBoxContainer/ResumeButton
 
+@onready var win_screen: CanvasLayer = $WinScreen
+@onready var win_exit_button: Button = $WinScreen/ExitLevelButton
 
 var test_puzzles: Array[String] = [
 	"""0 1 1 1 0
@@ -56,7 +58,7 @@ var puzzle: Puzzle
 
 func _ready() -> void:
 	
-	var puzzle_string = test_puzzles.pick_random()
+	var puzzle_string = test_puzzles[-1]
 	
 	puzzle = Puzzle.new(puzzle_string)
 	
@@ -74,10 +76,7 @@ func _ready() -> void:
 		pause_menu.show()
 	)
 	
-	# Load file instead of from Packed Scene to avoid circular dependency (?)
-	exit_button.pressed.connect(func():
-		get_tree().change_scene_to_file("res://scenes/level_select/level_select.tscn")
-		)
+	exit_button.pressed.connect(_exit_level)
 	
 	restart_button.pressed.connect(_restart_level)
 	
@@ -88,6 +87,13 @@ func _ready() -> void:
 	settings_button.pressed.connect(SettingsMenu.show_menu)
 	
 	puzzle_controller.puzzle_solved.connect(_on_puzzle_solved)
+	
+	win_exit_button.pressed.connect(_exit_level)
+	win_screen.hide()
+
+func _exit_level() -> void:
+	# Load file instead of from Packed Scene to avoid circular dependency (?)
+	get_tree().change_scene_to_file("res://scenes/level_select/level_select.tscn")
 
 func _restart_level() -> void:
 	get_tree().reload_current_scene()
@@ -96,3 +102,4 @@ func _on_puzzle_solved() -> void:
 	EventBus.level_completed.emit()
 	SettingsMenu.hide_menu()
 	pause_menu.hide()
+	win_screen.show()

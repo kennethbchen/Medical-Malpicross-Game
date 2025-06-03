@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=66 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://fljgdlvfv1gh" path="res://scripts/level.gd" id="1_c1pbi"]
@@ -55,10 +55,12 @@ shader_parameter/Radius__________ = 0.334
 shader_parameter/Opacity = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fmhk"]
-bg_color = Color(0, 0, 0, 0.388235)
+bg_color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iafhg"]
 bg_color = Color(0.169245, 0.169245, 0.169245, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0fmhk"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f1g4q"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -166,8 +168,6 @@ script = ExtResource("1_c1pbi")
 [node name="DebugCommands" type="Node" parent="."]
 script = ExtResource("1_b4stf")
 
-[node name="WinScreen" type="CanvasLayer" parent="."]
-
 [node name="PostProcessing" type="CanvasLayer" parent="."]
 
 [node name="Vignette" type="ColorRect" parent="PostProcessing"]
@@ -255,6 +255,60 @@ text = "Settings"
 [node name="ExitButton" type="Button" parent="PauseMenu/ContentPanel/VBoxContainer"]
 layout_mode = 2
 text = "Exit Puzzle"
+
+[node name="WinScreen" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="MouseBlockPanel" type="Panel" parent="WinScreen"]
+offset_right = 129.0
+offset_bottom = 99.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_0fmhk")
+
+[node name="Panel" type="Panel" parent="WinScreen"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -114.0
+offset_right = 70.0
+offset_bottom = -88.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="WinScreen/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Level Complete!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WinScreen/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ExitLevelButton" type="Button" parent="WinScreen"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.5
+offset_top = 101.0
+offset_right = 40.5
+offset_bottom = 132.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Exit Level"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ygxcr")
