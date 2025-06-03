@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=67 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://fljgdlvfv1gh" path="res://scripts/level.gd" id="1_c1pbi"]
@@ -61,6 +61,8 @@ bg_color = Color(0, 0, 0, 0)
 bg_color = Color(0.169245, 0.169245, 0.169245, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0fmhk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iafhg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f1g4q"]
 sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
@@ -164,6 +166,7 @@ albedo_color = Color(0.920884, 0.707924, 0.675801, 1)
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_c1pbi")
+level_name = "Level Nameasdfsdf"
 
 [node name="DebugCommands" type="Node" parent="."]
 script = ExtResource("1_b4stf")
@@ -257,7 +260,6 @@ layout_mode = 2
 text = "Exit Puzzle"
 
 [node name="WinScreen" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="MouseBlockPanel" type="Panel" parent="WinScreen"]
 offset_right = 129.0
@@ -271,9 +273,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -70.0
-offset_top = -114.0
+offset_top = -150.0
 offset_right = 70.0
-offset_bottom = -88.0
+offset_bottom = -124.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -288,14 +290,6 @@ text = "Level Complete!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="WinScreen/Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
 [node name="ExitLevelButton" type="Button" parent="WinScreen"]
 anchors_preset = 8
 anchor_left = 0.5
@@ -309,6 +303,36 @@ offset_bottom = 132.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Exit Level"
+
+[node name="LevelNameContainer" type="PanelContainer" parent="WinScreen"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -54.0
+offset_top = -120.0
+offset_right = 53.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="WinScreen/LevelNameContainer"]
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="WinScreen/LevelNameContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_iafhg")
+
+[node name="LevelNameLabel" type="Label" parent="WinScreen/LevelNameContainer/HBoxContainer"]
+layout_mode = 2
+text = "Level Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="WinScreen/LevelNameContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_iafhg")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ygxcr")

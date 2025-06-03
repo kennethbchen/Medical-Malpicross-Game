@@ -1,5 +1,7 @@
 extends Node3D
 
+@export var level_name: String = "Level Name"
+
 @onready var camera: Camera3D = $CameraSystem/CameraShake/Camera3D
 
 @onready var puzzle_controller: Node3D = $PuzzleController
@@ -26,6 +28,8 @@ extends Node3D
 
 @onready var win_screen: CanvasLayer = $WinScreen
 @onready var win_exit_button: Button = $WinScreen/ExitLevelButton
+
+@onready var level_name_label: Label = $WinScreen/LevelNameContainer/HBoxContainer/LevelNameLabel
 
 var test_puzzles: Array[String] = [
 	"""0 1 1 1 0
@@ -90,6 +94,8 @@ func _ready() -> void:
 	
 	win_exit_button.pressed.connect(_exit_level)
 	win_screen.hide()
+	
+	level_name_label.text = level_name
 
 func _exit_level() -> void:
 	# Load file instead of from Packed Scene to avoid circular dependency (?)
