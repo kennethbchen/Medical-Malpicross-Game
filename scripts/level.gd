@@ -79,9 +79,7 @@ func _ready() -> void:
 		get_tree().change_scene_to_file("res://scenes/level_select/level_select.tscn")
 		)
 	
-	restart_button.pressed.connect(func():
-		get_tree().reload_current_scene()
-		)
+	restart_button.pressed.connect(_restart_level)
 	
 	resume_button.pressed.connect(func():
 		pause_menu.hide()
@@ -89,7 +87,12 @@ func _ready() -> void:
 	
 	settings_button.pressed.connect(SettingsMenu.show_menu)
 	
-	puzzle_controller.puzzle_solved.connect(func():
-		EventBus.level_completed.emit())
-	
-	
+	puzzle_controller.puzzle_solved.connect(_on_puzzle_solved)
+
+func _restart_level() -> void:
+	get_tree().reload_current_scene()
+
+func _on_puzzle_solved() -> void:
+	EventBus.level_completed.emit()
+	SettingsMenu.hide_menu()
+	pause_menu.hide()

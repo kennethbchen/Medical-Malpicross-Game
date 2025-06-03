@@ -166,6 +166,8 @@ script = ExtResource("1_c1pbi")
 [node name="DebugCommands" type="Node" parent="."]
 script = ExtResource("1_b4stf")
 
+[node name="WinScreen" type="CanvasLayer" parent="."]
+
 [node name="PostProcessing" type="CanvasLayer" parent="."]
 
 [node name="Vignette" type="ColorRect" parent="PostProcessing"]
