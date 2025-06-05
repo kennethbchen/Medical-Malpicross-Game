@@ -27,8 +27,8 @@ func set_cursor_position(pos: Vector2) -> void:
 	cursor_position = pos
 
 func _draw() -> void:
-	
-	if not visible: return
+	if cursor_position == Vector2(-1, -1): 
+		return
 	
 	# Highlight input cell
 	var cur_size = Vector2(cell_size_px, cell_size_px)

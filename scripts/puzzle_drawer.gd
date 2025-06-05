@@ -11,6 +11,8 @@ func init(puz: Puzzle, cell_size: int = 32) -> void:
 	puzzle = puz
 	
 	cell_size_px = cell_size
+	
+	
 
 func _process(delta: float) -> void:
 	queue_redraw()

@@ -39,7 +39,7 @@ var cursor_position: Vector2i
 
 signal puzzle_solved()
 
-func init(camera: Camera3D, puzzle: Puzzle) -> void:
+func init(camera: Camera3D, puzzle: Puzzle, solution_image: Texture) -> void:
 	
 	self.camera = camera
 	self.puzzle = puzzle
@@ -58,7 +58,7 @@ func init(camera: Camera3D, puzzle: Puzzle) -> void:
 	
 	flesh_sim.init(puzzle, sim_point_columns, sim_point_rows, sim_segment_size)
 	
-	puzzle_viewport.init(puzzle)
+	puzzle_viewport.init(puzzle, solution_image)
 	
 	var puzzle_mesh_material: StandardMaterial3D = StandardMaterial3D.new()
 	puzzle_mesh_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
@@ -209,8 +209,6 @@ func get_board_points() -> Array[Vector3]:
 
 func _on_input_attempt_made(cell: Puzzle.InputCell, row: int, col: int):
 	if puzzle.is_solved():
-		print("solved")
-		puzzle_mesh.hide()
 		puzzle_solved.emit()
 
 func _get_selected_cell():

@@ -1,9 +1,10 @@
-[gd_scene load_steps=67 format=3 uid="uid://cphi0cg2safub"]
+[gd_scene load_steps=69 format=3 uid="uid://cphi0cg2safub"]
 
 [ext_resource type="Script" uid="uid://1kiapugm7kgr" path="res://scripts/util/debug_commands.gd" id="1_b4stf"]
 [ext_resource type="Script" uid="uid://fljgdlvfv1gh" path="res://scripts/level.gd" id="1_c1pbi"]
 [ext_resource type="Shader" uid="uid://v4s45bekv3ew" path="res://shaders/post_processing.gdshader" id="1_fdta4"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
+[ext_resource type="Texture2D" uid="uid://dnm7cnvwi6244" path="res://sprites/test_solution_image.png" id="2_cr74b"]
 [ext_resource type="Script" uid="uid://dra4lijujrmwu" path="res://scripts/puzzle_viewport.gd" id="2_f1g4q"]
 [ext_resource type="Script" uid="uid://b4k1w2j2r7scw" path="res://scripts/camera/camera_shake.gd" id="2_inhaj"]
 [ext_resource type="Script" uid="uid://cr08p4p1ek04c" path="res://scripts/scream_controller.gd" id="3_38a0a"]
@@ -42,6 +43,7 @@
 [ext_resource type="AudioStream" uid="uid://cvani8d6cmwfh" path="res://audio/sfx/knife_impact/impact 06.wav" id="17_uep1p"]
 [ext_resource type="Material" uid="uid://1jbeha805keo" path="res://materials/wiggle_material_outer.tres" id="19_dogtj"]
 [ext_resource type="Material" uid="uid://6maqubq4rapg" path="res://materials/wiggle_material_inner.tres" id="21_dogtj"]
+[ext_resource type="Texture2D" uid="uid://dbwc55h75l4r2" path="res://icon.svg" id="30_iafhg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lip14"]
 shader = ExtResource("1_fdta4")
@@ -167,6 +169,7 @@ albedo_color = Color(0.920884, 0.707924, 0.675801, 1)
 [node name="Level" type="Node3D"]
 script = ExtResource("1_c1pbi")
 level_name = "Level Nameasdfsdf"
+solution_image = ExtResource("2_cr74b")
 
 [node name="DebugCommands" type="Node" parent="."]
 script = ExtResource("1_b4stf")
@@ -411,8 +414,15 @@ metadata/_custom_type_script = "uid://dcnqwn1puo4h"
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
+canvas_item_default_texture_filter = 0
 size = Vector2i(100, 100)
 script = ExtResource("2_f1g4q")
+
+[node name="SolutionTexture" type="TextureRect" parent="PuzzleController/PuzzleViewport"]
+modulate = Color(1, 1, 1, 0.862745)
+offset_right = 128.0
+offset_bottom = 64.0
+texture = ExtResource("30_iafhg")
 
 [node name="PuzzleDrawer" type="Control" parent="PuzzleController/PuzzleViewport"]
 top_level = true
