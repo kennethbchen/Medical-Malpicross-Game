@@ -1,7 +1,8 @@
 extends Node3D
 
+@export_multiline var puzzle_string: String
 @export var level_name: String = "Level Name"
-@export var solution_image: Texture
+@export var level_image: Texture
 
 @onready var camera: Camera3D = $CameraSystem/CameraShake/Camera3D
 
@@ -63,17 +64,14 @@ var puzzle: Puzzle
 
 func _ready() -> void:
 	
-	var puzzle_string = test_puzzles[-1]
-	
 	puzzle = Puzzle.new(puzzle_string)
 	
-	puzzle_controller.init(camera, puzzle, solution_image)
+	puzzle_controller.init(camera, puzzle, level_image)
 	
 	wiggle_shader_controller.init(puzzle)
 	scream_controller.init(puzzle)
 	world_environment.init(puzzle)
 	blood_splatter_vignette.init(puzzle)
-	
 	
 	# UI
 	

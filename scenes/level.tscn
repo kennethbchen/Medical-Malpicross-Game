@@ -168,8 +168,10 @@ albedo_color = Color(0.920884, 0.707924, 0.675801, 1)
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1_c1pbi")
-level_name = "Level Nameasdfsdf"
-solution_image = ExtResource("2_cr74b")
+puzzle_string = "0 1 1 1
+1 1 1 1"
+level_name = "TestLevel"
+level_image = ExtResource("2_cr74b")
 
 [node name="DebugCommands" type="Node" parent="."]
 script = ExtResource("1_b4stf")
