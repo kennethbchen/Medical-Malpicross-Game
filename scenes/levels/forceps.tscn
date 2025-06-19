@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwk7wkyhx4a5s"]
+
+[ext_resource type="PackedScene" uid="uid://cphi0cg2safub" path="res://scenes/level.tscn" id="1_nnyt0"]
+[ext_resource type="Texture2D" uid="uid://ryy5jn1aw8ya" path="res://sprites/forceps.png" id="2_elvf4"]
+
+[node name="Level" instance=ExtResource("1_nnyt0")]
+puzzle_string = "0 0 1 1 0 0
+0 1 1 0 0 0
+1 1 0 0 0 1
+1 0 0 0 1 1
+1 0 0 1 1 0
+1 1 1 1 0 0"
+level_name = "Forceps"
+level_image = ExtResource("2_elvf4")

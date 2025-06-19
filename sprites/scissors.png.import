@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dc3roy1s2qsca"
-path="res://.godot/imported/heart.png-69bff64251259751f4bcc5909839a008.ctex"
+uid="uid://8y54y0c6x3bo"
+path="res://.godot/imported/scissors.png-74224f9996ce64970f9ae995daa00e80.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/heart.png"
-dest_files=["res://.godot/imported/heart.png-69bff64251259751f4bcc5909839a008.ctex"]
+source_file="res://sprites/scissors.png"
+dest_files=["res://.godot/imported/scissors.png-74224f9996ce64970f9ae995daa00e80.ctex"]
 
 [params]
 

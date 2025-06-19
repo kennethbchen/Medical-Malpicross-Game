@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dc3roy1s2qsca"
-path="res://.godot/imported/heart.png-69bff64251259751f4bcc5909839a008.ctex"
+uid="uid://cd5v5n1i15lvk"
+path="res://.godot/imported/kidney.png-bb91c174aa11f3ca16fa4dcac8cb9a68.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/heart.png"
-dest_files=["res://.godot/imported/heart.png-69bff64251259751f4bcc5909839a008.ctex"]
+source_file="res://sprites/kidney.png"
+dest_files=["res://.godot/imported/kidney.png-bb91c174aa11f3ca16fa4dcac8cb9a68.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

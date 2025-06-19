@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://b12l7bli4bpps"]
+
+[ext_resource type="PackedScene" uid="uid://cphi0cg2safub" path="res://scenes/level.tscn" id="1_m4mv3"]
+[ext_resource type="Texture2D" uid="uid://ce7o1lpxg38jn" path="res://sprites/scalpel.png" id="2_g8g16"]
+
+[node name="Level" instance=ExtResource("1_m4mv3")]
+puzzle_string = "0 1 1 0 0 0
+0 1 1 1 0 0
+0 1 1 1 0 0
+0 1 1 1 1 0
+0 1 1 1 1 0
+0 1 1 1 0 0"
+level_name = "Scalpel"
+level_image = ExtResource("2_g8g16")

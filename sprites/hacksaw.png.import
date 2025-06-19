@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dc3roy1s2qsca"
-path="res://.godot/imported/heart.png-69bff64251259751f4bcc5909839a008.ctex"
+uid="uid://dok7rt0p6q87c"
+path="res://.godot/imported/hacksaw.png-6b6670551b3357550d3a490132e61cb8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/heart.png"
-dest_files=["res://.godot/imported/heart.png-69bff64251259751f4bcc5909839a008.ctex"]
+source_file="res://sprites/hacksaw.png"
+dest_files=["res://.godot/imported/hacksaw.png-6b6670551b3357550d3a490132e61cb8.ctex"]
 
 [params]
 

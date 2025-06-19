@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjn6txgn0ljay"]
+
+[ext_resource type="PackedScene" uid="uid://cphi0cg2safub" path="res://scenes/level.tscn" id="1_aviog"]
+[ext_resource type="Texture2D" uid="uid://dok7rt0p6q87c" path="res://sprites/hacksaw.png" id="2_6fl5k"]
+
+[node name="Level" instance=ExtResource("1_aviog")]
+puzzle_string = "0 0 0 1 1 1
+0 0 1 1 0 1
+0 1 1 0 0 1
+1 1 0 0 1 0
+1 0 1 1 0 0
+1 1 0 0 0 0"
+level_name = "Hacksaw"
+level_image = ExtResource("2_6fl5k")

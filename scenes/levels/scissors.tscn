@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://en6a7138nwoq"]
+
+[ext_resource type="PackedScene" uid="uid://cphi0cg2safub" path="res://scenes/level.tscn" id="1_nyuwb"]
+[ext_resource type="Texture2D" uid="uid://8y54y0c6x3bo" path="res://sprites/scissors.png" id="2_scyo8"]
+
+[node name="Level" instance=ExtResource("1_nyuwb")]
+puzzle_string = "0 0 0 0 0 0 1 0
+1 1 0 0 0 1 0 0
+1 0 1 0 0 1 0 0
+1 1 1 1 1 0 0 0
+0 0 0 0 1 1 0 0
+0 0 1 1 0 0 1 1
+0 1 0 1 0 0 0 0
+0 1 1 1 0 0 0 0"
+level_name = "Scissors"
+level_image = ExtResource("2_scyo8")

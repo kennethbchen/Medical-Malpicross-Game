@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dc3roy1s2qsca"
-path="res://.godot/imported/heart.png-69bff64251259751f4bcc5909839a008.ctex"
+uid="uid://cc6rsere0nsy6"
+path="res://.godot/imported/syringe.png-e852c8e85db7ed3c1904693cd7a0a816.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/heart.png"
-dest_files=["res://.godot/imported/heart.png-69bff64251259751f4bcc5909839a008.ctex"]
+source_file="res://sprites/syringe.png"
+dest_files=["res://.godot/imported/syringe.png-e852c8e85db7ed3c1904693cd7a0a816.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

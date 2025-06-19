@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dc3roy1s2qsca"
-path="res://.godot/imported/heart.png-69bff64251259751f4bcc5909839a008.ctex"
+uid="uid://ce7o1lpxg38jn"
+path="res://.godot/imported/scalpel.png-9715e8e09e3152912dbd0fb3b8f30ec5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/heart.png"
-dest_files=["res://.godot/imported/heart.png-69bff64251259751f4bcc5909839a008.ctex"]
+source_file="res://sprites/scalpel.png"
+dest_files=["res://.godot/imported/scalpel.png-9715e8e09e3152912dbd0fb3b8f30ec5.ctex"]
 
 [params]
 
@@ -31,4 +31,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

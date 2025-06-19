@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dc3roy1s2qsca"
-path="res://.godot/imported/heart.png-69bff64251259751f4bcc5909839a008.ctex"
+uid="uid://qulmtesj71j6"
+path="res://.godot/imported/eyeball.png-f18ae13037e047f287d16e3f1080feef.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/heart.png"
-dest_files=["res://.godot/imported/heart.png-69bff64251259751f4bcc5909839a008.ctex"]
+source_file="res://sprites/eyeball.png"
+dest_files=["res://.godot/imported/eyeball.png-f18ae13037e047f287d16e3f1080feef.ctex"]
 
 [params]
 

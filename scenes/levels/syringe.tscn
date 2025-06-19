@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbt8q6hs20hpg"]
+
+[ext_resource type="PackedScene" uid="uid://cphi0cg2safub" path="res://scenes/level.tscn" id="1_00gdg"]
+[ext_resource type="Texture2D" uid="uid://cc6rsere0nsy6" path="res://sprites/syringe.png" id="2_l3vpx"]
+
+[node name="Level" instance=ExtResource("1_00gdg")]
+puzzle_string = "0 0 1 1 0 1
+0 0 0 1 1 0
+0 0 1 1 1 1
+0 1 1 1 0 1
+0 1 1 0 0 0
+1 0 0 0 0 0"
+level_name = "Syringe"
+level_image = ExtResource("2_l3vpx")
