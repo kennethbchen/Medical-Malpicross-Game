@@ -1,8 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://dkj0mqh4hxwwu"]
+[gd_scene load_steps=10 format=3 uid="uid://dkj0mqh4hxwwu"]
 
 [ext_resource type="Script" uid="uid://bleslppfu4ods" path="res://scripts/util/game_state.gd" id="1_321hb"]
+[ext_resource type="PackedScene" uid="uid://b12l7bli4bpps" path="res://scenes/levels/scalpel.tscn" id="2_3oy0g"]
 [ext_resource type="PackedScene" uid="uid://ofx5w0jiqxp8" path="res://scenes/levels/heart.tscn" id="2_jy5aj"]
+[ext_resource type="PackedScene" uid="uid://cbt8q6hs20hpg" path="res://scenes/levels/syringe.tscn" id="3_7ti0s"]
+[ext_resource type="PackedScene" uid="uid://cjn6txgn0ljay" path="res://scenes/levels/hacksaw.tscn" id="4_ou381"]
+[ext_resource type="PackedScene" uid="uid://bwk7wkyhx4a5s" path="res://scenes/levels/forceps.tscn" id="5_hinck"]
+[ext_resource type="PackedScene" uid="uid://bu1dtuwmo6e1v" path="res://scenes/levels/eyeball.tscn" id="6_b43q5"]
+[ext_resource type="PackedScene" uid="uid://ci4pkbu68rpv1" path="res://scenes/levels/kidney.tscn" id="8_n02c0"]
+[ext_resource type="PackedScene" uid="uid://en6a7138nwoq" path="res://scenes/levels/scissors.tscn" id="9_wshnm"]
 
 [node name="GameState" type="Node"]
 script = ExtResource("1_321hb")
-levels = Array[PackedScene]([ExtResource("2_jy5aj")])
+levels = Array[PackedScene]([ExtResource("2_3oy0g"), ExtResource("3_7ti0s"), ExtResource("4_ou381"), ExtResource("5_hinck"), ExtResource("6_b43q5"), ExtResource("2_jy5aj"), ExtResource("8_n02c0"), ExtResource("9_wshnm")])
