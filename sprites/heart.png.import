@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqccaqnr0a72c"
-path="res://.godot/imported/checkerboard_square_test.png-0f99aee1453f78ddbba2a9f2008d53a7.ctex"
+uid="uid://dc3roy1s2qsca"
+path="res://.godot/imported/heart.png-69bff64251259751f4bcc5909839a008.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/checkerboard_square_test.png"
-dest_files=["res://.godot/imported/checkerboard_square_test.png-0f99aee1453f78ddbba2a9f2008d53a7.ctex"]
+source_file="res://sprites/heart.png"
+dest_files=["res://.godot/imported/heart.png-69bff64251259751f4bcc5909839a008.ctex"]
 
 [params]
 

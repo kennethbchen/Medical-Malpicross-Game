@@ -167,7 +167,7 @@ func _calculate_hints() -> Array:
 	var columns: int = input_size.y
 	
 	var output: Array = [[], []]
-	
+	print(_solution)
 	# Calculate hints for columns
 	for col in range(columns):
 		
@@ -177,7 +177,7 @@ func _calculate_hints() -> Array:
 		var column_hint: Array[int] = []
 		
 		for row in range(rows):
-			
+
 			if _solution[row][col]:
 				# the line continues
 				line_count += 1

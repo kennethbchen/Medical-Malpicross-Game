@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://fljgdlvfv1gh" path="res://scripts/level.gd" id="1_c1pbi"]
 [ext_resource type="Shader" uid="uid://v4s45bekv3ew" path="res://shaders/post_processing.gdshader" id="1_fdta4"]
 [ext_resource type="Script" uid="uid://s36af8eoblro" path="res://scripts/puzzle_controller_3d.gd" id="1_yob6b"]
-[ext_resource type="Texture2D" uid="uid://dnm7cnvwi6244" path="res://sprites/test_solution_image.png" id="2_cr74b"]
+[ext_resource type="Texture2D" uid="uid://dnm7cnvwi6244" path="res://sprites/test/test_solution_image.png" id="2_cr74b"]
 [ext_resource type="Script" uid="uid://dra4lijujrmwu" path="res://scripts/puzzle_viewport.gd" id="2_f1g4q"]
 [ext_resource type="Script" uid="uid://b4k1w2j2r7scw" path="res://scripts/camera/camera_shake.gd" id="2_inhaj"]
 [ext_resource type="Script" uid="uid://cr08p4p1ek04c" path="res://scripts/scream_controller.gd" id="3_38a0a"]
@@ -331,6 +331,7 @@ theme_override_styles/separator = SubResource("StyleBoxEmpty_iafhg")
 
 [node name="LevelNameLabel" type="Label" parent="WinScreen/LevelNameContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Level Name"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -364,7 +365,7 @@ max_yaw = 8.0
 max_roll = 8.0
 
 [node name="Camera3D" type="Camera3D" parent="CameraSystem/CameraShake"]
-transform = Transform3D(1, 0, 0, 0, 0.494458, 0.869202, 0, -0.869202, 0.494458, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.336339, 0.941741, 0, -0.941741, 0.336339, 0, 0.44046, -0.274276)
 
 [node name="PuzzleController" type="Node3D" parent="."]
 script = ExtResource("1_yob6b")
