@@ -521,41 +521,41 @@ material = ExtResource("19_dogtj")
 [node name="Organs" type="Node" parent="StaticMeshes"]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="StaticMeshes/Organs"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -1.45688, 1.37151)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -2.05015, 1.37151)
 size = Vector3(1.33984, 1.14868, 1)
 material = SubResource("StandardMaterial3D_v280i")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="StaticMeshes/Organs"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.66201, -1.45738, -0.927985)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.66201, -2.17175, -0.927985)
 size = Vector3(0.798828, 2.00452, 0.722168)
 material = SubResource("StandardMaterial3D_v280i")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="StaticMeshes/Organs"]
-transform = Transform3D(-0.139363, -0.990241, -4.32848e-08, 0, -4.37114e-08, 1, -0.990241, 0.139363, 6.09176e-09, -0.217219, -1.45738, -1.64828)
+transform = Transform3D(-0.136475, -0.969719, -0.202531, -0.0282253, -0.200554, 0.979276, -0.990241, 0.139363, 6.09176e-09, -0.217219, -2.01657, -1.64828)
 size = Vector3(0.798828, 2.56378, 0.722168)
 material = SubResource("StandardMaterial3D_v280i")
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="StaticMeshes/Organs"]
-transform = Transform3D(0.204598, -0.978846, -4.27867e-08, 0, -4.37114e-08, 1, -0.978846, -0.204598, -8.94329e-09, 0.430104, -1.29133, -2.393)
+transform = Transform3D(0.197545, -0.945102, 0.260302, -0.0532573, 0.254796, 0.965527, -0.978846, -0.204598, -8.94329e-09, 0.430104, -2.02843, -2.393)
 size = Vector3(0.798828, 2.56378, 0.722168)
 material = SubResource("StandardMaterial3D_v280i")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="StaticMeshes/Organs"]
-transform = Transform3D(-0.0303467, -0.999539, -4.36913e-08, 0, -4.37114e-08, 1, -0.999539, 0.0303467, 1.3265e-09, -1.25855, -1.45738, -2.37771)
+transform = Transform3D(-0.0303467, -0.999539, -4.36913e-08, 0, -4.37114e-08, 1, -0.999539, 0.0303467, 1.3265e-09, -1.25855, -2.01721, -2.37771)
 size = Vector3(0.798828, 0.795181, 0.722168)
 material = SubResource("StandardMaterial3D_v280i")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="StaticMeshes/Organs"]
-transform = Transform3D(-0.0303467, -0.999539, -4.36913e-08, 0, -4.37114e-08, 1, -0.999539, 0.0303467, 1.3265e-09, 1.59959, -1.45738, -2.35511)
+transform = Transform3D(-0.0303467, -0.999539, -4.36913e-08, 0, -4.37114e-08, 1, -0.999539, 0.0303467, 1.3265e-09, 1.59959, -2.09525, -2.35511)
 size = Vector3(1.06104, 0.795181, 0.722168)
 material = SubResource("StandardMaterial3D_v280i")
 
 [node name="TempOrgans" type="CSGBox3D" parent="StaticMeshes/Organs"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.0905103, -1.44412, -0.305045)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.0905103, -1.7745, -0.305045)
 size = Vector3(2.32575, 2.27, 0.464)
 material = SubResource("StandardMaterial3D_v280i")
 
 [node name="TempOrgans2" type="CSGBox3D" parent="StaticMeshes/Organs"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.0905103, -1.44412, -0.305045)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.43604, -2.20592, -0.305045)
 size = Vector3(2.32575, 2.27, 0.464)
 material = SubResource("StandardMaterial3D_v280i")

@@ -196,7 +196,7 @@ func _process(delta: float) -> void:
 			elif is_flexible_cell and not generate_outer:
 				# Generate inner body instead
 				
-				var body_depth_offset: Vector3 = Vector3(0, -1.25, 0)
+				var body_depth_offset: Vector3 = Vector3(0, -2.0, 0)
 				
 				# Vertices on the cube (so, 8 vertices) that this cell represents
 				
