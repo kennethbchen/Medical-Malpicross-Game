@@ -65,4 +65,4 @@ func _on_level_complete() -> void:
 	if current_level_idx >= 0:
 		level_complete[current_level_idx] = true
 		
-	print(level_complete)
+	#print(level_complete)
