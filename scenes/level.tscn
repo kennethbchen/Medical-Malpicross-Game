@@ -456,6 +456,7 @@ hide_fixed = false
 [node name="ScreamController" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45724, -22.0389)
 stream = SubResource("AudioStreamRandomizer_uclkp")
+volume_db = -4.0
 unit_size = 30.0
 bus = &"Voice"
 script = ExtResource("3_38a0a")
