@@ -1,8 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://c4k60x16kd0da"]
+[gd_scene load_steps=11 format=3 uid="uid://c4k60x16kd0da"]
 
 [ext_resource type="Script" uid="uid://p3e7eh43tr3n" path="res://scripts/main_menu.gd" id="1_bqqt6"]
 [ext_resource type="Script" uid="uid://lfxrj4s481ed" path="res://addons/simplemenu/simple_menu/simple_menu.gd" id="1_ekxnf"]
+[ext_resource type="Texture2D" uid="uid://bhdqelg3wbme7" path="res://sprites/UI/title_background.png" id="2_8ln24"]
 [ext_resource type="Script" uid="uid://brl1wodkpfsk4" path="res://addons/simplemenu/simple_menu_button_binding.gd" id="2_bqqt6"]
+[ext_resource type="Texture2D" uid="uid://cmh7ydyinjq04" path="res://sprites/UI/logo_trans.png" id="4_wu84c"]
 
 [sub_resource type="Resource" id="Resource_ekxnf"]
 script = ExtResource("2_bqqt6")
@@ -40,12 +42,43 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_bqqt6")
 
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -27.0
+offset_top = -91.0
+offset_right = 27.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_8ln24")
+expand_mode = 1
+
 [node name="SimpleMenu" type="Node" parent="."]
 script = ExtResource("1_ekxnf")
 actions = Array[ExtResource("2_bqqt6")]([SubResource("Resource_ekxnf"), SubResource("Resource_bqqt6"), SubResource("Resource_wu84c")])
 metadata/_custom_type_script = "uid://lfxrj4s481ed"
 
+[node name="Logo" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -189.0
+offset_top = -210.0
+offset_right = 189.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_wu84c")
+expand_mode = 1
+
 [node name="Label" type="Label" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -66,9 +99,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -71.0
-offset_top = -17.0
+offset_top = 25.0
 offset_right = 71.0
-offset_bottom = 105.0
+offset_bottom = 147.0
 grow_horizontal = 2
 grow_vertical = 2
 
